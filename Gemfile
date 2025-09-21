@@ -125,3 +125,6 @@
 
   # Authorization with Pundit
   gem "pundit", "~> 2.5"
+
+  # implement supported icon libraries easily
+  gem "rails_icons"
