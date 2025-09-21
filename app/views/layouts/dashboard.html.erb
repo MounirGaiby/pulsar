@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="<%= I18n.locale %>" dir="<%= I18n.locale.to_s == 'ar' ? 'rtl' : 'ltr' %>">
+  <%= render "layouts/head" %>
+  <body class="bg-gray-50">
+    <%= render FlashComponent.new %>
+    <div class="flex min-h-screen">
+      <%= render SidebarComponent.new(current_user: current_user) %>
+      <main class="flex-1 p-6">
+        <div class="flex justify-end mb-4">
+          <div class="flex space-x-2">
+            <% available_locales.each do |locale| %>
+              <%= link_to url_for(locale: locale[:code]), class: "btn-secondary px-2 py-1 rounded flex items-center space-x-1 <%= 'font-bold underline' if I18n.locale == locale[:code] %>" do %>
+                <%= icon locale[:icon], library: locale[:library], class: "w-4 h-4" %>
+                <span><%= locale[:label] %></span>
+              <% end %>
+            <% end %>
+          </div>
+        </div>
+        <%= yield %>
+      </main>
+    </div>
+  </body>
+</html>
