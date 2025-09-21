@@ -1,31 +1,110 @@
-# Files in the config/locales directory are used for internationalization and
-# are automatically loaded by Rails. If you want to use locales other than
-# English, add the necessary files in this directory.
-#
-# To use the locales, use `I18n.t`:
-#
-#     I18n.t "hello"
-#
-# In views, this is aliased to just `t`:
-#
-#     <%= t("hello") %>
-#
-# To use a different locale, set it with `I18n.locale`:
-#
-#     I18n.locale = :es
-#
-# This would use the information in config/locales/es.yml.
-#
-# To learn more about the API, please read the Rails Internationalization guide
-# at https://guides.rubyonrails.org/i18n.html.
-#
-# Be aware that YAML interprets the following case-insensitive strings as
-# booleans: `true`, `false`, `on`, `off`, `yes`, `no`. Therefore, these strings
-# must be quoted to be interpreted as strings. For example:
-#
-#     en:
-#       "yes": yup
-#       enabled: "ON"
-
 en:
-  hello: "Hello world"
+  # ActiveRecord model and attribute translations
+  activerecord:
+    models:
+      user: "User"
+      session: "Session"
+    attributes:
+      user:
+        email_address: "Email address"
+        password: "Password"
+      session:
+        token: "Session token"
+
+  # Views and components
+  sessions:
+    new:
+      title: "Login"
+      email: "Email"
+      password: "Password"
+      submit: "Login"
+      error: "Try another email address or password."
+      success: "Signed in successfully."
+
+  passwords:
+    new:
+      title: "Forgot your password?"
+      email: "Enter your email address"
+      submit: "Email reset instructions"
+    edit:
+      title: "Update your password"
+      password: "Password"
+      password_confirmation: "Password confirmation"
+      submit: "Save"
+    create:
+      notice: "Password reset instructions sent (if a user with that email exists)."
+    update:
+      notice: "Password has been reset."
+      alert: "Passwords did not match."
+    token:
+      invalid: "Password reset link is invalid or has expired."
+
+  dashboard:
+    index:
+      title: "Dashboard"
+
+  sidebar:
+    links:
+      dashboard: "Dashboard"
+      profile: "Profile"
+
+  flash:
+    alert: "There was a problem."
+    notice: "Operation successful."
+    rate_limited: "Too many attempts, try again later."
+
+  simple_form:
+    yes: "Yes"
+    no: "No"
+    required:
+      text: "required"
+      mark: "*"
+    error_notification:
+      default_message: "Please review the problems below:"
+
+  # Date/time formats for use with I18n.l and time distance translations
+  date:
+    formats:
+      default: "%Y-%m-%d"
+      short: "%b %d"
+      long: "%B %d, %Y"
+
+  time:
+    formats:
+      default: "%Y-%m-%d %H:%M:%S %z"
+      short: "%d %b %H:%M"
+      long: "%B %d, %Y %H:%M"
+
+  datetime:
+    distance_in_words:
+      half_a_minute: "half a minute"
+      less_than_x_seconds:
+        one: "less than 1 second"
+        other: "less than %{count} seconds"
+      x_seconds:
+        one: "1 second"
+        other: "%{count} seconds"
+      less_than_x_minutes:
+        one: "less than a minute"
+        other: "less than %{count} minutes"
+      x_minutes:
+        one: "1 minute"
+        other: "%{count} minutes"
+      about_x_hours:
+        one: "about 1 hour"
+        other: "about %{count} hours"
+      x_days:
+        one: "1 day"
+        other: "%{count} days"
+      about_x_months:
+        one: "about 1 month"
+        other: "about %{count} months"
+      x_months:
+        one: "1 month"
+        other: "%{count} months"
+      about_x_years:
+        one: "about 1 year"
+        other: "about %{count} years"
+      over_x_years:
+        one: "over 1 year"
+        other: "over %{count} years"

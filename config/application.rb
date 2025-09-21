@@ -22,6 +22,9 @@ module Pulsar
     # in config/environments, which are processed later.
     #
     config.time_zone = "UTC"
+  # I18n configuration
+  config.i18n.default_locale = :en
+  config.i18n.available_locales = %i[en fr ar]
     # config.eager_load_paths << Rails.root.join("extras")
 
     config.generators do |g|

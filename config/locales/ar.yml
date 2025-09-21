@@ -1,0 +1,107 @@
+ar:
+  activerecord:
+    models:
+      user: "مستخدم"
+      session: "جلسة"
+    attributes:
+      user:
+        email_address: "البريد الإلكتروني"
+        password: "كلمة المرور"
+      session:
+        token: "رمز الجلسة"
+
+  sessions:
+    new:
+      title: "تسجيل الدخول"
+      email: "البريد الإلكتروني"
+      password: "كلمة المرور"
+      submit: "تسجيل الدخول"
+      error: "حاول بريدًا إلكترونيًا أو كلمة مرور أخرى."
+      success: "تم تسجيل الدخول بنجاح."
+
+  passwords:
+    new:
+      title: "هل نسيت كلمة المرور؟"
+      email: "أدخل بريدك الإلكتروني"
+      submit: "إرسال تعليمات إعادة التعيين"
+    edit:
+      title: "تحديث كلمة المرور"
+      password: "كلمة المرور"
+      password_confirmation: "تأكيد كلمة المرور"
+      submit: "حفظ"
+    create:
+      notice: "تم إرسال تعليمات إعادة تعيين كلمة المرور (إذا كان هناك مستخدم بهذا البريد)."
+    update:
+      notice: "تمت إعادة تعيين كلمة المرور."
+      alert: "كلمات المرور غير متطابقة."
+    token:
+      invalid: "رابط إعادة تعيين كلمة المرور غير صالح أو انتهت صلاحيته."
+
+  dashboard:
+    index:
+      title: "لوحة التحكم"
+
+  sidebar:
+    links:
+      dashboard: "لوحة التحكم"
+      profile: "الملف الشخصي"
+
+  flash:
+    alert: "حدثت مشكلة."
+    notice: "تمت العملية بنجاح."
+    rate_limited: "عدد المحاولات كبير جدا، الرجاء المحاولة لاحقًا."
+
+  simple_form:
+    yes: 'نعم'
+    no: 'لا'
+    required:
+      text: 'إلزامي'
+      mark: '*'
+    error_notification:
+      default_message: "يرجى مراجعة المشاكل أدناه:"
+
+  date:
+    formats:
+      default: "%Y-%m-%d"
+      short: "%d %b"
+      long: "%d %B %Y"
+
+  time:
+    formats:
+      default: "%Y-%m-%d %H:%M:%S %z"
+      short: "%d %b %H:%M"
+      long: "%d %B %Y %H:%M"
+
+  datetime:
+    distance_in_words:
+      half_a_minute: "نصف دقيقة"
+      less_than_x_seconds:
+        one: "أقل من ثانية"
+        other: "أقل من %{count} ثوانٍ"
+      x_seconds:
+        one: "1 ثانية"
+        other: "%{count} ثوانٍ"
+      less_than_x_minutes:
+        one: "أقل من دقيقة"
+        other: "أقل من %{count} دقائق"
+      x_minutes:
+        one: "1 دقيقة"
+        other: "%{count} دقائق"
+      about_x_hours:
+        one: "حوالي ساعة واحدة"
+        other: "حوالي %{count} ساعات"
+      x_days:
+        one: "1 يوم"
+        other: "%{count} أيام"
+      about_x_months:
+        one: "حوالي شهر"
+        other: "حوالي %{count} أشهر"
+      x_months:
+        one: "1 شهر"
+        other: "%{count} أشهر"
+      about_x_years:
+        one: "حوالي سنة"
+        other: "حوالي %{count} سنوات"
+      over_x_years:
+        one: "أكثر من سنة"
+        other: "أكثر من %{count} سنوات"
