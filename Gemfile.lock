@@ -113,11 +113,11 @@ GEM
     connection_pool (2.5.4)
     crass (1.0.6)
     date (3.4.1)
-    debug (1.11.0)
-      irb (~> 1.10)
-      reline (>= 0.3.8)
     diff-lcs (1.6.2)
     dotenv (3.1.8)
+    dotenv-rails (3.1.8)
+      dotenv (= 3.1.8)
+      railties (>= 6.1)
     drb (2.2.3)
     ed25519 (1.4.0)
     erb (5.0.2)
@@ -231,6 +231,9 @@ GEM
     pry (0.15.2)
       coderay (~> 1.1)
       method_source (~> 1.0)
+    pry-byebug (3.11.0)
+      byebug (~> 12.0)
+      pry (>= 0.13, < 0.16)
     psych (5.2.6)
       date
       stringio
@@ -449,9 +452,8 @@ DEPENDENCIES
   bootsnap
   brakeman
   bullet
-  byebug
   capybara
-  debug
+  dotenv-rails
   factory_bot (~> 6.5)
   faker
   goldiloader
@@ -462,6 +464,7 @@ DEPENDENCIES
   pagy (~> 9.3)
   propshaft
   pry (~> 0.15.0)
+  pry-byebug
   puma (>= 5.0)
   rack-attack
   rails (~> 8.0.2, >= 8.0.2.1)
