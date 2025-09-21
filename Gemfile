@@ -122,3 +122,6 @@
   gem "faker"
 
   gem "factory_bot", "~> 6.5"
+
+  # Authorization with Pundit
+  gem "pundit", "~> 2.5"
