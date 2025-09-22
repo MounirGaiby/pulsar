@@ -5,12 +5,13 @@
     <%#= render TopbarComponent.new(current_user: current_user) %>
     <%= render FlashComponent.new %>
     <div class="flex min-h-screen">
-      <%= render SidebarComponent.new(current_user: current_user) %>
-      <main class="flex-1 p-6">
-        <div class="flex justify-end mb-4">
-        </div>
+    <%= render SidebarComponent.new(current_user: current_user) %>
+    <main class="flex-1 flex flex-col">
+      <%= render TopbarComponent.new(current_user: current_user) %>
+      <div class="p-6 flex-1">
         <%= yield %>
-      </main>
+      </div>
+    </main>
     </div>
   </body>
 </html>

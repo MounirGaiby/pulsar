@@ -1,36 +1,65 @@
-<div class="topbar justify-end">
-  <%= render DropdownComponent.new(id: 'topbar-theme-language-switcher') do |c| %>
-    <% c.with_trigger do %>
-      <button class="dropdown-trigger">
-        <%#= icon "globe", library: "lucide", class: "w-4 h-4" %>
-        <span><%= t('topbar.language') %></span>
-        <svg class="dropdown-caret" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.293l3.71-4.06a.75.75 0 111.08 1.04l-4.25 4.654a.75.75 0 01-1.08 0L5.21 8.27a.75.75 0 01.02-1.06z" clip-rule="evenodd"/></svg>
-      </button>
-    <% end %>
+<header class="topbar topbar-reverse topbar-space-between" role="banner">
+  <nav aria-label="Topbar navigation" class="topbar-nav">
+    <%= render DropdownComponent.new(id: 'topbar-theme-language-switcher') do |c| %>
+      <% c.with_trigger do %>
+        <button class="dropdown-trigger">
+          <%#= icon "globe", library: "lucide", class: "w-4 h-4" %>
+          <span><%= "#{t('topbar.language')} · #{t('topbar.theme')}" %></span>
+          <svg class="dropdown-caret" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.293l3.71-4.06a.75.75 0 111.08 1.04l-4.25 4.654a.75.75 0 01-1.08 0L5.21 8.27a.75.75 0 01.02-1.06z" clip-rule="evenodd"/></svg>
+        </button>
+      <% end %>
 
-    <% c.with_menu do %>
-      <div class="dropdown-list">
-        <% available_locales.each do |locale| %>
-          <%= link_to url_for(locale: locale[:code]), class: "dropdown-item-flex" do %>
-            <%#= icon locale[:icon], library: locale[:library], class: "w-4 h-4" %>
-            <span><%= t("topbar.languages.#{locale[:code]}") %></span>
+      <% c.with_menu do %>
+        <div class="dropdown-list">
+          <% available_locales.each do |locale| %>
+            <%= link_to url_for(locale: locale[:code]), class: "dropdown-item-flex" do %>
+              <%#= icon locale[:icon], library: locale[:library], class: "w-4 h-4" %>
+              <span><%= t("topbar.languages.#{locale[:code]}") %></span>
+            <% end %>
           <% end %>
-        <% end %>
-      </div>
-
-      <hr class="my-2 border-t" />
-
-      <div class="topbar-item">
-        <div class="flex items-center justify-between" style="width:100%">
-            <div class="topbar-item">
-            <%#= icon "moon", library: "lucide", class: "w-4 h-4" %>
-            <span><%= t('topbar.theme') %></span>
-          </div>
-          <button data-controller="theme" data-action="click->theme#toggle" class="btn-compact" title="Toggle theme">
-            <span data-theme-target="icon">🌙</span>
-          </button>
         </div>
-      </div>
+
+        <hr class="my-2 border-t" />
+
+          <div class="topbar-item topbar-inner">
+            <div class="topbar-item">
+              <%#= icon "moon", library: "lucide", class: "w-4 h-4" %>
+              <span><%= t('topbar.theme') %></span>
+            </div>
+            <button data-controller="theme" data-action="click->theme#toggle" class="btn-compact" title="Toggle theme">
+              <span data-theme-target="icon">🌙</span>
+            </button>
+          </div>
+      <% end %>
     <% end %>
-  <% end %>
-</div>
+    <%# User menu: show when user present; integrates profile and logout into a dropdown near language menu %>
+    <% if @current_user %>
+      <%= render DropdownComponent.new(id: 'topbar-user-menu', classes: 'ml-2') do |c| %>
+        <% c.with_trigger do %>
+          <button class="dropdown-trigger" aria-label="User menu">
+            <%# small avatar placeholder - uncomment when avatars available %>
+            <%#= image_tag @current_user.avatar_url, alt: @current_user.name, class: 'w-6 h-6 rounded-full' %>
+            <span class="sr-only"><%= t('topbar.user_profile') %></span>
+            <span class="muted"><%= @current_user.email_address %></span>
+            <svg class="dropdown-caret" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.293l3.71-4.06a.75.75 0 111.08 1.04l-4.25 4.654a.75.75 0 01-1.08 0L5.21 8.27a.75.75 0 01.02-1.06z" clip-rule="evenodd"/></svg>
+          </button>
+        <% end %>
+
+        <% c.with_menu do %>
+          <div class="dropdown-list">
+            <div class="dropdown-item-flex">
+              <div>
+                <!--<div class="font-semibold"><%#= @current_user.name || @current_user.email_address %></div>-->
+                <div class="muted text-sm"><%= @current_user.email_address %></div>
+              </div>
+            </div>
+            <hr class="my-2 border-t" />
+            <%= button_to logout_path, method: :delete, form: { class: 'm-0' }, class: 'dropdown-item-flex dropdown-item-danger' do %>
+              <span><%= t('topbar.logout') %></span>
+            <% end %>
+          </div>
+        <% end %>
+      <% end %>
+    <% end %>
+  </nav>
+</header>

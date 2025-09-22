@@ -474,6 +474,34 @@ html.dark,
         border-bottom: 1px solid rgba(15, 23, 36, 0.02);
     }
 
+    /* Reusable topbar helper classes to avoid repeating utility classes in templates */
+    .topbar-reverse {
+        flex-direction: row-reverse;
+    }
+
+    .topbar-space-between {
+        justify-content: space-between;
+    }
+
+    .topbar-nav {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .topbar-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+    }
+
+    .topbar-user {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
     .dropdown-menu {
         background-color: var(--color-card);
         color: var(--color-card-text, var(--color-text));
@@ -531,6 +559,12 @@ html.dark,
         /* py-1 px-2 */
         border-radius: 0.25rem;
         color: inherit;
+        width: 100%;
+    }
+
+    /* Danger variant for dropdown items (e.g., logout) */
+    .dropdown-item-danger {
+        color: var(--alert-danger);
     }
 
     /* Topbar internal item spacing */
@@ -546,6 +580,7 @@ html.dark,
     .dropdown-item:hover {
         background-color: var(--color-accent-weak);
         color: var(--color-accent);
+        cursor: pointer;
     }
 
     .btn-compact {
@@ -557,6 +592,7 @@ html.dark,
         padding: 0.25rem 0.5rem;
         /* py-1 px-2 */
         transition: background-color 0.12s ease, border-color 0.12s ease;
+        cursor: pointer;
     }
 
     /* Alignment helpers: add to container via component logic */
