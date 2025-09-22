@@ -4,6 +4,13 @@
     body {
         color: var(--color-text);
     }
+
+    /* Ensure the document background follows our design tokens so dark mode applies globally */
+    html,
+    body {
+        background-color: var(--color-background);
+        transition: background-color 0.18s ease, color 0.18s ease;
+    }
 }
 
 /* RTL adjustments: flip dropdown anchoring and item ordering when the document is RTL */
@@ -18,74 +25,116 @@
 }
 
 /* CSS-first theme: define design tokens as CSS custom properties. */
-@theme {
-    --radius-xl: 1rem;
-    --radius-2xl: 1.5rem;
-    --color-primary: #2563eb;
-    /* blue-600 */
-    --color-primary-light: #3b82f6;
-    /* blue-500 */
-    --color-background: #f9fafb;
-    /* gray-50 */
+:root {
+    /* Shape */
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+
+    /* Neutral palette (soft, professional) */
+    --color-background: #f3f5f9;
+    /* subtle warm off-white */
+    --color-surface: #ffffff;
+    /* panels */
     --color-card: #ffffff;
-    --shadow-card: 0 2px 8px 0 rgba(0, 0, 0, 0.04);
-    --color-text: #111827;
-    /* gray-900 */
+    /* cards/topbar/dropdowns */
+    --color-card-text: #0f1724;
     --color-muted: #6b7280;
-    /* gray-500 */
-    --color-surface-hover: rgba(243, 244, 246, 0.9);
-    /* gray-100 */
-    --alert-danger: #ef4444;
-    /* red-500 */
-    --alert-success: #10b981;
-    /* green-500 */
+    /* secondary text */
+    --color-text: #0f1724;
+    /* primary text */
+
+    /* Accent (vibrant ruby / candy red) */
+    --color-accent: #e11d48;
+    /* ruby */
+    --color-accent-hover: #c2183b;
+    /* deeper on hover */
+    --color-accent-weak: rgba(225, 29, 72, 0.06);
+    /* subtle highlight */
+    --color-accent-strong: rgba(225, 29, 72, 0.12);
+
+    /* Brand / logo blue (added per request) */
+    --color-brand: #60a4ff;
+    --color-brand-weak: rgba(96, 164, 255, 0.06);
+    --color-brand-strong: rgba(96, 164, 255, 0.12);
+
+    /* Secondary / supportive */
+    --color-secondary: #ff6b6b;
+    --color-secondary-hover: #ff4b4b;
+
+    /* Shadows */
+    --shadow-card: 0 8px 28px rgba(15, 23, 36, 0.08);
+    --shadow-ring: 0 0 0 4px rgba(225, 29, 72, 0.08);
+
+    /* Alerts */
+    --alert-danger: #ff375f;
+    /* candy red */
+    --alert-success: #12e691;
+    --color-surface-hover: rgba(15, 23, 36, 0.04);
+    --color-border: rgba(15, 23, 36, 0.06);
 }
 
-/* Dark theme overrides when `.dark` class is present on <html> */
+/* Dark theme overrides when `.dark` class is present on <html> or any ancestor */
+html.dark,
 .dark {
-    --color-primary: #60a5fa;
-    /* lighter blue for dark bg */
-    --color-primary-light: #93c5fd;
-    --color-background: #0f172a;
-    /* dark slate */
-    --color-card: #0b1220;
-    /* darker card */
-    --shadow-card: 0 2px 12px rgba(2, 6, 23, 0.6);
+    /* Dark theme overrides: tuned for dark surfaces with ruby accent */
+    --color-background: #071022;
+    /* deep navy-black */
+    --color-surface: #061123;
+    /* panel surface */
+    --color-card: #071427;
+    /* cards slightly lighter */
+    --color-card-text: #e6eef8;
     --color-text: #e6eef8;
-    /* light text in dark */
     --color-muted: #9aa6bf;
-    --color-surface-hover: rgba(255, 255, 255, 0.04);
-    --alert-danger: #f87171;
-    --alert-success: #34d399;
+
+    --color-accent: #ff6b8a;
+    /* lighter / punchy ruby in dark */
+    --color-accent-hover: #ff4b6a;
+    --color-accent-weak: rgba(255, 107, 138, 0.06);
+    --color-accent-strong: rgba(255, 107, 138, 0.12);
+
+    /* Keep the brand blue in dark mode as well (tweak if desired) */
+    --color-brand: #60a4ff;
+    --color-brand-weak: rgba(96, 164, 255, 0.06);
+    --color-brand-strong: rgba(96, 164, 255, 0.12);
+
+    --shadow-card: 0 10px 36px rgba(2, 6, 23, 0.6);
+    --shadow-ring: 0 0 0 4px rgba(255, 107, 138, 0.08);
+
+    --color-surface-hover: rgba(255, 255, 255, 0.02);
+    --alert-danger: #ff7b7b;
+    --alert-success: #4ee19a;
+    --color-border: rgba(255, 255, 255, 0.04);
 }
 
 @layer components {
 
     /* Buttons */
     .btn-primary {
-        background-color: var(--color-primary);
+        background-color: var(--color-accent);
         color: #ffffff;
-        font-weight: 500;
-        border-radius: 0.375rem;
-        padding: 0.625rem 0.875rem;
-        /* approximate px-3.5 py-2.5 */
-        transition-property: background-color, color;
+        font-weight: 600;
+        border-radius: var(--radius-md);
+        padding: 0.75rem 1rem;
+        letter-spacing: 0.2px;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+        transition: transform 0.12s ease, box-shadow 0.12s ease, background-color 0.12s ease;
     }
 
     .btn-primary:hover {
-        background-color: var(--color-primary-light);
+        transform: translateY(-1px);
+        background-color: var(--color-accent-hover);
     }
 
     .btn-secondary {
-        background-color: var(--color-card);
-        border: 1px solid rgba(209, 213, 219, 0.8);
-        /* gray-300 */
-        color: var(--color-text, #374151);
-        /* fallback gray-700 */
+        background-color: transparent;
+        border: 1px solid rgba(15, 23, 36, 0.06);
+        color: var(--color-text);
         font-weight: 500;
-        border-radius: 0.375rem;
-        padding: 0.5rem 0.75rem;
-        transition: background-color 0.2s;
+        border-radius: var(--radius-md);
+        padding: 0.625rem 0.875rem;
+        transition: background-color 0.12s ease, border-color 0.12s ease;
     }
 
     /* Alerts */
@@ -95,6 +144,20 @@
         border-radius: 0.375rem;
         color: var(--color-card-text, #ffffff);
         font-weight: 500;
+        animation: fadeOut 0.5s ease-in-out 2s forwards;
+    }
+
+    /* alerts do not need focus styles by default; keep minimal accessible behavior */
+
+    @keyframes fadeOut {
+        from {
+            opacity: 1;
+        }
+
+        to {
+            opacity: 0;
+            display: none;
+        }
     }
 
     .alert-danger {
@@ -105,20 +168,181 @@
         background-color: var(--alert-success);
     }
 
+    .flash-messages {
+        position: fixed;
+        bottom: 1rem;
+        right: 1rem;
+        z-index: 1000;
+        width: auto;
+        max-width: 20rem;
+    }
+
+    [dir="rtl"] .flash-messages {
+        right: auto;
+        left: 1rem;
+    }
+
+    @media (max-width: 640px) {
+        .flash-messages {
+            left: 1rem;
+            right: 1rem;
+            max-width: none;
+        }
+    }
+
+    /* Enhanced flash stack + animations */
+    .flash-stack {
+        display: flex;
+        flex-direction: column-reverse;
+        gap: 0.75rem;
+        align-items: flex-end;
+        max-height: calc(100vh - 4rem);
+        overflow: visible;
+        pointer-events: none;
+        /* allow clicks to pass to individual alerts */
+    }
+
+    [dir="rtl"] .flash-stack {
+        align-items: flex-start;
+    }
+
+    .flash-item {
+        pointer-events: auto;
+        min-width: 12rem;
+        max-width: 24rem;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.75rem 1rem;
+        border-radius: 0.75rem;
+        box-shadow: 0 8px 28px rgba(2, 6, 23, 0.12);
+        transform-origin: right bottom;
+        transition: transform 200ms cubic-bezier(.2, .9, .3, 1), opacity 160ms ease, box-shadow 160ms ease;
+        opacity: 0;
+        transform: translateY(8px) scale(0.98);
+        border: 1px solid var(--color-border);
+        background-clip: padding-box;
+    }
+
+    [dir="rtl"] .flash-item {
+        transform-origin: left bottom;
+    }
+
+    /* visible state applied by JS when inserted */
+    .flash-item.show {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+
+    /* Dismiss animation */
+    .flash-item.hide {
+        opacity: 0;
+        transform: translateY(6px) scale(0.98);
+        transition: opacity 160ms ease, transform 160ms cubic-bezier(.4, .0, .2, 1);
+    }
+
+    /* Inner content layout */
+    .flash-content {
+        flex: 1 1 auto;
+        color: var(--color-card-text);
+        font-weight: 600;
+        font-size: 0.95rem;
+    }
+
+    .flash-actions {
+        display: flex;
+        gap: 0.5rem;
+        align-items: center;
+        margin-left: 0.5rem;
+    }
+
+    [dir="rtl"] .flash-actions {
+        margin-left: 0;
+        margin-right: 0.5rem;
+    }
+
+    .flash-close {
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        color: inherit;
+        padding: 0.25rem;
+        border-radius: 6px;
+        transition: background-color 0.12s ease;
+    }
+
+    .flash-close:hover {
+        background-color: var(--color-surface-hover);
+    }
+
+    /* Pause auto-hide when hovering */
+    .flash-item:hover {
+        animation-play-state: paused;
+    }
+
+    /* Theming for success/danger alerts to be subtle in light/dark */
+    .flash-success {
+        background-color: color-mix(in srgb, var(--color-accent-weak) 18%, var(--color-card) 82%);
+        color: var(--color-card-text);
+        border-left: 4px solid var(--color-accent);
+    }
+
+    .flash-danger {
+        background-color: color-mix(in srgb, var(--alert-danger) 14%, var(--color-card) 86%);
+        color: var(--color-card-text);
+        border-left: 4px solid var(--alert-danger);
+    }
+
+    /* On small screens make full width */
+    @media (max-width: 640px) {
+        .flash-stack {
+            align-items: stretch;
+            width: auto;
+            bottom: 1rem;
+            left: 1rem;
+            right: 1rem;
+        }
+
+        .flash-item {
+            max-width: none;
+            width: 100%;
+        }
+    }
+
+    /* required field asterisk */
+    label {
+        color: var(--color-accent);
+        font-weight: 600;
+    }
+
     /* Card container */
     .card-container {
         background-color: var(--color-card);
         box-shadow: var(--shadow-card);
-        border-radius: var(--radius-xl);
+        border-radius: var(--radius-lg);
         padding: 2rem;
-        max-width: 28rem;
-        margin: 2rem auto;
+        max-width: 34rem;
+        margin: 2.25rem auto;
+        color: var(--color-card-text);
+        border: 1px solid rgba(15, 23, 36, 0.04);
+    }
+
+    /* background helpers used by layouts */
+    .bg-background {
+        background-color: var(--color-background);
+        color: var(--color-text);
+        min-height: 100vh;
+    }
+
+    .bg-card {
+        background-color: var(--color-card);
+        color: var(--color-card-text);
     }
 
     /* Headings */
     .heading-1 {
-        font-size: 2.25rem;
-        /* text-4xl */
+        font-size: 1.875rem;
+        /* ~text-3xl */
         font-weight: 700;
     }
 
@@ -127,7 +351,7 @@
         width: 16rem;
         /* w-64 */
         display: none;
-        background-color: var(--color-card);
+        background-color: var(--color-surface);
         box-shadow: var(--shadow-card);
         padding: 1rem;
     }
@@ -136,6 +360,37 @@
         .sidebar {
             display: block;
         }
+    }
+
+    .sidebar-header {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .sidebar-title {
+        font-size: 2rem;
+        font-weight: 700;
+        /* Use accent by default but prefer the brand-accent gradient when available */
+        color: var(--color-accent);
+        font-family: 'Sora', 'Poppins', sans-serif;
+        letter-spacing: 0.2px;
+    }
+
+    /* Brand gradient text utility (accent -> brand). Use on headings/logotype to match logo */
+    .text-brand-gradient {
+        background-image: linear-gradient(90deg, var(--color-accent) 0%, var(--color-brand) 100%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        display: inline-block;
+    }
+
+    .sidebar-logo {
+        width: 42px;
+        height: 42px;
     }
 
     .sidebar-links {
@@ -158,6 +413,10 @@
         text-align: left;
     }
 
+    [dir="rtl"] .sidebar-button {
+        text-align: right;
+    }
+
     .sidebar-link:hover,
     .sidebar-button:hover {
         background-color: var(--color-surface-hover);
@@ -168,36 +427,145 @@
     /* Forms */
     .input {
         display: block;
-        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-        border-radius: 0.375rem;
-        border: 1px solid rgba(156, 163, 175, 0.8);
-        /* gray-400 */
-        padding: 0.5rem 0.75rem;
+        background-color: transparent;
+        border: 1px solid var(--color-border);
+        border-radius: 12px;
+        padding: 0.7rem 0.9rem;
         margin-top: 0.5rem;
         width: 100%;
-        background-color: var(--color-card);
-        color: var(--color-text, #111827);
+        color: var(--color-text);
+        backdrop-filter: blur(4px);
+        transition: box-shadow 0.12s ease, border-color 0.12s ease;
     }
 
     .input:focus {
         outline: none;
-        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+        box-shadow: var(--shadow-ring);
+        border-color: var(--color-accent);
+        background-color: rgba(0, 0, 0, 0.02);
     }
 
     .form-group {
         margin: 1.25rem 0;
     }
 
+    .form-label {
+        display: block;
+        font-weight: 600;
+        color: var(--color-text);
+        margin-bottom: 0.5rem;
+        font-size: 0.95rem;
+    }
+
+    .muted {
+        color: var(--color-muted);
+        font-size: 0.875rem;
+    }
+
     /* Topbar / dropdown styles */
     .topbar {
         display: flex;
         align-items: center;
+        width: 100%;
+        padding: 0.5rem 1rem;
+        background-color: var(--color-card);
+        gap: 0.5rem;
+        color: var(--color-card-text);
+        border-bottom: 1px solid rgba(15, 23, 36, 0.02);
     }
 
     .dropdown-menu {
         background-color: var(--color-card);
-        color: var(--color-text, #111827);
+        color: var(--color-card-text, var(--color-text));
         border-radius: 0.5rem;
+        border: 1px solid var(--color-border);
+        box-shadow: var(--shadow-card);
+    }
+
+    /* Dropdown helper classes (explicit properties to avoid @apply in linters) */
+    .dropdown-trigger {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        /* space-x-2 */
+        background-color: transparent;
+        border: 1px solid rgba(15, 23, 36, 0.06);
+        color: var(--color-text);
+        font-weight: 500;
+        border-radius: var(--radius-md);
+        padding: 0.625rem 0.875rem;
+        /* close to btn-secondary */
+        transition: background-color 0.12s ease, border-color 0.12s ease, color 0.12s ease, box-shadow 0.12s ease;
+    }
+
+    .dropdown-trigger:hover {
+        background-color: var(--color-accent-weak);
+        color: var(--color-accent);
+        border-color: rgba(225, 29, 72, 0.18);
+    }
+
+    .dropdown-trigger:focus {
+        outline: none;
+        box-shadow: var(--shadow-ring);
+        border-color: var(--color-accent);
+    }
+
+    .dropdown-caret {
+        width: 0.75rem;
+        /* w-3 */
+        height: 0.75rem;
+        /* h-3 */
+    }
+
+    .dropdown-list>*+* {
+        margin-top: 0.25rem;
+        /* space-y-1 */
+    }
+
+    .dropdown-item-flex {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        /* space-x-2 */
+        padding: 0.25rem 0.5rem;
+        /* py-1 px-2 */
+        border-radius: 0.25rem;
+        color: inherit;
+    }
+
+    /* Topbar internal item spacing */
+    .topbar-item {
+        padding: 0.25rem 0.5rem;
+        /* px-2 py-1 approx */
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .dropdown-item-flex:hover,
+    .dropdown-item:hover {
+        background-color: var(--color-accent-weak);
+        color: var(--color-accent);
+    }
+
+    .btn-compact {
+        background-color: transparent;
+        border: 1px solid rgba(15, 23, 36, 0.06);
+        color: var(--color-text);
+        font-weight: 500;
+        border-radius: var(--radius-md);
+        padding: 0.25rem 0.5rem;
+        /* py-1 px-2 */
+        transition: background-color 0.12s ease, border-color 0.12s ease;
+    }
+
+    /* Alignment helpers: add to container via component logic */
+    .dropdown-right {
+        right: 0;
+    }
+
+    .dropdown-left {
+        left: 0;
     }
 
     .dropdown-item {
@@ -206,22 +574,5 @@
 
     .dropdown-item:hover {
         background-color: var(--color-surface-hover);
-    }
-
-    .flash-messages {
-        position: fixed;
-        top: 1rem;
-        right: 1rem;
-        z-index: 1000;
-        width: auto;
-        max-width: 20rem;
-    }
-
-    @media (max-width: 640px) {
-        .flash-messages {
-            left: 1rem;
-            right: 1rem;
-            max-width: none;
-        }
     }
 }

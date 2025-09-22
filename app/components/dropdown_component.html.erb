@@ -1,0 +1,11 @@
+<div id="<%= @id %>" data-controller="dropdown" class="relative <%= @classes %>">
+  <% if trigger %>
+    <div data-action="click->dropdown#toggle" aria-haspopup="true" aria-expanded="false">
+      <%= trigger %>
+    </div>
+  <% end %>
+
+  <div data-dropdown-target="menu" class="<%= container_classes %>">
+    <%= menu %>
+  </div>
+</div>

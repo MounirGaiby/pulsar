@@ -1,5 +1,5 @@
 class DashboardController < ApplicationController
-  layout "dashboard"
+  layout "authenticated"
 
   def index
   end

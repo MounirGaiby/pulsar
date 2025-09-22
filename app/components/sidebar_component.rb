@@ -9,8 +9,7 @@ class SidebarComponent < ViewComponent::Base
 
   def links
     [
-      { name: I18n.t("sidebar.links.dashboard"), path: "/dashboard" },
-      { name: I18n.t("sidebar.links.profile"), path: "/profile" },
+      { name: I18n.t("sidebar.links.dashboard"), path: root_path },
       { name: I18n.t("sidebar.links.logout"), path: logout_path, method: :delete }
     ]
   end

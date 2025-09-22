@@ -1,4 +1,8 @@
 <aside data-controller="sidebar" data-sidebar-target="menu" class="sidebar">
+    <%= link_to root_path, class: "sidebar-header" do %>
+  <%= image_tag 'icon.svg', alt: 'Pulsar Logo', class: 'sidebar-logo' %>
+  <h2 class="sidebar-title text-brand-gradient">Pulsar</h2>
+    <% end %>
   <ul class="sidebar-links">
     <% links.each do |link| %>
       <li>

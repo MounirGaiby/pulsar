@@ -18,3 +18,6 @@ application.register("dropdown", DropdownController)
 
 import DirController from "./dir_controller"
 application.register("dir", DirController)
+
+import FlashController from "./flash_controller"
+application.register("flash", FlashController)

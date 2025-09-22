@@ -48,6 +48,7 @@ fr:
     links:
       dashboard: "Tableau de bord"
       profile: "Profil"
+      logout: "Déconnexion"
 
   flash:
     alert: "Il y a eu un problème."

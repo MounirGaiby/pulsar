@@ -1,8 +1,20 @@
 <section class="flash-messages">
-  <% flash.each do |type, message| %>
-    <% i18n_key = "flash.#{type}" %>
-    <div class="alert <%= type == 'alert' ? 'alert-danger' : 'alert-success' %>">
-      <%= t(i18n_key, default: message) %>
-    </div>
-  <% end %>
+  <div data-controller="flash" class="flash-stack" aria-live="polite" aria-atomic="true">
+    <% flash.each do |type, message| %>
+      <% i18n_key = "flash.#{type}" %>
+      <% kind = type == 'alert' ? 'danger' : 'success' %>
+      <div
+        class="flash-item flash-<%= kind %>"
+        role="status"
+        tabindex="0"
+        data-flash-timeout="6000"
+        data-flash-type-value="<%= kind %>"
+      >
+        <div class="flash-content"><%= t(i18n_key, default: message) %></div>
+        <div class="flash-actions">
+          <button type="button" class="flash-close" aria-label="Dismiss" title="Dismiss">&times;</button>
+        </div>
+      </div>
+    <% end %>
+  </div>
 </section>

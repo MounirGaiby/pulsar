@@ -1,15 +1,17 @@
-<div class="topbar flex items-center space-x-2">
-  <div data-controller="dropdown" class="relative">
-    <button data-action="click->dropdown#toggle" aria-haspopup="true" aria-expanded="false" class="btn-secondary px-3 py-1 rounded flex items-center space-x-2">
-      <%#= icon "globe", library: "lucide", class: "w-4 h-4" %>
-      <span><%= t('topbar.language') %></span>
-      <svg class="w-3 h-3" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.293l3.71-4.06a.75.75 0 111.08 1.04l-4.25 4.654a.75.75 0 01-1.08 0L5.21 8.27a.75.75 0 01.02-1.06z" clip-rule="evenodd"/></svg>
-    </button>
+<div class="topbar justify-end">
+  <%= render DropdownComponent.new(id: 'topbar-theme-language-switcher') do |c| %>
+    <% c.with_trigger do %>
+      <button class="dropdown-trigger">
+        <%#= icon "globe", library: "lucide", class: "w-4 h-4" %>
+        <span><%= t('topbar.language') %></span>
+        <svg class="dropdown-caret" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.293l3.71-4.06a.75.75 0 111.08 1.04l-4.25 4.654a.75.75 0 01-1.08 0L5.21 8.27a.75.75 0 01.02-1.06z" clip-rule="evenodd"/></svg>
+      </button>
+    <% end %>
 
-    <div data-dropdown-target="menu" class="dropdown-menu hidden absolute right-0 mt-2 w-56 shadow-card rounded p-2 z-50">
-      <div class="space-y-1">
+    <% c.with_menu do %>
+      <div class="dropdown-list">
         <% available_locales.each do |locale| %>
-          <%= link_to url_for(locale: locale[:code]), class: "dropdown-item flex items-center space-x-2 px-2 py-1 rounded" do %>
+          <%= link_to url_for(locale: locale[:code]), class: "dropdown-item-flex" do %>
             <%#= icon locale[:icon], library: locale[:library], class: "w-4 h-4" %>
             <span><%= t("topbar.languages.#{locale[:code]}") %></span>
           <% end %>
@@ -18,17 +20,17 @@
 
       <hr class="my-2 border-t" />
 
-      <div class="px-2 py-1">
-        <div class="flex items-center justify-between">
-            <div class="flex items-center space-x-2">
+      <div class="topbar-item">
+        <div class="flex items-center justify-between" style="width:100%">
+            <div class="topbar-item">
             <%#= icon "moon", library: "lucide", class: "w-4 h-4" %>
             <span><%= t('topbar.theme') %></span>
           </div>
-          <button data-controller="theme" data-action="click->theme#toggle" class="btn-secondary px-2 py-1 rounded" title="Toggle theme">
+          <button data-controller="theme" data-action="click->theme#toggle" class="btn-compact" title="Toggle theme">
             <span data-theme-target="icon">🌙</span>
           </button>
         </div>
       </div>
-    </div>
-  </div>
+    <% end %>
+  <% end %>
 </div>
