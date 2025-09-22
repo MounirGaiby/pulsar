@@ -1,0 +1,13 @@
+<aside data-controller="sidebar" data-sidebar-target="menu" class="sidebar">
+  <ul class="sidebar-links">
+    <% links.each do |link| %>
+      <li>
+        <% if (link[:method].present? && (link[:method] != :get)) %>
+          <%= button_to link[:name], link[:path], method: link[:method], class: "sidebar-button" %>
+        <% else %>
+          <%= link_to link[:name], link[:path], method: link[:method], class: "sidebar-link" %>
+        <% end %>
+      </li>
+    <% end %>
+  </ul>
+</aside>

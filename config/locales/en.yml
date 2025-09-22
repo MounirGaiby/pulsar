@@ -19,6 +19,9 @@ en:
       password: "Password"
       submit: "Login"
       error: "Try another email address or password."
+      errors:
+        user_not_found: "No account found for that email address."
+        invalid_password: "Incorrect password for that email address."
       success: "Signed in successfully."
 
   passwords:
@@ -47,11 +50,20 @@ en:
     links:
       dashboard: "Dashboard"
       profile: "Profile"
+      logout: "Logout"
 
   flash:
     alert: "There was a problem."
     notice: "Operation successful."
     rate_limited: "Too many attempts, try again later."
+
+  topbar:
+    language: "Language"
+    theme: "Theme"
+    languages:
+      en: "English"
+      fr: "Français"
+      ar: "العربية"
 
   simple_form:
     yes: "Yes"

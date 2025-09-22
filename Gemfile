@@ -79,6 +79,9 @@
 
     # ENV variable management
     gem "dotenv-rails"
+
+    # Eliminate N+1 queries in Active Record
+    gem "bullet"
   end
 
   group :development do
@@ -87,9 +90,6 @@
 
     # letter_opener: Preview email in the browser
     gem "letter_opener"
-
-    # Eliminate N+1 queries in Active Record
-    gem "bullet"
   end
 
   group :test do
@@ -128,3 +128,5 @@
 
   # implement supported icon libraries easily
   gem "rails_icons"
+
+gem "i18n-tasks", "~> 1.0"

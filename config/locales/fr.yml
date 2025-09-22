@@ -17,6 +17,9 @@ fr:
       password: "Mot de passe"
       submit: "Connexion"
       error: "Essayez une autre adresse e-mail ou un autre mot de passe."
+      errors:
+        user_not_found: "Aucun compte trouvé pour cette adresse e-mail."
+        invalid_password: "Mot de passe incorrect pour cette adresse e-mail."
       success: "Connecté avec succès."
 
   passwords:
@@ -50,6 +53,14 @@ fr:
     alert: "Il y a eu un problème."
     notice: "Opération réussie."
     rate_limited: "Trop de tentatives, réessayez plus tard."
+
+  topbar:
+    language: "Langue"
+    theme: "Thème"
+    languages:
+      en: "English"
+      fr: "Français"
+      ar: "العربية"
 
   simple_form:
     yes: 'Oui'

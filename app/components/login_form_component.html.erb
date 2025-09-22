@@ -1,0 +1,17 @@
+<div class="card-container">
+  <h1 class="heading-1 mb-4"><%= t('sessions.new.title') %></h1>
+  <%= helpers.simple_form_for :session, url: @url, method: :post, html: { class: "space-y-4" } do |f| %>
+    <div class="form-group">
+  <%= f.input :email_address, label: t('sessions.new.email'), input_html: { class: "input", required: true, autocomplete: "username" } %>
+    </div>
+    <div class="form-group">
+  <%= f.input :password, label: t('sessions.new.password'), input_html: { class: "input", required: true, autocomplete: "current-password" } %>
+    </div>
+    <div>
+      <button type="submit" class="btn-primary w-full flex items-center justify-center gap-2">
+        <%= helpers.icon "log-in", library: "lucide", class: "h-5 w-5" %>
+        <%= t('sessions.new.submit') %>
+      </button>
+    </div>
+  <% end %>
+</div>

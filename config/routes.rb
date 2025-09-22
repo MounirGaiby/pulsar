@@ -1,6 +1,9 @@
 Rails.application.routes.draw do
   scope "(:locale)", locale: /en|fr|ar/ do
-    resource :session
+    get  "/login",  to: "sessions#new"
+    post "/login",  to: "sessions#create"
+    delete "/logout", to: "sessions#destroy"
+
     resources :passwords, param: :token
 
     # Defines the root path route ("/")
@@ -15,7 +18,4 @@ Rails.application.routes.draw do
   # Render dynamic PWA files from app/views/pwa/* (remember to link manifest in application.html.erb)
   # get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
   # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
-
-  # Fallback root when locale is not provided
-  root to: redirect("/%{locale}", status: 302), constraints: lambda { |req| !req.params[:locale].present? }
 end

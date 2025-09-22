@@ -10,7 +10,7 @@ class PasswordsController < ApplicationController
       PasswordsMailer.reset(user).deliver_later
     end
 
-  redirect_to new_session_path, notice: I18n.t("passwords.create.notice")
+  redirect_to login_path(locale), notice: I18n.t("passwords.create.notice")
   end
 
   def edit
@@ -18,7 +18,7 @@ class PasswordsController < ApplicationController
 
   def update
     if @user.update(params.permit(:password, :password_confirmation))
-  redirect_to new_session_path, notice: I18n.t("passwords.update.notice")
+  redirect_to login_path(locale), notice: I18n.t("passwords.update.notice")
     else
   redirect_to edit_password_path(params[:token]), alert: I18n.t("passwords.update.alert")
     end

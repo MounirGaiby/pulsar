@@ -17,6 +17,9 @@ ar:
       password: "كلمة المرور"
       submit: "تسجيل الدخول"
       error: "حاول بريدًا إلكترونيًا أو كلمة مرور أخرى."
+      errors:
+        user_not_found: "لا يوجد حساب بهذا البريد الإلكتروني."
+        invalid_password: "كلمة المرور غير صحيحة لهذا البريد الإلكتروني."
       success: "تم تسجيل الدخول بنجاح."
 
   passwords:
@@ -50,6 +53,14 @@ ar:
     alert: "حدثت مشكلة."
     notice: "تمت العملية بنجاح."
     rate_limited: "عدد المحاولات كبير جدا، الرجاء المحاولة لاحقًا."
+
+  topbar:
+    language: "اللغة"
+    theme: "السمة"
+    languages:
+      en: "English"
+      fr: "Français"
+      ar: "العربية"
 
   simple_form:
     yes: 'نعم'

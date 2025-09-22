@@ -1,0 +1,8 @@
+<section class="flash-messages">
+  <% flash.each do |type, message| %>
+    <% i18n_key = "flash.#{type}" %>
+    <div class="alert <%= type == 'alert' ? 'alert-danger' : 'alert-success' %>">
+      <%= t(i18n_key, default: message) %>
+    </div>
+  <% end %>
+</section>
