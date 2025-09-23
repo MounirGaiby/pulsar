@@ -3,9 +3,9 @@
     <%= render DropdownComponent.new(id: 'topbar-theme-language-switcher') do |c| %>
       <% c.with_trigger do %>
         <button class="dropdown-trigger">
-          <%#= icon "globe", library: "lucide", class: "w-4 h-4" %>
+          <%= icon "globe", library: "lucide", class: "w-4 h-4" %>
           <span><%= "#{t('topbar.language')} · #{t('topbar.theme')}" %></span>
-          <svg class="dropdown-caret" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.293l3.71-4.06a.75.75 0 111.08 1.04l-4.25 4.654a.75.75 0 01-1.08 0L5.21 8.27a.75.75 0 01.02-1.06z" clip-rule="evenodd"/></svg>
+          <%= icon "chevron-down", library: "lucide", class: "dropdown-caret" %>
         </button>
       <% end %>
 
@@ -13,7 +13,7 @@
         <div class="dropdown-list">
           <% available_locales.each do |locale| %>
             <%= link_to url_for(locale: locale[:code]), class: "dropdown-item-flex" do %>
-              <%#= icon locale[:icon], library: locale[:library], class: "w-4 h-4" %>
+              <%= icon locale[:icon], library: locale[:library], class: "w-4 h-4" %>
               <span><%= t("topbar.languages.#{locale[:code]}") %></span>
             <% end %>
           <% end %>
@@ -23,7 +23,7 @@
 
           <div class="topbar-item topbar-inner">
             <div class="topbar-item">
-              <%#= icon "moon", library: "lucide", class: "w-4 h-4" %>
+              <%= icon "moon", library: "lucide", class: "w-4 h-4" %>
               <span><%= t('topbar.theme') %></span>
             </div>
             <button data-controller="theme" data-action="click->theme#toggle" class="btn-compact" title="Toggle theme">
@@ -41,7 +41,7 @@
             <%#= image_tag @current_user.avatar_url, alt: @current_user.name, class: 'w-6 h-6 rounded-full' %>
             <span class="sr-only"><%= t('topbar.user_profile') %></span>
             <span class="muted"><%= @current_user.email_address %></span>
-            <svg class="dropdown-caret" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.293l3.71-4.06a.75.75 0 111.08 1.04l-4.25 4.654a.75.75 0 01-1.08 0L5.21 8.27a.75.75 0 01.02-1.06z" clip-rule="evenodd"/></svg>
+            <%= icon "chevron-down", library: "lucide", class: "dropdown-caret" %>
           </button>
         <% end %>
 
@@ -62,4 +62,7 @@
       <% end %>
     <% end %>
   </nav>
+
+  <button data-action="click->sidebar#toggle" class="topbar-button lg:hidden" aria-label="Toggle sidebar">
+  </button>
 </header>

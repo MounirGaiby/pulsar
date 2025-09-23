@@ -4,6 +4,18 @@
 
 import { application } from "./application"
 
+import DirController from "./dir_controller"
+application.register("dir", DirController)
+
+import DropdownController from "./dropdown_controller"
+application.register("dropdown", DropdownController)
+
+import EventController from "./event_controller"
+application.register("event", EventController)
+
+import FlashController from "./flash_controller"
+application.register("flash", FlashController)
+
 import HelloController from "./hello_controller"
 application.register("hello", HelloController)
 
@@ -12,12 +24,3 @@ application.register("sidebar", SidebarController)
 
 import ThemeController from "./theme_controller"
 application.register("theme", ThemeController)
-
-import DropdownController from "./dropdown_controller"
-application.register("dropdown", DropdownController)
-
-import DirController from "./dir_controller"
-application.register("dir", DirController)
-
-import FlashController from "./flash_controller"
-application.register("flash", FlashController)

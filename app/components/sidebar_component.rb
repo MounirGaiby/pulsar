@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class SidebarComponent < ViewComponent::Base
+class SidebarComponent < BaseComponent
   attr_reader :current_user
 
   def initialize(current_user:)

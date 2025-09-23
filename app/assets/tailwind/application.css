@@ -108,6 +108,21 @@ html.dark,
     --color-border: rgba(255, 255, 255, 0.04);
 }
 
+.turbo-progress-bar {
+    background-color: var(--color-accent);
+    height: 3px;
+}
+
+.poem {
+    background-color: var(--color-surface);
+    color: var(--color-text);
+    padding: 1rem;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-card);
+    border: 1px solid var(--color-border);
+    margin-bottom: 1.5rem;
+}
+
 @layer components {
 
     /* Buttons */

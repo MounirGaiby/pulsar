@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class DropdownComponent < ViewComponent::Base
+class DropdownComponent < BaseComponent
   renders_one :trigger
   renders_one :menu
 

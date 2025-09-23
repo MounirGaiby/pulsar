@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class LoginFormComponent < ViewComponent::Base
+class LoginFormComponent < BaseComponent
   def initialize(url:)
     @url = url
   end

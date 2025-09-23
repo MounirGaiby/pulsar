@@ -6,6 +6,10 @@ export default class extends Controller {
 
   connect() {
     console.log("Sidebar controller connected")
+
+    document.addEventListener("sidebar:toggle", () => {
+      this.toggle()
+    })
   }
 
   toggle() {
