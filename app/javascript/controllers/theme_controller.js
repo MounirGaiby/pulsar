@@ -18,17 +18,17 @@ export default class extends Controller {
 
     apply(theme) {
         if (theme === 'dark') {
-            document.documentElement.classList.add('dark')
+            document.documentElement.dataset.theme = 'dark'
             this.iconTarget && (this.iconTarget.textContent = '🌙')
         } else {
-            document.documentElement.classList.remove('dark')
+            document.documentElement.dataset.theme = 'light'
             this.iconTarget && (this.iconTarget.textContent = '☀️')
         }
         localStorage.setItem('theme', theme)
     }
 
     toggle() {
-        const isDark = document.documentElement.classList.contains('dark')
+        const isDark = document.documentElement.dataset.theme === 'dark'
         this.apply(isDark ? 'light' : 'dark')
     }
 }

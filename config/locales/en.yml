@@ -50,7 +50,6 @@ en:
     links:
       dashboard: "Dashboard"
       profile: "Profile"
-      logout: "Logout"
 
   flash:
     alert: "There was a problem."
@@ -60,6 +59,7 @@ en:
   topbar:
     language: "Language"
     theme: "Theme"
+    logout: "Logout"
     languages:
       en: "English"
       fr: "Français"

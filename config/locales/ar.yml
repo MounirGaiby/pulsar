@@ -48,7 +48,6 @@ ar:
     links:
       dashboard: "لوحة التحكم"
       profile: "الملف الشخصي"
-      logout: "تسجيل الخروج"
 
   flash:
     alert: "حدثت مشكلة."
@@ -58,6 +57,7 @@ ar:
   topbar:
     language: "اللغة"
     theme: "السمة"
+    logout: "تسجيل الخروج"
     languages:
       en: "English"
       fr: "Français"

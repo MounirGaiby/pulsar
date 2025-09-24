@@ -4,15 +4,9 @@ class DropdownComponent < BaseComponent
   renders_one :trigger
   renders_one :menu
 
-  def initialize(id: nil, classes: nil, align: :right)
-    @id = id || "dropdown-#{SecureRandom.hex(6)}"
-    @classes = classes
-    @align = align
-  end
-
-  def container_classes
-    base = "dropdown-menu hidden absolute mt-2 w-56 shadow-card rounded p-2 z-50"
-    alignment = @align == :left ? "dropdown-left" : "dropdown-right"
-    [ base, alignment ].compact.join(" ")
+  def initialize(container_classes: "", replace_container_classes: false, dropdown_classes: "", replace_dropdown_classes: false, menu_classes: "", replace_menu_classes: false)
+    @dropdown_classes = replace_container_classes ? container_classes : "dropdown dropdown-center #{container_classes}"
+    @trigger_classes = replace_dropdown_classes ? dropdown_classes : "btn m-1 #{dropdown_classes}"
+    @menu_classes = replace_menu_classes ? menu_classes : "dropdown-content menu bg-base-200 rounded-box z-1 w-52 p-2 shadow-sm #{menu_classes}"
   end
 end

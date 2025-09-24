@@ -1,68 +1,66 @@
-<header class="topbar topbar-reverse topbar-space-between" role="banner">
-  <nav aria-label="Topbar navigation" class="topbar-nav">
-    <%= render DropdownComponent.new(id: 'topbar-theme-language-switcher') do |c| %>
-      <% c.with_trigger do %>
-        <button class="dropdown-trigger">
-          <%= icon "globe", library: "lucide", class: "w-4 h-4" %>
-          <span><%= "#{t('topbar.language')} · #{t('topbar.theme')}" %></span>
-          <%= icon "chevron-down", library: "lucide", class: "dropdown-caret" %>
-        </button>
-      <% end %>
-
-      <% c.with_menu do %>
-        <div class="dropdown-list">
-          <% available_locales.each do |locale| %>
-            <%= link_to url_for(locale: locale[:code]), class: "dropdown-item-flex" do %>
-              <%= icon locale[:icon], library: locale[:library], class: "w-4 h-4" %>
-              <span><%= t("topbar.languages.#{locale[:code]}") %></span>
-            <% end %>
-          <% end %>
-        </div>
-
-        <hr class="my-2 border-t" />
-
-          <div class="topbar-item topbar-inner">
-            <div class="topbar-item">
-              <%= icon "moon", library: "lucide", class: "w-4 h-4" %>
-              <span><%= t('topbar.theme') %></span>
-            </div>
-            <button data-controller="theme" data-action="click->theme#toggle" class="btn-compact" title="Toggle theme">
-              <span data-theme-target="icon">🌙</span>
-            </button>
-          </div>
-      <% end %>
-    <% end %>
-    <%# User menu: show when user present; integrates profile and logout into a dropdown near language menu %>
+<header class="topbar" role="banner">
+  <nav aria-label="Topbar navigation" class="flex items-center gap-2 px-4 py-2">
     <% if @current_user %>
-      <%= render DropdownComponent.new(id: 'topbar-user-menu', classes: 'ml-2') do |c| %>
-        <% c.with_trigger do %>
-          <button class="dropdown-trigger" aria-label="User menu">
-            <%# small avatar placeholder - uncomment when avatars available %>
-            <%#= image_tag @current_user.avatar_url, alt: @current_user.name, class: 'w-6 h-6 rounded-full' %>
-            <span class="sr-only"><%= t('topbar.user_profile') %></span>
-            <span class="muted"><%= @current_user.email_address %></span>
-            <%= icon "chevron-down", library: "lucide", class: "dropdown-caret" %>
-          </button>
-        <% end %>
-
-        <% c.with_menu do %>
-          <div class="dropdown-list">
-            <div class="dropdown-item-flex">
-              <div>
-                <!--<div class="font-semibold"><%#= @current_user.name || @current_user.email_address %></div>-->
-                <div class="muted text-sm"><%= @current_user.email_address %></div>
-              </div>
+      <button data-controller="event" data-action="click->event#broadcast" data-event-name="sidebar:toggle" class="btn btn-ghost">
+        <%= icon "arrow-left-to-line", library: "lucide", class: "w-5 h-5", data: { sidebar_target: 'collapse-icon' } %>
+      </button>
+      <div class="topbar-end flex items-center gap-2">
+        <%# language + theme dropdown goes here (already rendered above) %>
+        <%# user menu (if present) %>
+        <%= render DropdownComponent.new(container_classes: "dropdown-end ml-2", dropdown_classes: "btn-ghost", menu_classes: "menu-compact") do |c| %>
+          <% c.with_trigger do %>
+            <div class="flex gap-2 items-center">
+              <span class="sr-only"><%= t('topbar.user_profile') %></span>
+              <span class="text-sm opacity-80"><%= @current_user.email_address %></span>
+              <%= icon "chevron-down", library: "lucide", class: "w-4 h-4" %>
             </div>
-            <hr class="my-2 border-t" />
-            <%= button_to logout_path, method: :delete, form: { class: 'm-0' }, class: 'dropdown-item-flex dropdown-item-danger' do %>
+          <% end %>
+          <% c.with_menu do %>
+            <li class="px-2 py-1">
+              <div class="text-sm opacity-80"><%= @current_user.email_address %></div>
+            </li>
+            <li class="divider h-0.5 my-2"></li>
+            <li>
+              <%= render DropdownComponent.new(container_classes: "dropdown-left dropdown-hover dropdown-end", dropdown_classes: "", replace_dropdown_classes: true, menu_classes: "") do |c| %>
+              </li>
+              <% c.with_trigger do %>
+                <div class="flex items-center gap-2">
+                  <%= icon "globe", library: "lucide", class: "w-4 h-4" %>
+                  <span><%= t('topbar.language') %></span>
+                </div>
+              <% end %>
+              <% c.with_menu do %>
+                <%= render LanguageDropdownComponent.new %>
+              <% end %>
+            <% end %>
+            <li class="divider h-0.5 my-2"></li>
+            <li>
+              <%= render ThemeToggleComponent.new(full_width: true) %>
+            </li>
+            <li class="divider h-0.5 my-2"></li>
+            <%= button_to logout_path, method: :delete, form: { class: 'm-0' }, class: 'btn btn-warning w-full' do %>
               <span><%= t('topbar.logout') %></span>
             <% end %>
+          <% end %>
+        <% end %>
+      </div>
+    <% else %>
+      <%= render DropdownComponent.new do |c| %>
+        <% c.with_trigger do %>
+          <div class="flex items-center gap-2">
+            <%= icon "globe", library: "lucide", class: "w-4 h-4" %>
+            <span><%= "#{t('topbar.language')} · #{t('topbar.theme')}" %></span>
+            <%= icon "chevron-down", library: "lucide", class: "w-4 h-4" %>
           </div>
+        <% end %>
+        <% c.with_menu do %>
+          <%= render LanguageDropdownComponent.new %>
+          <li class="divider h-0.5 my-2"></li>
+          <li>
+            <%= render ThemeToggleComponent.new %>
+          </li>
         <% end %>
       <% end %>
     <% end %>
   </nav>
-
-  <button data-action="click->sidebar#toggle" class="topbar-button lg:hidden" aria-label="Toggle sidebar">
-  </button>
 </header>

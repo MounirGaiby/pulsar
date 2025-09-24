@@ -9,7 +9,7 @@ class SidebarComponent < BaseComponent
 
   def links
     [
-      { name: I18n.t("sidebar.links.dashboard"), path: root_path }
+      { name: I18n.t("sidebar.links.dashboard"), path: root_path, icon: "home" }
     ]
   end
 end

@@ -1,18 +1,21 @@
-<section class="flash-messages">
-  <div data-controller="flash" class="flash-stack" aria-live="polite" aria-atomic="true">
+<section class="fixed top-16 right-4 z-50" aria-live="polite">
+  <div data-controller="flash" class="space-y-2">
     <% flash.each do |type, message| %>
       <% i18n_key = "flash.#{type}" %>
-      <% kind = type == 'alert' ? 'danger' : 'success' %>
+      <% kind = type == 'alert' ? 'error' : 'success' %>
       <div
-        class="flash-item flash-<%= kind %>"
         role="status"
         tabindex="0"
         data-flash-timeout="6000"
         data-flash-type-value="<%= kind %>"
       >
-        <div class="flash-content"><%= t(i18n_key, default: message) %></div>
-        <div class="flash-actions">
-          <button type="button" class="flash-close" aria-label="Dismiss" title="Dismiss">&times;</button>
+        <div class="alert alert-<%= kind %> shadow-lg">
+          <div class="flex-1">
+            <label><%= t(i18n_key, default: message) %></label>
+          </div>
+          <div class="flex-none">
+            <button type="button" class="btn btn-ghost btn-sm" aria-label="Dismiss" title="Dismiss">&times;</button>
+          </div>
         </div>
       </div>
     <% end %>

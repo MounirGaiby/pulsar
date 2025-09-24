@@ -48,7 +48,6 @@ fr:
     links:
       dashboard: "Tableau de bord"
       profile: "Profil"
-      logout: "Déconnexion"
 
   flash:
     alert: "Il y a eu un problème."
@@ -58,6 +57,7 @@ fr:
   topbar:
     language: "Langue"
     theme: "Thème"
+    logout: "Déconnexion"
     languages:
       en: "English"
       fr: "Français"

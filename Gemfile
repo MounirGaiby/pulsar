@@ -103,12 +103,6 @@
     gem "rspec-rails", "~> 8.0.0"
   end
 
-  # Tailwind CSS integration for Ruby
-  gem "tailwindcss-ruby", "~> 4.1.13"
-
-  # Tailwind CSS integration for Ruby on Rails
-  gem "tailwindcss-rails", "~> 4.3"
-
   # Turbo Streams enhancements and utilities
   gem "turbo_power", "~> 0.7.0"
 

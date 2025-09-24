@@ -222,6 +222,11 @@ cosmiconfig@^9.0.0:
     js-yaml "^4.1.0"
     parse-json "^5.2.0"
 
+daisyui@^5.1.14:
+  version "5.1.14"
+  resolved "https://registry.yarnpkg.com/daisyui/-/daisyui-5.1.14.tgz#243d171059ecba70f022b9527f90707f9965fbc2"
+  integrity sha512-c9Op7tB8vLzzazFaLeyFsmmVMLrU8sYo1sHuStBGTbaAzLVxrulelGQBROo/lS2ZxWm/CnCb9NWdKbTL+MaKFA==
+
 electron-to-chromium@^1.5.218:
   version "1.5.222"
   resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.5.222.tgz#965c93783ad989116b74593ae3068b9466fdb237"

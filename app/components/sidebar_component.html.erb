@@ -1,17 +1,22 @@
-<aside data-controller="sidebar" data-sidebar-target="menu" class="sidebar">
-  <%= link_to root_path, class: "sidebar-header" do %>
-  <%= image_tag 'icon.svg', alt: 'Pulsar Logo', class: 'sidebar-logo' %>
-  <h2 class="sidebar-title text-brand-gradient">Pulsar</h2>
-    <% end %>
-  <ul class="sidebar-links">
+<aside data-controller="sidebar" data-sidebar-target="menu" class="sidebar justify-between">
+  <ul class="space-y-1">
     <% links.each do |link| %>
       <li>
         <% if (link[:method].present? && (link[:method] != :get)) %>
-          <%= button_to link[:name], link[:path], method: link[:method], class: "sidebar-button" %>
+          <%= button_to link[:name], link[:path], method: link[:method], class: "sidebar-link" do %>
+            <%= icon link[:icon], class: "w-5 h-5", data: { sidebar_target: "icon" } %>
+            <span class="sidebar-link-text" data-sidebar-target="link"><%= link[:name] %></span>
+          <% end %>
         <% else %>
-          <%= link_to link[:name], link[:path], method: link[:method], class: "sidebar-link" %>
+          <%= link_to link[:path], method: link[:method], class: "sidebar-link" do %>
+            <%= icon link[:icon], class: "w-5 h-5", data: { sidebar_target: "icon" } %>
+            <span class="sidebar-link-text" data-sidebar-target="link"><%= link[:name] %></span>
+          <% end %>
         <% end %>
       </li>
     <% end %>
   </ul>
+  <%= link_to root_path, id: "sidebar-logo", class: "sidebar-brand" do %>
+    <%= image_tag 'icon.svg', alt: 'Pulsar Logo', class: 'w-8 h-8' %>
+  <% end %>
 </aside>

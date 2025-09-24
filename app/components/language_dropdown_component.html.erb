@@ -1,0 +1,17 @@
+<% available_locales.each do |locale| %>
+  <% if locale[:code] == @current_locale %>
+    <li>
+      <span class="dropdown-item-selected">
+        <%= icon locale[:icon], library: locale[:library], class: "w-4 h-4" %>
+        <span><%= t("topbar.languages.#{locale[:code]}") %></span>
+      </span>
+    </li>
+  <% else %>
+    <li>
+      <%= link_to url_for(locale: locale[:code]), class: "dropdown-item" do %>
+        <%= icon locale[:icon], library: locale[:library], class: "w-4 h-4" %>
+        <span><%= t("topbar.languages.#{locale[:code]}") %></span>
+      <% end %>
+    </li>
+  <% end %>
+<% end %>

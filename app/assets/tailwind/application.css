@@ -1,629 +1,249 @@
 @import "tailwindcss";
+@source "../../../public/*.html";
+@source "../../../app/helpers/**/*.rb";
+@source "../../../app/javascript/**/*.js";
+@source "../../../app/views/**/*";
 
-@layer base {
-    body {
-        color: var(--color-text);
+@plugin "daisyui";
+
+@plugin "daisyui/theme" {
+    name: "light";
+    default: true;
+    prefersdark: false;
+    color-scheme: "light";
+    --color-base-100: oklch(100% 0 0);
+    --color-base-200: oklch(97.466% 0.011 259.822);
+    --color-base-300: oklch(93.268% 0.016 262.751);
+    --color-base-content: oklch(41.886% 0.053 255.824);
+    --color-primary: oklch(56.86% 0.255 257.57);
+    --color-primary-content: oklch(91.372% 0.051 257.57);
+    --color-secondary: oklch(42.551% 0.161 282.339);
+    --color-secondary-content: oklch(88.51% 0.032 282.339);
+    --color-accent: oklch(59.939% 0.191 335.171);
+    --color-accent-content: oklch(11.988% 0.038 335.171);
+    --color-neutral: oklch(19.616% 0.063 257.651);
+    --color-neutral-content: oklch(83.923% 0.012 257.651);
+    --color-info: oklch(88.127% 0.085 214.515);
+    --color-info-content: oklch(17.625% 0.017 214.515);
+    --color-success: oklch(80.494% 0.077 197.823);
+    --color-success-content: oklch(16.098% 0.015 197.823);
+    --color-warning: oklch(89.172% 0.045 71.47);
+    --color-warning-content: oklch(17.834% 0.009 71.47);
+    --color-error: oklch(73.092% 0.11 20.076);
+    --color-error-content: oklch(14.618% 0.022 20.076);
+    --radius-selector: 1rem;
+    --radius-field: 0.5rem;
+    --radius-box: 1rem;
+    --size-selector: 0.25rem;
+    --size-field: 0.25rem;
+    --border: 1px;
+    --depth: 1;
+    --noise: 0;
+}
+
+@plugin "daisyui/theme" {
+    name: "dark";
+    default: false;
+    prefersdark: false;
+    color-scheme: "dark";
+    --color-base-100: oklch(28.822% 0.022 277.508);
+    --color-base-200: oklch(37% 0.034 259.733);
+    --color-base-300: oklch(24.787% 0.019 277.508);
+    --color-base-content: oklch(97.747% 0.007 106.545);
+    --color-primary: oklch(75.461% 0.183 346.812);
+    --color-primary-content: oklch(15.092% 0.036 346.812);
+    --color-secondary: oklch(74.202% 0.148 301.883);
+    --color-secondary-content: oklch(14.84% 0.029 301.883);
+    --color-accent: oklch(83.392% 0.124 66.558);
+    --color-accent-content: oklch(16.678% 0.024 66.558);
+    --color-neutral: oklch(39.445% 0.032 275.524);
+    --color-neutral-content: oklch(87.889% 0.006 275.524);
+    --color-info: oklch(88.263% 0.093 212.846);
+    --color-info-content: oklch(17.652% 0.018 212.846);
+    --color-success: oklch(87.099% 0.219 148.024);
+    --color-success-content: oklch(17.419% 0.043 148.024);
+    --color-warning: oklch(95.533% 0.134 112.757);
+    --color-warning-content: oklch(19.106% 0.026 112.757);
+    --color-error: oklch(68.22% 0.206 24.43);
+    --color-error-content: oklch(13.644% 0.041 24.43);
+    --radius-selector: 1rem;
+    --radius-field: 0.5rem;
+    --radius-box: 1rem;
+    --size-selector: 0.25rem;
+    --size-field: 0.25rem;
+    --border: 1px;
+    --depth: 0;
+    --noise: 0;
+}
+
+/* Reusable application-level utility classes extracted from components
+     Use DaisyUI tokens and Tailwind @apply to keep markup clean */
+.sidebar {
+    @apply menu p-2 w-52 bg-base-100 border-r border-base-300 shadow-base-300 overflow-x-hidden;
+    transition: width 0.3s ease;
+}
+
+.sidebar-collapsed {
+    @apply w-20 p-2;
+}
+
+.sidebar-collapsed .sidebar-brand {
+    @apply justify-center mb-2;
+}
+
+.sidebar-link-text {
+    transition: opacity 0.3s ease;
+}
+
+.sidebar-collapsed .sidebar-brand-text {
+    @apply opacity-0;
+}
+
+.sidebar-collapsed .sidebar-link-text {
+    @apply opacity-0;
+}
+
+.sidebar-brand {
+    @apply flex items-center justify-center gap-6;
+}
+
+.sidebar-brand-text {
+    @apply text-xl text-accent-content font-semibold;
+    transition: opacity 0.3s ease;
+}
+
+.sidebar-logo {
+    @apply w-8 h-8 overflow-hidden;
+}
+
+.sidebar-link,
+.sidebar-button {
+    @apply btn btn-ghost w-full justify-center gap-2 overflow-hidden;
+}
+
+.collapse-icon {
+    transition: transform 0.3s ease;
+}
+
+.collapse-icon-collapsed {
+    transform: rotate(0deg);
+}
+
+.collapse-icon-expanded {
+    transform: rotate(180deg);
+}
+
+@media (max-width: 767px) {
+    .sidebar {
+        @apply hidden fixed left-0 top-0 h-full z-50;
     }
-
-    /* Ensure the document background follows our design tokens so dark mode applies globally */
-    html,
-    body {
-        background-color: var(--color-background);
-        transition: background-color 0.18s ease, color 0.18s ease;
-    }
 }
 
-/* RTL adjustments: flip dropdown anchoring and item ordering when the document is RTL */
-[dir="rtl"] .dropdown-menu {
-    left: 0 !important;
-    right: auto !important;
-    text-align: right;
+.topbar {
+    @apply w-full bg-base-100 border-b border-base-300 shadow-base-300;
 }
 
-[dir="rtl"] .dropdown-item {
-    flex-direction: row-reverse;
+.topbar-button {
+    @apply btn btn-ghost;
 }
 
-/* CSS-first theme: define design tokens as CSS custom properties. */
-:root {
-    /* Shape */
-    --radius-sm: 8px;
-    --radius-md: 12px;
-    --radius-lg: 16px;
-
-    /* Neutral palette (soft, professional) */
-    --color-background: #f3f5f9;
-    /* subtle warm off-white */
-    --color-surface: #ffffff;
-    /* panels */
-    --color-card: #ffffff;
-    /* cards/topbar/dropdowns */
-    --color-card-text: #0f1724;
-    --color-muted: #6b7280;
-    /* secondary text */
-    --color-text: #0f1724;
-    /* primary text */
-
-    /* Accent (vibrant ruby / candy red) */
-    --color-accent: #e11d48;
-    /* ruby */
-    --color-accent-hover: #c2183b;
-    /* deeper on hover */
-    --color-accent-weak: rgba(225, 29, 72, 0.06);
-    /* subtle highlight */
-    --color-accent-strong: rgba(225, 29, 72, 0.12);
-
-    /* Brand / logo blue (added per request) */
-    --color-brand: #60a4ff;
-    --color-brand-weak: rgba(96, 164, 255, 0.06);
-    --color-brand-strong: rgba(96, 164, 255, 0.12);
-
-    /* Secondary / supportive */
-    --color-secondary: #ff6b6b;
-    --color-secondary-hover: #ff4b4b;
-
-    /* Shadows */
-    --shadow-card: 0 8px 28px rgba(15, 23, 36, 0.08);
-    --shadow-ring: 0 0 0 4px rgba(225, 29, 72, 0.08);
-
-    /* Alerts */
-    --alert-danger: #ff375f;
-    /* candy red */
-    --alert-success: #12e691;
-    --color-surface-hover: rgba(15, 23, 36, 0.04);
-    --color-border: rgba(15, 23, 36, 0.06);
+.text-brand-gradient {
+    /* keep this minimal; rely on DaisyUI primary color */
+    @apply text-primary;
 }
 
-/* Dark theme overrides when `.dark` class is present on <html> or any ancestor */
-html.dark,
-.dark {
-    /* Dark theme overrides: tuned for dark surfaces with ruby accent */
-    --color-background: #071022;
-    /* deep navy-black */
-    --color-surface: #061123;
-    /* panel surface */
-    --color-card: #071427;
-    /* cards slightly lighter */
-    --color-card-text: #e6eef8;
-    --color-text: #e6eef8;
-    --color-muted: #9aa6bf;
-
-    --color-accent: #ff6b8a;
-    /* lighter / punchy ruby in dark */
-    --color-accent-hover: #ff4b6a;
-    --color-accent-weak: rgba(255, 107, 138, 0.06);
-    --color-accent-strong: rgba(255, 107, 138, 0.12);
-
-    /* Keep the brand blue in dark mode as well (tweak if desired) */
-    --color-brand: #60a4ff;
-    --color-brand-weak: rgba(96, 164, 255, 0.06);
-    --color-brand-strong: rgba(96, 164, 255, 0.12);
-
-    --shadow-card: 0 10px 36px rgba(2, 6, 23, 0.6);
-    --shadow-ring: 0 0 0 4px rgba(255, 107, 138, 0.08);
-
-    --color-surface-hover: rgba(255, 255, 255, 0.02);
-    --alert-danger: #ff7b7b;
-    --alert-success: #4ee19a;
-    --color-border: rgba(255, 255, 255, 0.04);
+.card-container {
+    @apply card bg-base-100 shadow-lg;
 }
 
 .turbo-progress-bar {
-    background-color: var(--color-accent);
-    height: 3px;
+    @apply bg-accent h-1.5;
 }
 
 .poem {
-    background-color: var(--color-surface);
-    color: var(--color-text);
-    padding: 1rem;
-    border-radius: var(--radius-md);
-    box-shadow: var(--shadow-card);
-    border: 1px solid var(--color-border);
-    margin-bottom: 1.5rem;
+    @apply card bg-base-100 text-base-content p-4 rounded-box shadow-lg border border-base-200 mb-6;
 }
 
-@layer components {
-
-    /* Buttons */
-    .btn-primary {
-        background-color: var(--color-accent);
-        color: #ffffff;
-        font-weight: 600;
-        border-radius: var(--radius-md);
-        padding: 0.75rem 1rem;
-        letter-spacing: 0.2px;
-        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
-        transition: transform 0.12s ease, box-shadow 0.12s ease, background-color 0.12s ease;
-    }
-
-    .btn-primary:hover {
-        transform: translateY(-1px);
-        background-color: var(--color-accent-hover);
-    }
-
-    .btn-secondary {
-        background-color: transparent;
-        border: 1px solid rgba(15, 23, 36, 0.06);
-        color: var(--color-text);
-        font-weight: 500;
-        border-radius: var(--radius-md);
-        padding: 0.625rem 0.875rem;
-        transition: background-color 0.12s ease, border-color 0.12s ease;
-    }
-
-    /* Alerts */
-    .alert {
-        padding: 1rem;
-        margin-bottom: 1rem;
-        border-radius: 0.375rem;
-        color: var(--color-card-text, #ffffff);
-        font-weight: 500;
-        animation: fadeOut 0.5s ease-in-out 2s forwards;
-    }
-
-    /* alerts do not need focus styles by default; keep minimal accessible behavior */
-
-    @keyframes fadeOut {
-        from {
-            opacity: 1;
-        }
-
-        to {
-            opacity: 0;
-            display: none;
-        }
-    }
-
-    .alert-danger {
-        background-color: var(--alert-danger);
-    }
-
-    .alert-success {
-        background-color: var(--alert-success);
-    }
-
-    .flash-messages {
-        position: fixed;
-        bottom: 1rem;
-        right: 1rem;
-        z-index: 1000;
-        width: auto;
-        max-width: 20rem;
-    }
-
-    [dir="rtl"] .flash-messages {
-        right: auto;
-        left: 1rem;
-    }
-
-    @media (max-width: 640px) {
-        .flash-messages {
-            left: 1rem;
-            right: 1rem;
-            max-width: none;
-        }
-    }
-
-    /* Enhanced flash stack + animations */
-    .flash-stack {
-        display: flex;
-        flex-direction: column-reverse;
-        gap: 0.75rem;
-        align-items: flex-end;
-        max-height: calc(100vh - 4rem);
-        overflow: visible;
-        pointer-events: none;
-        /* allow clicks to pass to individual alerts */
-    }
-
-    [dir="rtl"] .flash-stack {
-        align-items: flex-start;
-    }
-
-    .flash-item {
-        pointer-events: auto;
-        min-width: 12rem;
-        max-width: 24rem;
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-        padding: 0.75rem 1rem;
-        border-radius: 0.75rem;
-        box-shadow: 0 8px 28px rgba(2, 6, 23, 0.12);
-        transform-origin: right bottom;
-        transition: transform 200ms cubic-bezier(.2, .9, .3, 1), opacity 160ms ease, box-shadow 160ms ease;
-        opacity: 0;
-        transform: translateY(8px) scale(0.98);
-        border: 1px solid var(--color-border);
-        background-clip: padding-box;
-    }
-
-    [dir="rtl"] .flash-item {
-        transform-origin: left bottom;
-    }
-
-    /* visible state applied by JS when inserted */
-    .flash-item.show {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-    }
-
-    /* Dismiss animation */
-    .flash-item.hide {
-        opacity: 0;
-        transform: translateY(6px) scale(0.98);
-        transition: opacity 160ms ease, transform 160ms cubic-bezier(.4, .0, .2, 1);
-    }
-
-    /* Inner content layout */
-    .flash-content {
-        flex: 1 1 auto;
-        color: var(--color-card-text);
-        font-weight: 600;
-        font-size: 0.95rem;
-    }
-
-    .flash-actions {
-        display: flex;
-        gap: 0.5rem;
-        align-items: center;
-        margin-left: 0.5rem;
-    }
-
-    [dir="rtl"] .flash-actions {
-        margin-left: 0;
-        margin-right: 0.5rem;
-    }
-
-    .flash-close {
-        background: transparent;
-        border: none;
-        cursor: pointer;
-        color: inherit;
-        padding: 0.25rem;
-        border-radius: 6px;
-        transition: background-color 0.12s ease;
-    }
-
-    .flash-close:hover {
-        background-color: var(--color-surface-hover);
-    }
-
-    /* Pause auto-hide when hovering */
-    .flash-item:hover {
-        animation-play-state: paused;
-    }
-
-    /* Theming for success/danger alerts to be subtle in light/dark */
-    .flash-success {
-        background-color: color-mix(in srgb, var(--color-accent-weak) 18%, var(--color-card) 82%);
-        color: var(--color-card-text);
-        border-left: 4px solid var(--color-accent);
-    }
-
-    .flash-danger {
-        background-color: color-mix(in srgb, var(--alert-danger) 14%, var(--color-card) 86%);
-        color: var(--color-card-text);
-        border-left: 4px solid var(--alert-danger);
-    }
-
-    /* On small screens make full width */
-    @media (max-width: 640px) {
-        .flash-stack {
-            align-items: stretch;
-            width: auto;
-            bottom: 1rem;
-            left: 1rem;
-            right: 1rem;
-        }
-
-        .flash-item {
-            max-width: none;
-            width: 100%;
-        }
-    }
-
-    /* required field asterisk */
-    label {
-        color: var(--color-accent);
-        font-weight: 600;
-    }
-
-    /* Card container */
-    .card-container {
-        background-color: var(--color-card);
-        box-shadow: var(--shadow-card);
-        border-radius: var(--radius-lg);
-        padding: 2rem;
-        max-width: 34rem;
-        margin: 2.25rem auto;
-        color: var(--color-card-text);
-        border: 1px solid rgba(15, 23, 36, 0.04);
-    }
-
-    /* background helpers used by layouts */
-    .bg-background {
-        background-color: var(--color-background);
-        color: var(--color-text);
-        min-height: 100vh;
-    }
-
-    .bg-card {
-        background-color: var(--color-card);
-        color: var(--color-card-text);
-    }
-
-    /* Headings */
-    .heading-1 {
-        font-size: 1.875rem;
-        /* ~text-3xl */
-        font-weight: 700;
-    }
-
-    /* Sidebar */
-    .sidebar {
-        width: 16rem;
-        /* w-64 */
-        display: none;
-        background-color: var(--color-surface);
-        box-shadow: var(--shadow-card);
-        padding: 1rem;
-    }
-
-    @media (min-width: 768px) {
-        .sidebar {
-            display: block;
-        }
-    }
-
-    .sidebar-header {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 0.5rem;
-        margin-bottom: 1.5rem;
-    }
-
-    .sidebar-title {
-        font-size: 2rem;
-        font-weight: 700;
-        /* Use accent by default but prefer the brand-accent gradient when available */
-        color: var(--color-accent);
-        font-family: 'Sora', 'Poppins', sans-serif;
-        letter-spacing: 0.2px;
-    }
-
-    /* Brand gradient text utility (accent -> brand). Use on headings/logotype to match logo */
-    .text-brand-gradient {
-        background-image: linear-gradient(90deg, var(--color-accent) 0%, var(--color-brand) 100%);
-        -webkit-background-clip: text;
-        background-clip: text;
-        color: transparent;
-        display: inline-block;
-    }
-
-    .sidebar-logo {
-        width: 42px;
-        height: 42px;
-    }
-
-    .sidebar-links {
-        gap: 0.5rem;
-    }
-
-    .sidebar-link {
-        display: block;
-        padding: 0.25rem 0.5rem;
-        border-radius: 0.25rem;
-        transition: background-color 0.2s;
-    }
-
-    .sidebar-button {
-        display: block;
-        width: 100%;
-        padding: 0.25rem 0.5rem;
-        border-radius: 0.25rem;
-        transition: background-color 0.2s;
-        text-align: left;
-    }
-
-    [dir="rtl"] .sidebar-button {
-        text-align: right;
-    }
-
-    .sidebar-link:hover,
-    .sidebar-button:hover {
-        background-color: var(--color-surface-hover);
-        /* gray-100 */
-        cursor: pointer;
-    }
-
-    /* Forms */
-    .input {
-        display: block;
-        background-color: transparent;
-        border: 1px solid var(--color-border);
-        border-radius: 12px;
-        padding: 0.7rem 0.9rem;
-        margin-top: 0.5rem;
-        width: 100%;
-        color: var(--color-text);
-        backdrop-filter: blur(4px);
-        transition: box-shadow 0.12s ease, border-color 0.12s ease;
-    }
-
-    .input:focus {
-        outline: none;
-        box-shadow: var(--shadow-ring);
-        border-color: var(--color-accent);
-        background-color: rgba(0, 0, 0, 0.02);
-    }
-
-    .form-group {
-        margin: 1.25rem 0;
-    }
-
-    .form-label {
-        display: block;
-        font-weight: 600;
-        color: var(--color-text);
-        margin-bottom: 0.5rem;
-        font-size: 0.95rem;
-    }
-
-    .muted {
-        color: var(--color-muted);
-        font-size: 0.875rem;
-    }
-
-    /* Topbar / dropdown styles */
-    .topbar {
-        display: flex;
-        align-items: center;
-        width: 100%;
-        padding: 0.5rem 1rem;
-        background-color: var(--color-card);
-        gap: 0.5rem;
-        color: var(--color-card-text);
-        border-bottom: 1px solid rgba(15, 23, 36, 0.02);
-    }
-
-    /* Reusable topbar helper classes to avoid repeating utility classes in templates */
-    .topbar-reverse {
-        flex-direction: row-reverse;
-    }
-
-    .topbar-space-between {
-        justify-content: space-between;
-    }
-
-    .topbar-nav {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-    }
-
-    .topbar-inner {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        width: 100%;
-    }
-
-    .topbar-user {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-    }
-
-    .dropdown-menu {
-        background-color: var(--color-card);
-        color: var(--color-card-text, var(--color-text));
-        border-radius: 0.5rem;
-        border: 1px solid var(--color-border);
-        box-shadow: var(--shadow-card);
-    }
-
-    /* Dropdown helper classes (explicit properties to avoid @apply in linters) */
-    .dropdown-trigger {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-        /* space-x-2 */
-        background-color: transparent;
-        border: 1px solid rgba(15, 23, 36, 0.06);
-        color: var(--color-text);
-        font-weight: 500;
-        border-radius: var(--radius-md);
-        padding: 0.625rem 0.875rem;
-        /* close to btn-secondary */
-        transition: background-color 0.12s ease, border-color 0.12s ease, color 0.12s ease, box-shadow 0.12s ease;
-    }
-
-    .dropdown-trigger:hover {
-        background-color: var(--color-accent-weak);
-        color: var(--color-accent);
-        border-color: rgba(225, 29, 72, 0.18);
-    }
-
-    .dropdown-trigger:focus {
-        outline: none;
-        box-shadow: var(--shadow-ring);
-        border-color: var(--color-accent);
-    }
-
-    .dropdown-caret {
-        width: 0.75rem;
-        /* w-3 */
-        height: 0.75rem;
-        /* h-3 */
-    }
-
-    .dropdown-list>*+* {
-        margin-top: 0.25rem;
-        /* space-y-1 */
-    }
-
-    .dropdown-item-flex {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        /* space-x-2 */
-        padding: 0.25rem 0.5rem;
-        /* py-1 px-2 */
-        border-radius: 0.25rem;
-        color: inherit;
-        width: 100%;
-    }
-
-    /* Danger variant for dropdown items (e.g., logout) */
-    .dropdown-item-danger {
-        color: var(--alert-danger);
-    }
-
-    /* Topbar internal item spacing */
-    .topbar-item {
-        padding: 0.25rem 0.5rem;
-        /* px-2 py-1 approx */
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-    }
-
-    .dropdown-item-flex:hover,
-    .dropdown-item:hover {
-        background-color: var(--color-accent-weak);
-        color: var(--color-accent);
-        cursor: pointer;
-    }
-
-    .btn-compact {
-        background-color: transparent;
-        border: 1px solid rgba(15, 23, 36, 0.06);
-        color: var(--color-text);
-        font-weight: 500;
-        border-radius: var(--radius-md);
-        padding: 0.25rem 0.5rem;
-        /* py-1 px-2 */
-        transition: background-color 0.12s ease, border-color 0.12s ease;
-        cursor: pointer;
-    }
-
-    /* Alignment helpers: add to container via component logic */
-    .dropdown-right {
-        right: 0;
-    }
-
-    .dropdown-left {
-        left: 0;
-    }
-
-    .dropdown-item {
-        color: inherit;
-    }
-
-    .dropdown-item:hover {
-        background-color: var(--color-surface-hover);
-    }
+/* Custom styles for specific components can go here */
+/* Custom styles for specific components can go here */
+/* Place end-group at the inline end (works for LTR and RTL). Use logical margin so it flips automatically. */
+.topbar-end {
+    /* push to inline end */
+    margin-inline-start: auto;
+    @apply flex items-center gap-2;
+}
+
+.dropdown-item {
+    @apply flex items-center gap-2 px-2 py-1;
+}
+
+.dropdown-item-selected {
+    @apply flex items-center gap-2 px-2 py-1 opacity-50 cursor-not-allowed;
+}
+
+/* New gradient utilities using DaisyUI theme variables.
+   Use these in components:
+     - <h2 class="sidebar-brand-text brand-gradient-text">Pulsar</h2>
+     - <button class="btn btn-primary-gradient">Create</button>
+     - <aside class="sidebar sidebar-gradient">...</aside>
+     - <header class="topbar topbar-gradient">...</header>
+     - <div class="poem poem-gradient">...</div>
+*/
+.brand-gradient-text {
+    /* gradient text: fall back to solid color if gradient not supported */
+    background-image: linear-gradient(90deg, var(--color-primary), var(--color-accent));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-weight: 600;
+}
+
+/* Primary button with a soft gradient and preserved DaisyUI look */
+.btn-primary-gradient {
+    @apply inline-flex items-center justify-center gap-2 text-primary-content font-semibold rounded-md;
+    padding: .5rem 1rem;
+    background-image: linear-gradient(90deg, var(--color-primary), var(--color-accent));
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
+    transition: transform 120ms ease, box-shadow 120ms ease, opacity 120ms ease;
+}
+
+.btn-primary-gradient:active {
+    transform: translateY(1px);
+}
+
+.btn-primary-gradient:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Subtle sidebar overlay that blends the theme primary color into the base background */
+.sidebar-gradient {
+    /* keep original sidebar layout via composition; just add a background overlay */
+    background-image: linear-gradient(180deg, color-mix(in srgb, var(--color-primary) 8%, transparent), transparent), var(--color-base-100);
+    background-blend-mode: normal;
+}
+
+/* Topbar gradient: subtle horizontal tint using primary -> secondary */
+.topbar-gradient {
+    @apply w-full border-b border-base-300 shadow-base-300;
+    background-image: linear-gradient(90deg, rgba(255, 255, 255, 0.00), rgba(255, 255, 255, 0.00));
+    /* overlay tint using theme colors with low opacity for light/dark compatibility */
+    background-image: linear-gradient(90deg, rgba(0, 0, 0, 0.00), rgba(0, 0, 0, 0.00)), linear-gradient(90deg, var(--color-primary), var(--color-secondary));
+    background-blend-mode: color, normal;
+    opacity: 0.98;
+}
+
+/* Cards/poems with a soft top-left accent gradient */
+.poem-gradient {
+    position: relative;
+    overflow: hidden;
+}
+
+.poem-gradient::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image: radial-gradient(600px 200px at 10% 0%, color-mix(in srgb, var(--color-accent) 18%, transparent), transparent 30%);
+    opacity: 0.12;
 }
