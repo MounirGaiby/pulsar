@@ -5,13 +5,14 @@
     </button>
     <% links.each do |link| %>
       <li>
+        <% link_classes = active_link?(link) ? "sidebar-link sidebar-link-active" : "sidebar-link" %>
         <% if (link[:method].present? && (link[:method] != :get)) %>
-          <%= button_to link[:name], link[:path], method: link[:method], class: "sidebar-link" do %>
+          <%= button_to link[:name], link[:path], method: link[:method], class: link_classes do %>
             <%= icon link[:icon], class: "w-5 h-5", data: { sidebar_target: "icon" } %>
             <span class="sidebar-link-text <%= 'hidden' if @collapsed %>" data-sidebar-target="link"><%= link[:name] %></span>
           <% end %>
         <% else %>
-          <%= link_to link[:path], method: link[:method], class: "sidebar-link" do %>
+          <%= link_to link[:path], method: link[:method], class: link_classes do %>
             <%= icon link[:icon], class: "w-5 h-5", data: { sidebar_target: "icon" } %>
             <span class="sidebar-link-text <%= 'hidden' if @collapsed %>" data-sidebar-target="link"><%= link[:name] %></span>
           <% end %>
