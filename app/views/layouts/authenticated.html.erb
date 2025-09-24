@@ -3,7 +3,7 @@
   <%= render "layouts/head" %>
   <body class="bg-background relative">
     <%#= render TopbarComponent.new(current_user: current_user) %>
-    <%= render FlashComponent.new %>
+    <%= render FlashComponent.new(flash: flash) %>
     <div class="flex min-h-screen">
       <%= render SidebarComponent.new(current_user: current_user, collapsed: cookies[:'sidebar-collapsed'] == 'true') %>
       <main class="flex-1 flex flex-col">

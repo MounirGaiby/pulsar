@@ -1,23 +1,64 @@
-<section class="fixed top-16 right-4 z-50" aria-live="polite">
-  <div data-controller="flash" class="space-y-2">
+<section class="<%= position_class %>" aria-live="polite" aria-label="Flash messages">
+  <div
+    data-controller="flash"
+    data-flash-animation-duration-value="<%= animation_duration %>"
+    class="space-y-2 max-w-sm"
+  >
     <% flash.each do |type, message| %>
-      <% i18n_key = "flash.#{type}" %>
-      <% kind = type == 'alert' ? 'error' : 'success' %>
-      <div
-        role="status"
-        tabindex="0"
-        data-flash-timeout="6000"
-        data-flash-type-value="<%= kind %>"
-      >
-        <div class="alert alert-<%= kind %> shadow-lg">
-          <div class="flex-1">
-            <label><%= t(i18n_key, default: message) %></label>
-          </div>
-          <div class="flex-none">
-            <button type="button" class="btn btn-ghost btn-sm" aria-label="Dismiss" title="Dismiss">&times;</button>
+      <% next if message.blank? %>
+      <% content = message_content(type, message) %>
+      <% timeout = timeout_for(type, message) %>
+      <% custom_class = custom_classes(type, message) %>
+      <% alert_kind = alert_type(type) %>
+      <% if custom_template?(type) %>
+        <!-- Custom template rendering -->
+        <div
+          class="flash-item <%= custom_class %>"
+          data-flash-timeout="<%= timeout %>"
+          data-flash-type-value="<%= alert_kind %>"
+          role="status"
+          tabindex="0"
+        >
+          <%= render_custom_template(type, message) %>
+        </div>
+      <% else %>
+        <!-- Default flash item -->
+        <div
+          class="flash-item <%= custom_class %>"
+          data-flash-timeout="<%= timeout %>"
+          data-flash-type-value="<%= alert_kind %>"
+          role="status"
+          tabindex="0"
+        >
+          <div class="alert alert-<%= alert_kind %> shadow-lg border border-base-300 flash-alert">
+            <div class="flex-1">
+              <div class="flash-icon mr-2">
+                <% case alert_kind %>
+                <% when "success" %>
+                  <%= icon "check-circle", variant: "outline", class: "w-5 h-5" %>
+                <% when "error" %>
+                  <%= icon "exclamation-circle", variant: "outline", class: "w-5 h-5" %>
+                <% when "warning" %>
+                  <%= icon "exclamation-triangle", variant: "outline", class: "w-5 h-5" %>
+                <% when "info" %>
+                  <%= icon "information-circle", variant: "outline", class: "w-5 h-5" %>
+                <% end %>
+              </div>
+              <label class="flash-message"><%= content %></label>
+            </div>
+            <div class="flex-none">
+              <button
+                type="button"
+                class="flash-close btn btn-circle btn-ghost btn-sm"
+                aria-label="<%= t('flash.close', default: 'Dismiss') %>"
+                title="<%= t('flash.close', default: 'Dismiss') %>"
+              >
+                <%= icon "x", library: "lucide", class: "w-4 h-4" %>
+              </button>
+            </div>
           </div>
         </div>
-      </div>
+      <% end %>
     <% end %>
   </div>
 </section>

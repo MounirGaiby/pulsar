@@ -20,7 +20,6 @@ fr:
       errors:
         user_not_found: "Aucun compte trouvé pour cette adresse e-mail."
         invalid_password: "Mot de passe incorrect pour cette adresse e-mail."
-      success: "Connecté avec succès."
 
   passwords:
     new:
@@ -53,6 +52,9 @@ fr:
     alert: "Il y a eu un problème."
     notice: "Opération réussie."
     rate_limited: "Trop de tentatives, réessayez plus tard."
+    sessions:
+      login_success: "Connecté avec succès."
+      logout_success: "Déconnecté avec succès."
 
   topbar:
     language: "Langue"

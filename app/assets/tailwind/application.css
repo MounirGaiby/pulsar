@@ -265,3 +265,125 @@
     background-image: radial-gradient(600px 200px at 10% 0%, color-mix(in srgb, var(--color-accent) 18%, transparent), transparent 30%);
     opacity: 0.12;
 }
+
+/* Flash Component Styles */
+.flash-item {
+    /* Smooth entrance/exit animations using DaisyUI transitions */
+    @apply transition-all duration-300 ease-in-out;
+    /* Initial state: hidden and scaled down */
+    opacity: 0;
+    transform: translateX(100%) scale(0.95);
+}
+
+.flash-item.flash-show {
+    /* Animate in: visible and full size */
+    opacity: 1;
+    transform: translateX(0) scale(1);
+}
+
+.flash-item.flash-hide {
+    /* Animate out: fade and slide out to the same side (right) */
+    opacity: 0;
+    transform: translateX(100%) scale(0.95);
+}
+
+/* RTL support for flash animations */
+[dir="rtl"] .flash-item {
+    /* Initial state: hidden and scaled down from left */
+    transform: translateX(-100%) scale(0.95);
+}
+
+[dir="rtl"] .flash-item.flash-show {
+    /* Animate in: visible and full size */
+    opacity: 1;
+    transform: translateX(0) scale(1);
+}
+
+[dir="rtl"] .flash-item.flash-hide {
+    /* Animate out: fade and slide out to the same side (left) */
+    opacity: 0;
+    transform: translateX(-100%) scale(0.95);
+}
+
+/* Flash alert enhancements using DaisyUI */
+.flash-alert {
+    @apply border-l-4 shadow-xl;
+}
+
+/* Alert type specific left borders */
+.alert-success {
+    @apply border-l-success;
+}
+
+.alert-error {
+    @apply border-l-error;
+}
+
+.alert-warning {
+    @apply border-l-warning;
+}
+
+.alert-info {
+    @apply border-l-info;
+}
+
+/* Flash icon with simple animation */
+.flash-icon {
+    @apply animate-pulse;
+}
+
+/* Close button styling */
+.flash-close {
+    @apply transition-transform duration-200;
+}
+
+.flash-close:hover {
+    @apply rotate-90;
+}
+
+/* Flash message text */
+.flash-message {
+    @apply font-medium;
+    line-height: 1.5;
+}
+
+/* Staggered entrance for multiple flashes */
+.flash-item:nth-child(1) {
+    animation-delay: 0ms;
+}
+
+.flash-item:nth-child(2) {
+    animation-delay: 100ms;
+}
+
+.flash-item:nth-child(3) {
+    animation-delay: 200ms;
+}
+
+.flash-item:nth-child(4) {
+    animation-delay: 300ms;
+}
+
+.flash-item:nth-child(5) {
+    animation-delay: 400ms;
+}
+
+/* Accessibility: Screen reader only class */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* Responsive flash positioning */
+@media (max-width: 640px) {
+    .flash-item {
+        max-width: calc(100vw - 2rem);
+    }
+}

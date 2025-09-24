@@ -22,7 +22,6 @@ en:
       errors:
         user_not_found: "No account found for that email address."
         invalid_password: "Incorrect password for that email address."
-      success: "Signed in successfully."
 
   passwords:
     new:
@@ -55,6 +54,9 @@ en:
     alert: "There was a problem."
     notice: "Operation successful."
     rate_limited: "Too many attempts, try again later."
+    sessions:
+      login_success: "Signed in successfully."
+      logout_success: "Signed out successfully."
 
   topbar:
     language: "Language"

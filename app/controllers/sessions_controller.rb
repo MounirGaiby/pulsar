@@ -13,7 +13,7 @@ class SessionsController < ApplicationController
     case result
     when User
       start_new_session_for result
-      redirect_to after_authentication_url, notice: I18n.t("sessions.new.success")
+      redirect_to after_authentication_url, notice: "flash.sessions.login_success"
     when :user_not_found, :invalid_password
       alert_key = "sessions.new.errors.#{result}"
       redirect_to login_path, alert: I18n.t(alert_key)
@@ -25,7 +25,7 @@ class SessionsController < ApplicationController
 
   def destroy
     terminate_session
-    redirect_to login_path
+    redirect_to login_path, notice: "flash.sessions.logout_success"
   end
 
   private
