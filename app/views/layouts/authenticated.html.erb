@@ -1,17 +1,17 @@
 <!DOCTYPE html>
-<html lang="<%= I18n.locale %>" dir="<%= I18n.locale.to_s == 'ar' ? 'rtl' : 'ltr' %>" data-controller="dir">
+<html lang="<%= I18n.locale %>" dir="<%= I18n.locale.to_s == 'ar' ? 'rtl' : 'ltr' %>" data-controller="dir" data-theme="<%= cookies[:theme] || 'system' %>">
   <%= render "layouts/head" %>
   <body class="bg-background relative">
     <%#= render TopbarComponent.new(current_user: current_user) %>
     <%= render FlashComponent.new %>
     <div class="flex min-h-screen">
-    <%= render SidebarComponent.new(current_user: current_user) %>
-    <main class="flex-1 flex flex-col">
-      <%= render TopbarComponent.new(current_user: current_user) %>
-      <div class="p-6 flex-1">
-        <%= yield %>
-      </div>
-    </main>
+      <%= render SidebarComponent.new(current_user: current_user, collapsed: cookies[:'sidebar-collapsed'] == 'true') %>
+      <main class="flex-1 flex flex-col">
+        <%= render TopbarComponent.new(current_user: current_user) %>
+        <div class="p-6 flex-1">
+          <%= yield %>
+        </div>
+      </main>
     </div>
   </body>
 </html>

@@ -25,6 +25,7 @@ export default class extends Controller {
             this.iconTarget && (this.iconTarget.textContent = '☀️')
         }
         localStorage.setItem('theme', theme)
+        document.cookie = `theme=${theme}; path=/; max-age=31536000; SameSite=Lax`
     }
 
     toggle() {

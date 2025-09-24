@@ -1,8 +1,8 @@
 <header class="topbar" role="banner">
   <nav aria-label="Topbar navigation" class="flex items-center gap-2 px-4 py-2">
     <% if @current_user %>
-      <button data-controller="event" data-action="click->event#broadcast" data-event-name="sidebar:toggle" class="btn btn-ghost">
-        <%= icon "arrow-left-to-line", library: "lucide", class: "w-5 h-5", data: { sidebar_target: 'collapse-icon' } %>
+      <button data-controller="event" data-action="click->event#broadcast" data-event-name="sidebar:toggle" class="btn btn-ghost topbar-sidebar-toggle-button">
+        <%= icon "menu", library: "lucide", class: "w-5 h-5", data: { sidebar_target: 'collapse-icon' } %>
       </button>
       <div class="topbar-end flex items-center gap-2">
         <%# language + theme dropdown goes here (already rendered above) %>
@@ -21,7 +21,7 @@
             </li>
             <li class="divider h-0.5 my-2"></li>
             <li>
-              <%= render DropdownComponent.new(container_classes: "dropdown-left dropdown-hover dropdown-end", dropdown_classes: "", replace_dropdown_classes: true, menu_classes: "") do |c| %>
+              <%= render DropdownComponent.new(container_classes: "sm:dropdown-left dropdown-hover dropdown-end", dropdown_classes: "", replace_dropdown_classes: true, menu_classes: "") do |c| %>
               </li>
               <% c.with_trigger do %>
                 <div class="flex items-center gap-2">

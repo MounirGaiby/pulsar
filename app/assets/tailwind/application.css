@@ -80,7 +80,11 @@
      Use DaisyUI tokens and Tailwind @apply to keep markup clean */
 .sidebar {
     @apply menu p-2 w-52 bg-base-100 border-r border-base-300 shadow-base-300 overflow-x-hidden;
-    transition: width 0.3s ease;
+    transition: width 0.3s ease, transform 0.3s ease;
+}
+
+[dir="rtl"] .sidebar {
+    @apply border-r-0 border-l border-base-300;
 }
 
 .sidebar-collapsed {
@@ -133,9 +137,23 @@
     transform: rotate(180deg);
 }
 
+.topbar-toggle-button {
+    @apply hidden btn btn-ghost;
+    /* hidden by default, shown on small screens */
+}
+
+
 @media (max-width: 767px) {
     .sidebar {
-        @apply hidden fixed left-0 top-0 h-full z-50;
+        @apply absolute top-0 start-0 h-full z-50;
+    }
+
+    .sidebar-collapsed {
+        transform: translateX(-100%);
+    }
+
+    [dir="rtl"] .sidebar-collapsed {
+        transform: translateX(100%);
     }
 }
 

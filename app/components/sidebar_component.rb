@@ -3,8 +3,9 @@
 class SidebarComponent < BaseComponent
   attr_reader :current_user
 
-  def initialize(current_user:)
+  def initialize(current_user:, collapsed: false)
     @current_user = current_user
+    @collapsed = collapsed
   end
 
   def links
