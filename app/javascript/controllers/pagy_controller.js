@@ -50,7 +50,14 @@ export default class extends Controller {
             // Merge current URL params with the form's data so limit + sort + filters are preserved
             const params = new URLSearchParams(window.location.search)
             const fd = new FormData(form)
+
+            // Make sure the select's own chosen value always overrides any stale value
+            const selectName = el.name || 'limit'
+            params.set(selectName, el.value)
+
             for (const [k, v] of fd.entries()) {
+                // Do not let form entries overwrite the select's freshly-chosen value
+                if (k === selectName) continue
                 if (v === null || v === undefined || v === '') params.delete(k)
                 else params.set(k, v)
             }
