@@ -7,8 +7,51 @@ fr:
       user:
         email_address: "Adresse e-mail"
         password: "Mot de passe"
+        created_at: "Créé le"
+        updated_at: "Mis à jour le"
       session:
         token: "Jeton de session"
+ 
+
+  dashboard:
+    index:
+      title: "Tableau de bord"
+
+  sidebar:
+    links:
+      dashboard: "Tableau de bord"
+      profile: "Profil"
+      users: "Utilisateurs"
+
+  # Global filter translations (moved from users.filters)
+  filters:
+    email: "E-mail"
+    created_after: "Créé après"
+    created_before: "Créé avant"
+    add_filter: "Ajouter un filtre"
+    clear_all: "Tout effacer"
+    apply_filters: "Appliquer les filtres"
+    all_option: "Tous les %{attribute}"
+    search_filters: "Rechercher des filtres..."
+    operators:
+      cont: "Contient"
+      eq: "Égale"
+      start: "Commence par"
+      end: "Finit par"
+      not_cont: "Ne contient pas"
+      gt: "Après"
+      gteq: "À ou après"
+      lt: "Avant"
+      lteq: "À ou avant"
+      yes: "Oui"
+      no: "Non"
+
+  actions:
+    users:
+      create: "Créer un utilisateur"
+      view: "Voir"
+      edit: "Modifier"
+      delete: "Supprimer"
 
   sessions:
     new:
@@ -39,14 +82,25 @@ fr:
     token:
       invalid: "Le lien de réinitialisation est invalide ou a expiré."
 
-  dashboard:
+  users:
     index:
-      title: "Tableau de bord"
+      title: "Utilisateurs"
+    columns:
+      email: "E-mail"
+      created_at: "Créé le"
+      updated_at: "Mis à jour le"
 
-  sidebar:
-    links:
-      dashboard: "Tableau de bord"
-      profile: "Profil"
+  table:
+    select_all: "Tout sélectionner"
+    actions: "Actions"
+    empty_message: "Aucun enregistrement trouvé"
+    no_data_available: "Aucune donnée disponible"
+
+  pagy:
+    show: "Afficher :"
+    prev: "Précédent"
+    next: "Suivant"
+    info: "Affichage de %{from} à %{to} sur %{count} entrées"
 
   flash:
     alert: "Il y a eu un problème."
@@ -60,6 +114,7 @@ fr:
     language: "Langue"
     theme: "Thème"
     logout: "Déconnexion"
+    user_profile: "Profil utilisateur"
     languages:
       en: "English"
       fr: "Français"

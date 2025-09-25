@@ -14,8 +14,6 @@ export default class extends Controller {
         this.showAll()
         this._timers = new Map()
         this._animationDuration = this.animationDurationValue
-
-        console.log("FlashController connected")
     }
 
     disconnect() {

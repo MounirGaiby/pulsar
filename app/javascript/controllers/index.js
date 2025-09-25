@@ -7,9 +7,6 @@ import { application } from "./application"
 import DirController from "./dir_controller"
 application.register("dir", DirController)
 
-import DropdownController from "./dropdown_controller"
-application.register("dropdown", DropdownController)
-
 import EventController from "./event_controller"
 application.register("event", EventController)
 
@@ -24,3 +21,12 @@ application.register("sidebar", SidebarController)
 
 import ThemeController from "./theme_controller"
 application.register("theme", ThemeController)
+
+import FilterController from "./filter_controller"
+application.register("filter", FilterController)
+
+import TableController from "./table_controller"
+application.register("table", TableController)
+
+import PagyController from "./pagy_controller"
+application.register("pagy", PagyController)

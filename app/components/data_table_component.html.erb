@@ -1,0 +1,25 @@
+<div class="<%= container_classes %>">
+  <% if @title %>
+    <div class="flex items-center justify-between">
+      <h1 class="<%= title_classes %>"><%= @title %></h1>
+    </div>
+  <% end %>
+  <% if has_filters? || has_action_buttons? %>
+    <%= render filter_component %>
+  <% end %>
+  <%= turbo_frame_tag(@table_frame_id || 'data-table-frame') do %>
+    <%= render TableComponent.new(
+        columns: @columns,
+        data: @data,
+        pagy: @pagy,
+        sort_column: @sort_column,
+        sort_direction: @sort_direction,
+        selectable: @selectable,
+        selected_ids: @selected_ids,
+        row_actions: @row_actions
+      ) %>
+    <% if @pagy %>
+      <%= render pagy_component %>
+    <% end %>
+  <% end %>
+</div>

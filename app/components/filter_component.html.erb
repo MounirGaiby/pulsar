@@ -1,0 +1,87 @@
+<%# Allow parent to pass a target turbo frame id via options or use default 'data-table-frame' %>
+<% turbo_target = @options[:turbo_frame_id] || 'data-table-frame' %>
+<%= form_with id: @form_id, method: :get, data: { controller: "filter", turbo_frame: turbo_target }, class: form_classes do |f| %>
+  <!-- Active Filters -->
+  <div class="flex flex-wrap items-center gap-2" data-filter-target="activeFilters">
+    <!-- Clear All is always present in the DOM so Stimulus can toggle it client-side. It starts hidden when there are no active filters. -->
+    <button type="button" class="btn btn-ghost btn-sm <%= 'hidden' unless active_filters.any? %>" data-action="filter#clearAllFilters" data-filter-target="clearButton">
+      <%= icon "x", library: "lucide", class: "w-4 h-4 mr-1" %>
+      <%= t('filters.clear_all', default: 'Clear All') %>
+    </button>
+    <% active_filters.each do |filter| %>
+      <div class="badge badge-primary gap-2 px-3 py-2" data-filter-key="<%= filter.key %>">
+        <span class="font-medium"><%= filter.label %></span>
+        <button type="button" class="btn btn-ghost btn-xs btn-circle" data-action="filter#removeFilter" data-filter-key="<%= filter.key %>">
+          <%= icon "x", library: "lucide", class: "w-3 h-3" %>
+        </button>
+      </div>
+    <% end %>
+    <!-- Hidden badge template to be cloned by Stimulus when adding filters client-side -->
+    <template id="filter-badge-template" data-filter-template>
+      <div class="badge badge-primary gap-2 px-3 py-2" data-filter-key="__KEY__">
+        <span class="font-medium">__LABEL__</span>
+        <button type="button" class="btn btn-ghost btn-xs btn-circle" data-action="filter#removeFilter" data-filter-key="__KEY__">
+          <%= icon "x", library: "lucide", class: "w-3 h-3" %>
+        </button>
+      </div>
+    </template>
+  </div>
+  <!-- Filter Inputs - stacked rows -->
+  <div class="flex flex-col gap-4" data-filter-target="inputsContainer">
+    <% @filters.each do |filter| %>
+      <% active = @active_filter_keys.include?(filter.key) || current_value(filter).present? %>
+      <div class="<%= filter_container_classes %> <%= 'hidden' unless active %>" data-filter-key="<%= filter.key %>">
+        <div class="flex items-center justify-between">
+          <div>
+            <label class="<%= label_classes %>"><%= filter.label %></label>
+            <div class="mt-2 flex items-center gap-3">
+              <%= select_tag "#{filter.key}_operator", options_for_select(filter.operators.map { |op| [op[:label], op[:value]] }, current_operator(filter)), class: "select select-bordered select-sm w-40", data: { action: "filter#updateOperator" } %>
+              <% if filter.multiple_inputs? %>
+                <div class="flex gap-2 flex-1">
+                  <% filter_name(filter).each_with_index do |name, index| %>
+                    <% placeholder = index == 0 ? "Min #{filter.label.downcase}" : "Max #{filter.label.downcase}" %>
+                    <%= f.text_field name, value: current_value(filter)&.dig(index), placeholder: placeholder, class: input_classes(filter), type: filter.input_type, data: { action: "input->filter#debouncedSubmit" } %>
+                  <% end %>
+                </div>
+              <% elsif filter.type == :select %>
+                <%= f.select filter.key, options_for_select(filter.select_options, current_value(filter)), { include_blank: t('filters.all_option', attribute: filter.label.pluralize.downcase, default: "All #{filter.label.pluralize.downcase}") }, class: input_classes(filter), data: { action: "change->filter#debouncedSubmit" } %>
+              <% else %>
+                <%= f.text_field filter.key, value: current_value(filter), placeholder: filter.placeholder, class: input_classes(filter), type: filter.input_type, data: { action: "input->filter#debouncedSubmit" } %>
+              <% end %>
+            </div>
+          </div>
+          <div class="flex items-start gap-2">
+            <button type="button" class="btn btn-ghost btn-xs btn-circle mt-1" data-action="filter#removeFilter" data-filter-key="<%= filter.key %>">
+              <%= icon "x", library: "lucide", class: "w-4 h-4" %>
+            </button>
+          </div>
+        </div>
+      </div>
+    <% end %>
+    <!-- Add Filter Dropdown -->
+    <div class="<%= filter_container_classes %>">
+      <label class="text-sm font-medium text-base-content/70"><%= t('filters.add_filter', default: 'Add Filter') %></label>
+      <div class="dropdown">
+        <div tabindex="0" role="button" class="btn btn-outline btn-sm">
+          <%= icon "plus", library: "lucide", class: "w-4 h-4 mr-1" %>
+          <%= t('filters.add_filter', default: 'Add Filter') %>
+        </div>
+        <ul class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
+          <li class="p-2">
+            <input type="text" placeholder="<%= t('filters.search_filters', default: 'Search filters...') %>" class="input input-bordered input-sm w-full" data-action="input->filter#searchFilters" data-filter-target="searchInput">
+          </li>
+          <li class="divider my-1 h-0.5"></li>
+          <% @filters.each do |filter| %>
+            <%# Mark filters that are currently active as hidden so they remain in the DOM but are not selectable. This makes re-adding them reliable after a refresh. %>
+            <% hidden = @active_filter_keys.include?(filter.key) || active_filters.map(&:key).include?(filter.key) || current_value(filter).present? %>
+            <li data-filter-target="filterItem" data-filter-label="<%= filter.label.downcase %>" <%= 'data-hidden-by-filter="true" style="display:none;"' if hidden %>>
+              <button type="button" class="w-full text-left" data-action="click->filter#addFilter" data-filter-key="<%= filter.key %>" data-filter-label="<%= filter.label %>">
+                <%= filter.label %>
+              </button>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+  </div>
+<% end %>

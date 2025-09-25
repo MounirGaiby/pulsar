@@ -7,6 +7,8 @@ ar:
       user:
         email_address: "البريد الإلكتروني"
         password: "كلمة المرور"
+        created_at: "تاريخ الإنشاء"
+        updated_at: "تاريخ التحديث"
       session:
         token: "رمز الجلسة"
 
@@ -47,6 +49,58 @@ ar:
     links:
       dashboard: "لوحة التحكم"
       profile: "الملف الشخصي"
+      users: "المستخدمون"
+
+  # Global filter translations (moved from users.filters)
+  filters:
+    email: "البريد الإلكتروني"
+    created_after: "تم الإنشاء بعد"
+    created_before: "تم الإنشاء قبل"
+    add_filter: "إضافة فلتر"
+    clear_all: "مسح الكل"
+    apply_filters: "تطبيق الفلاتر"
+    all_option: "جميع %{attribute}"
+    search_filters: "البحث في الفلاتر..."
+    operators:
+      cont: "يحتوي"
+      eq: "يساوي"
+      start: "يبدأ ب"
+      end: "ينتهي ب"
+      not_cont: "لا يحتوي"
+      gt: "بعد"
+      gteq: "في أو بعد"
+      lt: "قبل"
+      lteq: "في أو قبل"
+      yes: "نعم"
+      no: "لا"
+
+  actions:
+    users:
+      create: "إنشاء مستخدم"
+      view: "عرض"
+      edit: "تعديل"
+      delete: "حذف"
+
+  users:
+    index:
+      title: "المستخدمون"
+    # filters moved to top-level `filters` for global reuse
+    columns:
+      email: "البريد الإلكتروني"
+      created_at: "تاريخ الإنشاء"
+      updated_at: "تاريخ التحديث"
+
+  table:
+    select_all: "تحديد الكل"
+    actions: "الإجراءات"
+    empty_message: "لم يتم العثور على سجلات"
+    no_data_available: "لا توجد بيانات متاحة"
+
+  pagy:
+    show: "عرض:"
+    prev: "السابق"
+    next: "التالي"
+    info: "عرض %{from} إلى %{to} من %{count} إدخال"
 
   flash:
     alert: "حدثت مشكلة."
@@ -60,6 +114,7 @@ ar:
     language: "اللغة"
     theme: "السمة"
     logout: "تسجيل الخروج"
+    user_profile: "ملف المستخدم"
     languages:
       en: "English"
       fr: "Français"
@@ -119,3 +174,4 @@ ar:
       over_x_years:
         one: "أكثر من سنة"
         other: "أكثر من %{count} سنوات"
+

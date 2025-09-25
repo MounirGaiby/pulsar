@@ -1,0 +1,54 @@
+<div class="container mx-auto px-4 py-8">
+  <%= render DataTableComponent.new(
+    title: t('users.index.title'),
+    filters: @filters,
+    active_filter_keys: @active_filter_keys,
+    columns: [
+      { key: :email_address, label: t('users.columns.email'), sortable: true },
+      {
+        key: :created_at,
+        label: t('users.columns.created_at'),
+        type: :datetime,
+        sortable: true
+      },
+      {
+        key: :updated_at,
+        label: t('users.columns.updated_at'),
+        type: :datetime,
+        sortable: true
+      }
+    ],
+    data: @users,
+    pagy: @pagy,
+    sort_column: params[:sort],
+    sort_direction: params[:direction],
+    current_filters: params.except(:controller, :action, :sort, :direction, :page, :limit).permit!.to_h,
+    empty_message: t('table.empty_message'),
+    selectable: true,
+    selected_ids: params[:selected_ids] || [],
+    row_actions: [
+      {
+        label: t('actions.users.view', default: "View"),
+        icon: "eye",
+        url: ->(user) { user_path(user) }, # GET
+        type: :link
+      },
+      {
+        label: t('actions.users.edit', default: "Edit"), 
+        icon: "pencil",
+        url: ->(user) { edit_user_path(user) }, # GET
+        type: :link
+      },
+      {
+        label: t('actions.users.delete', default: "Delete"),
+        icon: "trash-2",
+        url: ->(user) { user_path(user) }, # DELETE
+        type: :button,
+        method: :delete,
+        data: { turbo_confirm: "Are you sure?" }
+      }
+    ],
+    action_buttons: [
+    ]
+  ) %>
+</div>

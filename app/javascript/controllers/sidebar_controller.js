@@ -5,8 +5,6 @@ export default class extends Controller {
   static targets = ["menu", "icon", "link"]
 
   connect() {
-    console.log("Sidebar controller connected")
-
     document.addEventListener("sidebar:toggle", (e) => {
       this.toggle(e)
     })
@@ -17,7 +15,6 @@ export default class extends Controller {
   }
 
   toggle(event) {
-    console.debug("Toggling sidebar")
     // const isCollapsed = this.menuTarget.classList.contains("sidebar-collapsed");
     if (event.detail.element.querySelector("[data-sidebar-target='collapse-icon']")) {
       const icon = event.detail.element.querySelector("[data-sidebar-target='collapse-icon']");

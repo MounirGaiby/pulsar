@@ -5,6 +5,7 @@ Rails.application.routes.draw do
     delete "/logout", to: "sessions#destroy"
 
     resources :passwords, param: :token
+    resources :users
 
     # Defines the root path route ("/")
     root "dashboard#index"

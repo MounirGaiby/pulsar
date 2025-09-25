@@ -8,6 +8,8 @@ en:
       user:
         email_address: "Email address"
         password: "Password"
+        created_at: "Created at"
+        updated_at: "Updated at"
       session:
         token: "Session token"
 
@@ -49,6 +51,58 @@ en:
     links:
       dashboard: "Dashboard"
       profile: "Profile"
+      users: "Users"
+
+  # Global filter translations (moved from users.filters)
+  filters:
+    email: "Email"
+    created_after: "Created After"
+    created_before: "Created Before"
+    add_filter: "Add Filter"
+    clear_all: "Clear All"
+    apply_filters: "Apply Filters"
+    all_option: "All %{attribute}"
+    search_filters: "Search filters..."
+    operators:
+      cont: "Contains"
+      eq: "Equals"
+      start: "Starts with"
+      end: "Ends with"
+      not_cont: "Does not contain"
+      gt: "After"
+      gteq: "On or after"
+      lt: "Before"
+      lteq: "On or before"
+      yes: "Yes"
+      no: "No"
+
+  # Actions organized per-resource for reuse
+  actions:
+    users:
+      create: "Create User"
+      view: "View"
+      edit: "Edit"
+      delete: "Delete"
+
+  users:
+    index:
+      title: "Users"
+    columns:
+      email: "Email"
+      created_at: "Created At"
+      updated_at: "Updated At"
+
+  table:
+    select_all: "Select All"
+    actions: "Actions"
+    empty_message: "No records found"
+    no_data_available: "No data available"
+
+  pagy:
+    show: "Show:"
+    prev: "Previous"
+    next: "Next"
+    info: "Showing %{from} to %{to} of %{count} entries"
 
   flash:
     alert: "There was a problem."
@@ -62,6 +116,7 @@ en:
     language: "Language"
     theme: "Theme"
     logout: "Logout"
+    user_profile: "User profile"
     languages:
       en: "English"
       fr: "Français"
@@ -122,3 +177,4 @@ en:
       over_x_years:
         one: "over 1 year"
         other: "over %{count} years"
+
