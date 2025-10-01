@@ -103,6 +103,7 @@ en:
     prev: "Previous"
     next: "Next"
     info: "Showing %{from} to %{to} of %{count} entries"
+    info_short: "%{from}-%{to} of %{count}"
 
   flash:
     alert: "There was a problem."

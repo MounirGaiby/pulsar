@@ -21,18 +21,18 @@
             </li>
             <li class="divider h-0.5 my-2"></li>
             <li>
-              <%= render DropdownComponent.new(container_classes: "sm:dropdown-left dropdown-hover dropdown-end", dropdown_classes: "", replace_dropdown_classes: true, menu_classes: "") do |c| %>
-              </li>
-              <% c.with_trigger do %>
-                <div class="flex items-center gap-2">
-                  <%= icon "globe", library: "lucide", class: "w-4 h-4" %>
-                  <span><%= t('topbar.language') %></span>
-                </div>
+              <%= render DropdownComponent.new(container_classes: "sm:dropdown-left dropdown-end", dropdown_classes: "", replace_dropdown_classes: true, menu_classes: "") do |c| %>
+                <% c.with_trigger do %>
+                  <div class="flex items-center gap-2">
+                    <%= icon "globe", library: "lucide", class: "w-4 h-4" %>
+                    <span><%= t('topbar.language') %></span>
+                  </div>
+                <% end %>
+                <% c.with_menu do %>
+                  <%= render LanguageDropdownComponent.new %>
+                <% end %>
               <% end %>
-              <% c.with_menu do %>
-                <%= render LanguageDropdownComponent.new %>
-              <% end %>
-            <% end %>
+            </li>
             <li class="divider h-0.5 my-2"></li>
             <li>
               <%= render ThemeToggleComponent.new(full_width: true) %>

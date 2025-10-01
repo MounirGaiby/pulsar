@@ -101,6 +101,7 @@ fr:
     prev: "Précédent"
     next: "Suivant"
     info: "Affichage de %{from} à %{to} sur %{count} entrées"
+    info_short: "%{from}-%{to} sur %{count}"
 
   flash:
     alert: "Il y a eu un problème."

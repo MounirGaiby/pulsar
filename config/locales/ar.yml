@@ -101,6 +101,7 @@ ar:
     prev: "السابق"
     next: "التالي"
     info: "عرض %{from} إلى %{to} من %{count} إدخال"
+    info_short: "%{from}-%{to} من %{count}"
 
   flash:
     alert: "حدثت مشكلة."

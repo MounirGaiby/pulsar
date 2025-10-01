@@ -8,6 +8,6 @@ class DropdownComponent < BaseComponent
     direction_class = direction == :rtl ? "dropdown-start" : "dropdown-end"
     @container_classes = replace_container_classes ? container_classes : "dropdown #{direction_class} #{container_classes}"
     @dropdown_classes = replace_dropdown_classes ? dropdown_classes : "btn m-1 #{dropdown_classes}"
-    @menu_classes = replace_menu_classes ? menu_classes : "dropdown-content menu bg-base-200 rounded-box z-1 w-52 p-2 shadow-sm #{menu_classes}"
+    @menu_classes = replace_menu_classes ? menu_classes : "dropdown-content menu bg-base-200 rounded-box z-[100] w-52 p-2 shadow-lg border border-base-300 #{menu_classes}"
   end
 end

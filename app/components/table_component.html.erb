@@ -4,10 +4,10 @@
       <thead>
         <tr>
           <% if @selectable %>
-            <th class="px-4 py-3 text-left font-medium border-b border-base-300">
-              <label class="flex items-center gap-2">
+            <th class="px-2 py-2 sm:px-3 sm:py-2.5 md:px-4 md:py-3 text-left font-medium border-b border-base-300 table-cell w-12 sm:w-auto">
+              <label class="flex items-center gap-1 sm:gap-2">
                 <input type="checkbox" class="checkbox checkbox-sm" <%= "checked" if all_selected? %> data-action="table#toggleSelectAll">
-                <span class="ml-3 text-sm"><%= t('table.select_all', default: 'Select All') %></span>
+                <span class="hidden sm:inline ml-2 text-xs sm:text-sm"><%= t('table.select_all', default: 'Select All') %></span>
               </label>
             </th>
           <% end %>
@@ -28,8 +28,8 @@
             <% end %>
           <% end %>
           <% if has_row_actions? %>
-            <th class="px-4 py-3 text-center font-medium border-b border-base-300">
-              <span class="text-sm"><%= t('table.actions', default: 'Actions') %></span>
+            <th class="px-2 py-2 sm:px-3 sm:py-2.5 md:px-4 md:py-3 text-center font-medium border-b border-base-300 table-cell">
+              <span class="text-xs sm:text-sm"><%= t('table.actions', default: 'Actions') %></span>
             </th>
           <% end %>
         </tr>
@@ -39,7 +39,7 @@
           <% @data.each do |record| %>
             <tr class="hover:bg-gradient-to-r hover:from-base-50/50 hover:to-transparent transition-all duration-200 group <%= "selected" if record_selected?(record) %>">
               <% if @selectable %>
-                <td class="px-4 py-3 border-b border-base-200/50">
+                <td class="px-2 py-2 sm:px-3 sm:py-2.5 md:px-4 md:py-3 border-b border-base-200/50 table-cell w-12 sm:w-auto">
                   <input type="checkbox" class="checkbox checkbox-sm" <%= "checked" if record_selected?(record) %> data-action="table#toggleSelect" data-table-record-id="<%= record_id(record) %>">
                 </td>
               <% end %>
@@ -49,30 +49,32 @@
                 </td>
               <% end %>
               <% if has_row_actions? %>
-                <td class="px-4 py-3 border-b border-base-200/50 flex justify-end">
-                  <%# Inline dropdown so the markup and actions are visible in the template %>
-                  <% direction = I18n.locale == :ar ? :rtl : :ltr %>
-                  <%= render DropdownComponent.new(direction: direction, container_classes: "dropdown-left !overflow-visible", dropdown_classes: "btn btn-ghost btn-sm", menu_classes: "bg-base-100") do |dropdown| %>
-                    <% dropdown.with_trigger do %>
-                      <%= icon "ellipsis-vertical", library: "lucide", class: "w-4 h-4" %>
-                    <% end %>
-                    <% dropdown.with_menu do %>
-                      <% @row_actions.each do |action| %>
-                        <li>
-                          <% if action[:type] == :link %>
-                            <%= link_to (action[:url].respond_to?(:call) ? action[:url].call(record) : action[:url]), class: "flex items-center gap-2" do %>
-                              <%= icon action[:icon], library: "lucide", class: "w-4 h-4" if action[:icon] %>
-                              <span class="text-sm"><%= action[:label] %></span>
+                <td class="px-2 py-2 sm:px-3 sm:py-2.5 md:px-4 md:py-3 border-b border-base-200/50 table-cell">
+                  <div class="flex justify-end items-center gap-1">
+                    <%# Inline dropdown so the markup and actions are visible in the template %>
+                    <% direction = I18n.locale == :ar ? :rtl : :ltr %>
+                    <%= render DropdownComponent.new(direction: direction, container_classes: "dropdown-left !overflow-visible", dropdown_classes: "btn btn-ghost btn-sm btn-square", menu_classes: "bg-base-100") do |dropdown| %>
+                      <% dropdown.with_trigger do %>
+                        <%= icon "ellipsis-vertical", library: "lucide", class: "w-4 h-4" %>
+                      <% end %>
+                      <% dropdown.with_menu do %>
+                        <% @row_actions.each do |action| %>
+                          <li>
+                            <% if action[:type] == :link %>
+                              <%= link_to (action[:url].respond_to?(:call) ? action[:url].call(record) : action[:url]), class: "flex items-center gap-2" do %>
+                                <%= icon action[:icon], library: "lucide", class: "w-4 h-4" if action[:icon] %>
+                                <span class="text-sm"><%= action[:label] %></span>
+                              <% end %>
+                            <% elsif action[:type] == :button %>
+                              <%= button_to (action[:url].respond_to?(:call) ? action[:url].call(record) : action[:url]), method: action[:method] || :post, form: { data: action[:data] || {} }, class: "w-full text-left" do %>
+                                <span class="flex items-center gap-2"><%= icon action[:icon], library: "lucide", class: "w-4 h-4" if action[:icon] %><span class="text-sm"><%= action[:label] %></span></span>
+                              <% end %>
                             <% end %>
-                          <% elsif action[:type] == :button %>
-                            <%= button_to (action[:url].respond_to?(:call) ? action[:url].call(record) : action[:url]), method: action[:method] || :post, form: { data: action[:data] || {} }, class: "w-full text-left" do %>
-                              <span class="flex items-center gap-2"><%= icon action[:icon], library: "lucide", class: "w-4 h-4" if action[:icon] %><span class="text-sm"><%= action[:label] %></span></span>
-                            <% end %>
-                          <% end %>
-                        </li>
+                          </li>
+                        <% end %>
                       <% end %>
                     <% end %>
-                  <% end %>
+                  </div>
                 </td>
               <% end %>
             </tr>

@@ -79,19 +79,44 @@ class TableComponent < BaseComponent
     @row_actions.any?
   end
   def responsive_classes
-    "table table-auto w-full text-sm border-collapse"
+    "table w-full text-xs sm:text-sm border-collapse"
   end
 
   def header_classes(column)
-    base_classes = "px-4 py-3 text-left font-medium border-b border-base-300 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:ring-offset-1"
+    base_classes = "text-left font-medium border-b border-base-300 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:ring-offset-1"
+    padding_classes = "px-2 py-2 sm:px-3 sm:py-2.5 md:px-4 md:py-3" # Responsive padding
     sortable_classes = sortable?(column) ? "hover:bg-base-200/50 cursor-pointer select-none" : ""
     sorted_classes = sorted_by?(column) ? "bg-primary/10 text-primary border-b-2 border-primary font-semibold" : "text-base-content/70"
 
-    [ base_classes, sortable_classes, sorted_classes ].compact.join(" ")
+    # Responsive visibility based on priority
+    visibility_classes = if column.low_priority?
+      "hidden lg:table-cell" # Hide on mobile/tablet, show on desktop
+    elsif column.high_priority?
+      "table-cell" # Always visible
+    else
+      "hidden md:table-cell" # Hide on mobile, show on tablet+
+    end
+
+    [ base_classes, padding_classes, sortable_classes, sorted_classes, visibility_classes ].compact.join(" ")
   end
 
   def cell_classes(column)
-    "px-4 py-3 border-b border-base-200/50 text-base-content hover:bg-base-50/50 transition-colors duration-150"
+    base_classes = "border-b border-base-200/50 text-base-content hover:bg-base-50/50 transition-colors duration-150"
+    padding_classes = "px-2 py-2 sm:px-3 sm:py-2.5 md:px-4 md:py-3" # Responsive padding
+
+    # Responsive visibility based on priority
+    visibility_classes = if column.low_priority?
+      "hidden lg:table-cell"
+    elsif column.high_priority?
+      "table-cell"
+    else
+      "hidden md:table-cell"
+    end
+
+    # Text truncation if specified
+    truncate_classes = column.should_truncate? ? "max-w-xs truncate" : ""
+
+    [ base_classes, padding_classes, visibility_classes, truncate_classes ].compact.join(" ")
   end
 
   def empty_row_classes
@@ -99,7 +124,7 @@ class TableComponent < BaseComponent
   end
 
   class Column
-    attr_reader :key, :label, :sortable, :type, :formatter, :value_method
+    attr_reader :key, :label, :sortable, :type, :formatter, :value_method, :priority, :truncate
 
     def initialize(options = {})
       @key = options[:key] || options[:attribute]
@@ -108,10 +133,24 @@ class TableComponent < BaseComponent
       @type = options[:type] || :string
       @formatter = options[:formatter]
       @value_method = options[:value_method] || @key
+      @priority = options[:priority] || :normal # :high, :normal, :low
+      @truncate = options.fetch(:truncate, false)
     end
 
     def sortable?
       @sortable
+    end
+
+    def high_priority?
+      @priority == :high
+    end
+
+    def low_priority?
+      @priority == :low
+    end
+
+    def should_truncate?
+      @truncate
     end
 
     def value_from_record(record)
