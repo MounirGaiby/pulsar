@@ -158,7 +158,7 @@ export default class extends Controller {
 
         // Create alert content
         const alert = document.createElement('div')
-        alert.className = `alert alert-${type} shadow-lg border border-base-300 flash-alert`
+        alert.className = `alert alert-${type} shadow-xs border border-base-300 flash-alert`
 
         const content = document.createElement('div')
         content.className = 'flex-1'

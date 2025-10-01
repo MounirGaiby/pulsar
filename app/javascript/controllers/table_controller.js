@@ -8,8 +8,6 @@ export default class extends Controller {
     }
 
     connect() {
-        this.handleResponsiveTable()
-        window.addEventListener('resize', this.handleResponsiveTable.bind(this))
     }
 
     sort(event) {
@@ -99,22 +97,5 @@ export default class extends Controller {
     }
 
     disconnect() {
-        window.removeEventListener('resize', this.handleResponsiveTable.bind(this))
-    }
-
-    handleResponsiveTable() {
-        const table = this.element.querySelector('table')
-        if (!table) return
-
-        const container = table.closest('.overflow-x-auto')
-
-        if (window.innerWidth < 768) {
-            // On mobile, make table scroll horizontally
-            container.classList.add('overflow-x-scroll')
-            table.style.minWidth = '600px'
-        } else {
-            container.classList.remove('overflow-x-scroll')
-            table.style.minWidth = ''
-        }
     }
 }

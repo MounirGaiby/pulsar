@@ -79,7 +79,7 @@
 /* Reusable application-level utility classes extracted from components
      Use DaisyUI tokens and Tailwind @apply to keep markup clean */
 .sidebar {
-    @apply menu p-2 w-52 bg-base-100 border-r border-base-300 shadow-base-300 overflow-x-hidden;
+    @apply menu p-2 w-52 bg-base-100 border-r border-base-300 shadow-base-300 overflow-x-hidden h-screen;
     transition: width 0.3s ease, transform 0.3s ease;
 }
 
@@ -153,7 +153,7 @@
 }
 
 
-@media (max-width: 767px) {
+@media (max-width: 900px) {
     .sidebar {
         @apply absolute top-0 start-0 h-full z-50;
     }
@@ -168,7 +168,7 @@
 }
 
 .topbar {
-    @apply w-full bg-base-100 border-b border-base-300 shadow-base-300;
+    @apply w-full bg-base-100 border-b border-base-300 shadow-base-300 sticky;
 }
 
 .topbar-button {
@@ -181,7 +181,7 @@
 }
 
 .card-container {
-    @apply card bg-base-100 shadow-lg;
+    @apply card bg-base-100 shadow-xs;
 }
 
 .turbo-progress-bar {
@@ -189,7 +189,7 @@
 }
 
 .poem {
-    @apply card bg-base-100 text-base-content p-4 rounded-box shadow-lg border border-base-200 mb-6;
+    @apply card bg-base-100 text-base-content p-4 rounded-box shadow-xs border border-base-200 mb-6;
 }
 
 /* Custom styles for specific components can go here */
@@ -317,7 +317,7 @@
 
 /* Flash alert enhancements using DaisyUI */
 .flash-alert {
-    @apply border-l-4 shadow-xl;
+    @apply border-l-4 shadow-xs;
 }
 
 /* Alert type specific left borders */
@@ -407,13 +407,8 @@
     @apply w-full;
 }
 
-.table-container thead th {
-    @apply sticky top-0 z-10;
-    background-color: var(--color-base-100);
-}
-
 /* Enhanced table responsiveness */
-@media (max-width: 768px) {
+/* @media (max-width: 768px) {
     .table-container .overflow-x-auto {
         @apply overflow-x-scroll;
     }
@@ -427,7 +422,7 @@
         @apply px-2 py-2 text-sm;
         white-space: nowrap;
     }
-}
+} */
 
 /* Filter Component Styles */
 .filter-container {

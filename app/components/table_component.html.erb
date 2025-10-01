@@ -1,7 +1,7 @@
 <div class="table-container">
-  <div class="overflow-visible bg-base-100 rounded-box shadow-xl border border-base-200/60">
-    <table id="<%= @table_id %>" class="<%= responsive_classes %>" data-controller="table" data-table-sort-column-value="<%= @sort_column %>" data-table-sort-direction-value="<%= @sort_direction %>">
-      <thead class="bg-gradient-to-b from-base-200/60 to-base-200/30">
+  <div class="overflow-visible bg-base-100 rounded-box shadow-xs border border-base-200/60">
+    <table id="<%= @table_id %>" class="<%= responsive_classes %> overflow-auto" data-controller="table" data-table-sort-column-value="<%= @sort_column %>" data-table-sort-direction-value="<%= @sort_direction %>">
+      <thead>
         <tr>
           <% if @selectable %>
             <th class="px-4 py-3 text-left font-medium border-b border-base-300">

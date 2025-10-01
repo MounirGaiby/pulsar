@@ -21,7 +21,7 @@ class FilterComponent < BaseComponent
 
   def form_classes
     # Stack filters vertically and provide spacing
-    "flex flex-col p-4 bg-base-100 rounded-box shadow-lg border border-base-200"
+    "flex flex-col p-4 bg-base-100 rounded-box shadow-xs border border-base-200"
   end
 
   def filter_container_classes
