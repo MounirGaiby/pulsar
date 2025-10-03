@@ -9,7 +9,7 @@ class TableComponent < BaseComponent
     pagy: nil,
     sort_column: nil,
     sort_direction: "asc",
-    empty_message: "No records found",
+    empty_message: I18n.t("table.empty_message", default: "No records found"),
     table_id: nil,
     selectable: false,
     selected_ids: [],
