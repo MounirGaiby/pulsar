@@ -1,8 +1,19 @@
 ar:
+  # ActiveRecord model and attribute translations
   activerecord:
     models:
-      user: "مستخدم"
-      session: "جلسة"
+      user:
+        one: "مستخدم"
+        other: "مستخدمون"
+      session:
+        one: "جلسة"
+        other: "جلسات"
+      terminal:
+        one: "جهاز طرفي"
+        other: "أجهزة طرفية"
+      clock:
+        one: "تسجيل حضور"
+        other: "تسجيلات حضور"
     attributes:
       user:
         email_address: "البريد الإلكتروني"
@@ -11,7 +22,59 @@ ar:
         updated_at: "تاريخ التحديث"
       session:
         token: "رمز الجلسة"
+      terminal:
+        name: "الاسم"
+        provider: "المزود"
+        provider: "نوع المزود"
+        ip: "عنوان IP"
+        port: "المنفذ"
+        protocol: "البروتوكول"
+        username: "اسم المستخدم"
+        password: "كلمة المرور"
+        status: "الحالة"
+        ssl_verify: "التحقق من شهادة SSL"
+        device_name: "اسم الجهاز"
+        device_id: "معرف الجهاز"
+        model: "الطراز"
+        serial_number: "الرقم التسلسلي"
+        firmware_version: "إصدار البرنامج الثابت"
+        online: "متصل"
+        last_checked_at: "آخر فحص"
+        last_synced_at: "آخر مزامنة"
+        listener_configured: "تم تكوين المستمع"
+        listener_url: "رابط المستمع"
+        listener_configured_at: "تم تكوين المستمع في"
+        user_count: "عدد المستخدمين"
+        last_user_sync_at: "آخر مزامنة للمستخدمين"
+        metadata: "البيانات الوصفية"
+        created_at: "تاريخ الإنشاء"
+        updated_at: "تاريخ التحديث"
+      clock:
+        terminal: "الجهاز"
+        terminal_id: "الجهاز"
+        employee_no: "رقم الموظف"
+        event_type: "نوع الحدث"
+        clocked_at: "وقت التسجيل"
+        device_id: "معرف الجهاز"
+        raw_event_data: "البيانات الأصلية"
+        created_at: "تاريخ التسجيل"
+        updated_at: "تاريخ التحديث"
+    errors:
+      messages:
+        blank: "لا يمكن أن يكون فارغاً"
+        taken: "مستخدم بالفعل"
+        too_short: "قصير جداً (الحد الأدنى %{count} حرف)"
+        too_long: "طويل جداً (الحد الأقصى %{count} حرف)"
+        invalid: "غير صالح"
+      models:
+        terminal:
+          attributes:
+            ip:
+              invalid: "يجب أن يكون عنوان IP صالح"
+            port:
+              not_a_number: "يجب أن يكون رقماً"
 
+  # Views and components
   sessions:
     new:
       title: "تسجيل الدخول"
@@ -49,13 +112,75 @@ ar:
     links:
       dashboard: "لوحة التحكم"
       profile: "الملف الشخصي"
+      terminals: "الأجهزة الطرفية"
+      clocks: "تسجيلات الحضور"
       users: "المستخدمون"
 
-  # Global filter translations (moved from users.filters)
+  # Global UI elements
+  common:
+    actions:
+      create: "إنشاء"
+      update: "تحديث"
+      save: "حفظ"
+      saving: "جاري الحفظ..."
+      cancel: "إلغاء"
+      edit: "تعديل"
+      delete: "حذف"
+      view: "عرض"
+      back: "رجوع"
+      confirm: "هل أنت متأكد؟"
+    status:
+      online: "متصل"
+      offline: "غير متصل"
+      active: "نشط"
+      idle: "خامل"
+      inactive: "غير نشط"
+    messages:
+      not_available: "غير متوفر"
+      never: "أبداً"
+      success: "تمت العملية بنجاح"
+      error: "حدث خطأ"
+
+  # Form helpers
+  helpers:
+    submit:
+      create: "إنشاء %{model}"
+      update: "تحديث %{model}"
+      submit: "حفظ %{model}"
+    select:
+      prompt: "الرجاء الاختيار"
+    label:
+      terminal:
+        name: "اسم الجهاز"
+        ip: "عنوان IP"
+        port: "المنفذ"
+        protocol: "البروتوكول"
+        username: "اسم المستخدم"
+        password: "كلمة المرور"
+        provider: "نوع المزود"
+        status: "الحالة"
+        ssl_verify: "التحقق من شهادة SSL"
+    placeholder:
+      terminal:
+        name: "مثال: جهاز المدخل الرئيسي"
+        ip: "مثال: 192.168.1.100"
+        port: "80"
+        username: "admin"
+        password: "أدخل كلمة المرور"
+    hint:
+      terminal:
+        password_edit: "اتركه فارغاً للإبقاء على كلمة المرور الحالية"
+        ssl_verify: "قم بتعطيله للشهادات الموقعة ذاتياً"
+
+  # Table component
+  table:
+    select_all: "تحديد الكل"
+    actions: "الإجراءات"
+    empty_message: "لم يتم العثور على سجلات"
+    no_data_available: "لا توجد بيانات متاحة"
+
+  # Filter component
   filters:
-    email: "البريد الإلكتروني"
-    created_after: "تم الإنشاء بعد"
-    created_before: "تم الإنشاء قبل"
     add_filter: "إضافة فلتر"
     clear_all: "مسح الكل"
     apply_filters: "تطبيق الفلاتر"
@@ -74,39 +199,164 @@ ar:
       yes: "نعم"
       no: "لا"
 
-  actions:
-    users:
-      create: "إنشاء مستخدم"
-      view: "عرض"
-      edit: "تعديل"
-      delete: "حذف"
-
-  users:
-    index:
-      title: "المستخدمون"
-    # filters moved to top-level `filters` for global reuse
-    columns:
-      email: "البريد الإلكتروني"
-      created_at: "تاريخ الإنشاء"
-      updated_at: "تاريخ التحديث"
-
-  table:
-    select_all: "تحديد الكل"
-    actions: "الإجراءات"
-    empty_message: "لم يتم العثور على سجلات"
-    no_data_available: "لا توجد بيانات متاحة"
-
+  # Pagination component
   pagy:
     show: "عرض:"
     prev: "السابق"
     next: "التالي"
-    info: "عرض %{from} إلى %{to} من %{count} إدخال"
+    info: "عرض %{from} إلى %{to} من أصل %{count} إدخال"
     info_short: "%{from}-%{to} من %{count}"
+
+  # View-specific translations
+  users:
+    index:
+      title: "المستخدمون"
+    columns:
+      email: "البريد الإلكتروني"
+      status: "الحالة"
+      created_at: "تاريخ الإنشاء"
+      updated_at: "تاريخ التحديث"
+
+  terminals:
+    index:
+      title: "الأجهزة الطرفية"
+      empty_message: "لم يتم العثور على أجهزة. أنشئ جهازك الأول للبدء."
+    show:
+      title: "تفاصيل الجهاز"
+      details: "معلومات الجهاز"
+      recent_clocks: "تسجيلات الحضور الأخيرة"
+      view_all_clocks: "عرض جميع التسجيلات"
+      no_clocks: "لا توجد تسجيلات حضور بعد"
+      stats:
+        total_clocks: "إجمالي الأحداث"
+        today: "اليوم"
+        this_week: "هذا الأسبوع"
+        this_month: "هذا الشهر"
+    new:
+      title: "جهاز جديد"
+    edit:
+      title: "تعديل الجهاز"
+    columns:
+      name: "الاسم"
+      ip: "عنوان IP"
+      port: "المنفذ"
+      protocol: "البروتوكول"
+      provider: "المزود"
+      status: "الحالة"
+      device_name: "اسم الجهاز"
+      model: "الطراز"
+      serial_number: "الرقم التسلسلي"
+      firmware_version: "إصدار البرنامج الثابت"
+      last_synced: "آخر مزامنة"
+      created_at: "تاريخ الإنشاء"
+    actions:
+      sync_now: "مزامنة الآن"
+    messages:
+      created: "تم إنشاء الجهاز بنجاح"
+      updated: "تم تحديث الجهاز بنجاح"
+      destroyed: "تم حذف الجهاز بنجاح"
+      sync_enqueued: "تمت جدولة المزامنة"
+      terminal_offline: "يجب أن يكون الجهاز متصلاً للمزامنة"
+      confirm_delete: "هل أنت متأكد من حذف هذا الجهاز؟ سيتم حذف جميع تسجيلات الحضور المرتبطة أيضاً."
+
+  clocks:
+    index:
+      title: "تسجيلات الحضور"
+      title_for_terminal: "تسجيلات الحضور لـ %{terminal_name}"
+      empty_message: "لم يتم العثور على تسجيلات."
+    show:
+      title: "تفاصيل التسجيل"
+      details: "معلومات الحدث"
+      view_raw_data: "عرض البيانات الأصلية"
+      view_all_clocks: "عرض جميع التسجيلات"
+      view_terminal: "عرض الجهاز"
+    columns:
+      terminal: "الجهاز"
+      employee_no: "رقم الموظف"
+      event_type: "نوع الحدث"
+      clocked_at: "وقت التسجيل"
+      device_id: "معرف الجهاز"
+      raw_event_data: "البيانات الأصلية"
+      created_at: "تاريخ التسجيل"
+      updated_at: "تاريخ التحديث"
+    messages:
+      destroyed: "تم حذف التسجيل بنجاح"
+      confirm_delete: "هل أنت متأكد من حذف هذا التسجيل?"
 
   flash:
     alert: "حدثت مشكلة."
     notice: "تمت العملية بنجاح."
     rate_limited: "عدد المحاولات كبير جدا، الرجاء المحاولة لاحقًا."
+    sessions:
+      login_success: "تم تسجيل الدخول بنجاح."
+      logout_success: "تم تسجيل الخروج بنجاح."
+
+  topbar:
+    language: "اللغة"
+    theme: "السمة"
+    logout: "تسجيل الخروج"
+    user_profile: "الملف الشخصي"
+    languages:
+      en: "English"
+      fr: "Français"
+      ar: "العربية"
+
+  simple_form:
+    yes: "نعم"
+    no: "لا"
+    required:
+      text: "مطلوب"
+      mark: "*"
+    error_notification:
+      default_message: "يرجى مراجعة المشاكل أدناه:"
+
+  # Date/time formats
+  date:
+    formats:
+      default: "%d/%m/%Y"
+      short: "%d %b"
+      long: "%d %B %Y"
+
+  time:
+    formats:
+      default: "%d/%m/%Y %H:%M:%S %z"
+      short: "%d %b %H:%M"
+      long: "%d %B %Y %H:%M"
+
+  datetime:
+    distance_in_words:
+      half_a_minute: "نصف دقيقة"
+      less_than_x_seconds:
+        one: "أقل من ثانية"
+        other: "أقل من %{count} ثانية"
+      x_seconds:
+        one: "ثانية واحدة"
+        other: "%{count} ثانية"
+      less_than_x_minutes:
+        one: "أقل من دقيقة"
+        other: "أقل من %{count} دقيقة"
+      x_minutes:
+        one: "دقيقة واحدة"
+        other: "%{count} دقيقة"
+      about_x_hours:
+        one: "حوالي ساعة"
+        other: "حوالي %{count} ساعة"
+      x_days:
+        one: "يوم واحد"
+        other: "%{count} يوم"
+      about_x_months:
+        one: "حوالي شهر"
+        other: "حوالي %{count} شهر"
+      x_months:
+        one: "شهر واحد"
+        other: "%{count} شهر"
+      about_x_years:
+        one: "حوالي سنة"
+        other: "حوالي %{count} سنة"
+      over_x_years:
+        one: "أكثر من سنة"
+        other: "أكثر من %{count} سنة"
+
     sessions:
       login_success: "تم تسجيل الدخول بنجاح."
       logout_success: "تم تسجيل الخروج بنجاح."

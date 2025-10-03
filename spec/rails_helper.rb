@@ -2,6 +2,16 @@
 require 'spec_helper'
 ENV['RAILS_ENV'] ||= 'test'
 require_relative '../config/environment'
+
+# Configure Rails to permit YAML deserialization of time classes
+ActiveRecord.yaml_column_permitted_classes = [
+  ActiveSupport::TimeWithZone,
+  ActiveSupport::TimeZone,
+  Time,
+  Date,
+  Symbol
+]
+
 # Prevent database truncation if the environment is production
 abort("The Rails environment is running in production mode!") if Rails.env.production?
 # Uncomment the line below in case you have `--require rails_helper` in the `.rspec` file
@@ -13,6 +23,10 @@ require 'rspec/rails'
 # ViewComponent testing
 require "view_component/test_helpers"
 require "view_component/system_test_helpers"
+
+# WebMock for HTTP request stubbing
+require 'webmock/rspec'
+WebMock.disable_net_connect!(allow_localhost: true)
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
 # spec/support/ and its subdirectories. Files matching `spec/**/*_spec.rb` are
@@ -27,7 +41,7 @@ require "view_component/system_test_helpers"
 # directory. Alternatively, in the individual `*_spec.rb` files, manually
 # require only the support files necessary.
 #
-# Rails.root.glob('spec/support/**/*.rb').sort_by(&:to_s).each { |f| require f }
+Rails.root.glob('spec/support/**/*.rb').sort_by(&:to_s).each { |f| require f }
 
 # Ensures that the test database schema matches the current schema file.
 # If there are pending migrations it will invoke `db:test:prepare` to
@@ -55,6 +69,13 @@ RSpec.configure do |config|
   # ViewComponent testing
   config.include ViewComponent::TestHelpers, type: :component
   config.include ViewComponent::SystemTestHelpers, type: :component
+
+  # FactoryBot
+  config.include FactoryBot::Syntax::Methods
+
+  # Shoulda Matchers
+  config.include Shoulda::Matchers::ActiveRecord, type: :model
+  config.include Shoulda::Matchers::ActiveModel, type: :model
 
   # RSpec Rails uses metadata to mix in different behaviours to your tests,
   # for example enabling you to call `get` and `post` in request specs. e.g.:

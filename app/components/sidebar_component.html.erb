@@ -20,7 +20,9 @@
       </li>
     <% end %>
   </ul>
-  <%= link_to root_path, id: "sidebar-logo", class: "sidebar-brand" do %>
-    <%= image_tag 'icon.svg', alt: 'Pulsar Logo', class: "w-8 h-8 #{'hidden' if @collapsed}" %>
+  <%= link_to root_path, id: "sidebar-logo", class: "sidebar-brand overflow-hidden h-10" do %>
+    <div class="w-full h-full">
+      <%= image_tag 'logo.svg', alt: 'Pulsar Logo', class: "logo #{'hidden' if @collapsed}" %>
+    </div>
   <% end %>
 </aside>

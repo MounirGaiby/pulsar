@@ -8,22 +8,29 @@
         key: :email_address, 
         label: t('users.columns.email'), 
         sortable: true,
-        priority: :high,  # Always visible
-        truncate: true    # Truncate on smaller screens
+        priority: :high,
+        truncate: true
+      },
+      {
+        key: :status,
+        label: t('users.columns.status'),
+        sortable: false, # Custom sorting handled by controller
+        priority: :high,
+        format: ->(user) { auto_status_badge(user.status) }
       },
       {
         key: :created_at,
         label: t('users.columns.created_at'),
         type: :datetime,
         sortable: true,
-        priority: :normal  # Hide on mobile, show on tablet+
+        priority: :normal
       },
       {
         key: :updated_at,
         label: t('users.columns.updated_at'),
         type: :datetime,
         sortable: true,
-        priority: :low  # Hide on mobile & tablet, show on desktop only
+        priority: :low
       }
     ],
     data: @users,
@@ -36,26 +43,25 @@
     selected_ids: params[:selected_ids] || [],
     row_actions: [
       {
-        label: t('actions.users.view', default: "View"),
+        label: t('common.actions.view'),
         icon: "eye",
-        url: ->(user) { user_path(user) }, # GET
+        url: ->(user) { user_path(user) },
         type: :link
       },
       {
-        label: t('actions.users.edit', default: "Edit"), 
+        label: t('common.actions.edit'),
         icon: "pencil",
-        url: ->(user) { edit_user_path(user) }, # GET
+        url: ->(user) { edit_user_path(user) },
         type: :link
       },
       {
-        label: t('actions.users.delete', default: "Delete"),
+        label: t('common.actions.delete'),
         icon: "trash-2",
-        url: ->(user) { user_path(user) }, # DELETE
+        url: ->(user) { user_path(user) },
         type: :button,
         method: :delete,
-        data: { turbo_confirm: "Are you sure?" }
+        data: { turbo_confirm: t('common.actions.confirm') }
       }
     ],
-    action_buttons: [
-    ]
+    action_buttons: []
   ) %>

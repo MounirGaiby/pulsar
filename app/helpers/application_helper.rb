@@ -1,4 +1,6 @@
 module ApplicationHelper
+  include StatusBadgeHelper
+
   # Returns the available locales for the language switcher
   def available_locales
     [

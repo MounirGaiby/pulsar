@@ -1,19 +1,17 @@
 # frozen_string_literal: true
 
 class FilterComponent < BaseComponent
-  attr_reader :filters, :current_filters, :action_buttons, :form_id, :active_filter_keys
+  attr_reader :filters, :current_filters, :form_id, :active_filter_keys
 
   def initialize(
     filters:,
     current_filters: {},
-    action_buttons: [],
     form_id: nil,
     active_filter_keys: [],
     **options
   )
     @filters = filters.map { |filter| Filter.new(filter) }
     @current_filters = current_filters || {}
-    @action_buttons = action_buttons
     @form_id = form_id || "filter-form-#{SecureRandom.hex(4)}"
     @active_filter_keys = active_filter_keys || []
     @options = options
@@ -56,14 +54,6 @@ class FilterComponent < BaseComponent
 
   def clear_button_classes
     "btn btn-ghost"
-  end
-
-  def action_button_classes(button)
-    base_classes = "btn"
-    variant_classes = button[:variant] ? "btn-#{button[:variant]}" : "btn-outline"
-    size_classes = button[:size] ? "btn-#{button[:size]}" : ""
-
-    [ base_classes, variant_classes, size_classes ].compact.join(" ")
   end
 
   def current_value(filter)
@@ -149,7 +139,7 @@ class FilterComponent < BaseComponent
         @model = options.model
       else
         # Normal initialization from hash
-        @key = (options[:key] || options[:attribute]).to_sym
+        @key = (options[:key] || options[:attribute] || "id").to_sym
         @label = options[:label] || @key.to_s.humanize
         @type = options[:type] || :text
         @options = options[:options] || []

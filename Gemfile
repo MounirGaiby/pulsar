@@ -101,6 +101,9 @@
     gem "shoulda-matchers", "~> 6.0"
 
     gem "rspec-rails", "~> 8.0.0"
+
+    # WebMock for HTTP request stubbing in tests
+    gem "webmock"
   end
 
   # Turbo Streams enhancements and utilities
@@ -117,10 +120,14 @@
 
   gem "factory_bot", "~> 6.5"
 
-  # Authorization with Pundit
-  gem "pundit", "~> 2.5"
+# Authorization with Pundit
+gem "pundit", "~> 2.5"
 
-  # implement supported icon libraries easily
-  gem "rails_icons"
+# HTTP client library
+gem "faraday", "~> 2.12"
+gem "faraday-retry", "~> 2.2"
+
+# implement supported icon libraries easily
+gem "rails_icons"
 
 gem "i18n-tasks", "~> 1.0"

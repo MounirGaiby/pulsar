@@ -57,6 +57,12 @@ class TableComponent < BaseComponent
 
   def cell_value(record, column)
     value = column.value_from_record(record)
+
+    # Handle nil values with default
+    if value.nil? && column.default_value.present?
+      return column.default_value
+    end
+
     column.format_value(value)
   end
 
@@ -124,7 +130,7 @@ class TableComponent < BaseComponent
   end
 
   class Column
-    attr_reader :key, :label, :sortable, :type, :formatter, :value_method, :priority, :truncate
+    attr_reader :key, :label, :sortable, :type, :formatter, :value_method, :priority, :truncate, :default_value, :format
 
     def initialize(options = {})
       @key = options[:key] || options[:attribute]
@@ -132,9 +138,11 @@ class TableComponent < BaseComponent
       @sortable = options.fetch(:sortable, true)
       @type = options[:type] || :string
       @formatter = options[:formatter]
+      @format = options[:format] # For custom lambda formatters
       @value_method = options[:value_method] || @key
       @priority = options[:priority] || :normal # :high, :normal, :low
       @truncate = options.fetch(:truncate, false)
+      @default_value = options[:default_value] # Default value for nil
     end
 
     def sortable?
@@ -154,6 +162,11 @@ class TableComponent < BaseComponent
     end
 
     def value_from_record(record)
+      # Use custom format lambda if provided
+      if @format.is_a?(Proc)
+        return @format.call(record)
+      end
+
       if @value_method.is_a?(Proc)
         @value_method.call(record)
       elsif record.respond_to?(@value_method)

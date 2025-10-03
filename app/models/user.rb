@@ -24,6 +24,20 @@ class User < ApplicationRecord
     :invalid_password
   end
 
+  # Status based on session activity
+  def status
+    return "inactive" if sessions.empty?
+
+    latest_session = sessions.order(updated_at: :desc).first
+    if latest_session.updated_at > 30.minutes.ago
+      "active"
+    elsif latest_session.updated_at > 24.hours.ago
+      "idle"
+    else
+      "inactive"
+    end
+  end
+
   def self.ransackable_attributes(auth_object = nil)
     %w[id email_address created_at updated_at]
   end

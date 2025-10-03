@@ -60,17 +60,24 @@
     <% end %>
     <!-- Add Filter Dropdown -->
     <div class="<%= filter_container_classes %>">
-      <label class="text-sm font-medium text-base-content/70"><%= t('filters.add_filter', default: 'Add Filter') %></label>
-      <div class="dropdown">
-        <div tabindex="0" role="button" class="btn btn-outline btn-sm">
+      <p class="text-sm font-medium text-base-content/70"><%= t('filters.add_filter', default: 'Add Filter') %></p>
+      <% direction = I18n.locale == :ar ? :rtl : :ltr %>
+      <%= render DropdownComponent.new(
+        direction: direction,
+        container_classes: "w-fit dropdown-start  ",
+        dropdown_classes: "btn btn-outline btn-sm",
+        menu_classes: "bg-base-100 max-h-96"
+      ) do |dropdown| %>
+        <% dropdown.with_trigger do %>
           <%= icon "plus", library: "lucide", class: "w-4 h-4 mr-1" %>
           <%= t('filters.add_filter', default: 'Add Filter') %>
-        </div>
-        <ul class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
+        <% end %>
+        <% dropdown.with_menu do %>
           <li class="p-2">
             <input type="text" placeholder="<%= t('filters.search_filters', default: 'Search filters...') %>" class="input input-bordered input-sm w-full" data-action="input->filter#searchFilters" data-filter-target="searchInput">
           </li>
           <li class="divider my-1 h-0.5"></li>
+          <section class="overflow-y-auto max-h-60">
           <% @filters.each do |filter| %>
             <%# Mark filters that are currently active as hidden so they remain in the DOM but are not selectable. This makes re-adding them reliable after a refresh. %>
             <% hidden = @active_filter_keys.include?(filter.key) || active_filters.map(&:key).include?(filter.key) || current_value(filter).present? %>
@@ -80,8 +87,9 @@
               </button>
             </li>
           <% end %>
-        </ul>
-      </div>
+          </section>
+        <% end %>
+      <% end %>
     </div>
   </div>
 <% end %>

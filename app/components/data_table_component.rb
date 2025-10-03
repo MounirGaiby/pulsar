@@ -51,11 +51,18 @@ class DataTableComponent < BaseComponent
     @action_buttons.any?
   end
 
+  def action_button_classes(button)
+    base_classes = "btn"
+    variant_classes = button[:variant] ? "btn-#{button[:variant]}" : "btn-primary"
+    size_classes = button[:size] ? "btn-#{button[:size]}" : ""
+
+    [ base_classes, variant_classes, size_classes ].compact.join(" ")
+  end
+
   def filter_component
     @filter_component ||= FilterComponent.new(
       filters: @filters,
       current_filters: @current_filters,
-      action_buttons: @action_buttons,
       active_filter_keys: @active_filter_keys
     )
   end

@@ -1,12 +1,33 @@
 <div class="<%= container_classes %>">
-  <% if @title %>
-    <div class="flex items-center justify-between">
-      <h1 class="<%= title_classes %>"><%= @title %></h1>
+  <% if @title || has_action_buttons? %>
+    <div class="flex items-center justify-between mb-4">
+      <% if @title %>
+        <h1 class="<%= title_classes %>"><%= @title %></h1>
+      <% end %>
+      <% if has_action_buttons? %>
+        <div class="flex items-center gap-2">
+          <% @action_buttons.each do |button| %>
+            <% if button[:type] == :link %>
+              <%= link_to button[:url], class: action_button_classes(button) do %>
+                <%= icon button[:icon], library: "lucide", class: "w-4 h-4 mr-1" if button[:icon] %>
+                <%= button[:label] %>
+              <% end %>
+            <% elsif button[:type] == :button %>
+              <%= button_to button[:url], method: button[:method] || :post, class: action_button_classes(button), data: button[:data] || {} do %>
+                <%= icon button[:icon], library: "lucide", class: "w-4 h-4 mr-1" if button[:icon] %>
+                <%= button[:label] %>
+              <% end %>
+            <% end %>
+          <% end %>
+        </div>
+      <% end %>
     </div>
   <% end %>
-  <% if has_filters? || has_action_buttons? %>
+  
+  <% if has_filters? %>
     <%= render filter_component %>
   <% end %>
+  
   <%= turbo_frame_tag(@table_frame_id || 'data-table-frame') do %>
     <%= render TableComponent.new(
         columns: @columns,
