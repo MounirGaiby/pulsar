@@ -186,6 +186,10 @@ ar:
     apply_filters: "تطبيق الفلاتر"
     all_option: "جميع %{attribute}"
     search_filters: "البحث في الفلاتر..."
+    sort: "ترتيب"
+    ascending: "تصاعدي"
+    descending: "تنازلي"
+    search_sort: "البحث في خيارات الترتيب..."
     operators:
       cont: "يحتوي"
       eq: "يساوي"

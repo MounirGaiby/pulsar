@@ -1,95 +1,143 @@
 <%# Allow parent to pass a target turbo frame id via options or use default 'data-table-frame' %>
 <% turbo_target = @options[:turbo_frame_id] || 'data-table-frame' %>
 <%= form_with id: @form_id, method: :get, data: { controller: "filter", turbo_frame: turbo_target }, class: form_classes do |f| %>
+  <!-- Hidden fields for sort, direction, and page -->
+  <%= f.hidden_field :sort, value: @current_sort, data: { filter_target: "sortField" } %>
+  <%= f.hidden_field :direction, value: @current_direction, data: { filter_target: "directionField" } %>
+  <%= f.hidden_field :page, value: @current_page, data: { filter_target: "pageField" } if @current_page.present? %>
   <!-- Active Filters -->
   <div class="flex flex-wrap items-center gap-2" data-filter-target="activeFilters">
-    <!-- Clear All is always present in the DOM so Stimulus can toggle it client-side. It starts hidden when there are no active filters. -->
-    <button type="button" class="btn btn-ghost btn-sm <%= 'hidden' unless active_filters.any? %>" data-action="filter#clearAllFilters" data-filter-target="clearButton">
+    <!-- Clear All is always visible -->
+    <button type="button" class="btn btn-ghost btn-sm" data-action="filter#clearAllFilters" data-filter-target="clearButton">
       <%= icon "x", library: "lucide", class: "w-4 h-4 mr-1" %>
       <%= t('filters.clear_all', default: 'Clear All') %>
     </button>
     <% active_filters.each do |filter| %>
-      <div class="badge badge-primary gap-2 px-3 py-2" data-filter-key="<%= filter.key %>">
+      <div class="badge badge-primary gap-2 px-3 py-2 group" data-filter-key="<%= filter.key %>">
         <span class="font-medium"><%= filter.label %></span>
-        <button type="button" class="btn btn-ghost btn-xs btn-circle" data-action="filter#removeFilter" data-filter-key="<%= filter.key %>">
-          <%= icon "x", library: "lucide", class: "w-3 h-3" %>
+        <button type="button" class="btn btn-ghost btn-xs btn-circle size-4 hidden group-hover:block" data-action="filter#removeFilter" data-filter-key="<%= filter.key %>">
+          <%= icon "x", library: "lucide", class: "size-3" %>
         </button>
       </div>
     <% end %>
     <!-- Hidden badge template to be cloned by Stimulus when adding filters client-side -->
     <template id="filter-badge-template" data-filter-template>
-      <div class="badge badge-primary gap-2 px-3 py-2" data-filter-key="__KEY__">
+      <div class="badge badge-primary gap-2 px-3 py-2 group" data-filter-key="__KEY__">
         <span class="font-medium">__LABEL__</span>
-        <button type="button" class="btn btn-ghost btn-xs btn-circle" data-action="filter#removeFilter" data-filter-key="__KEY__">
-          <%= icon "x", library: "lucide", class: "w-3 h-3" %>
+        <button type="button" class="btn btn-ghost btn-xs btn-circle size-4 hidden group-hover:block" data-action="filter#removeFilter" data-filter-key="__KEY__">
+          <%= icon "x", library: "lucide", class: "size-3" %>
         </button>
       </div>
     </template>
   </div>
   <!-- Filter Inputs - stacked rows -->
-  <div class="flex flex-col gap-4" data-filter-target="inputsContainer">
-    <% @filters.each do |filter| %>
-      <% active = @active_filter_keys.include?(filter.key) || current_value(filter).present? %>
-      <div class="<%= filter_container_classes %> <%= 'hidden' unless active %>" data-filter-key="<%= filter.key %>">
-        <div class="flex items-center justify-between">
-          <div>
-            <label class="<%= label_classes %>"><%= filter.label %></label>
-            <div class="mt-2 flex items-center gap-3">
-              <%= select_tag "#{filter.key}_operator", options_for_select(filter.operators.map { |op| [op[:label], op[:value]] }, current_operator(filter)), class: "select select-bordered select-sm w-40", data: { action: "filter#updateOperator" } %>
-              <% if filter.multiple_inputs? %>
-                <div class="flex gap-2 flex-1">
-                  <% filter_name(filter).each_with_index do |name, index| %>
-                    <% placeholder = index == 0 ? "Min #{filter.label.downcase}" : "Max #{filter.label.downcase}" %>
-                    <%= f.text_field name, value: current_value(filter)&.dig(index), placeholder: placeholder, class: input_classes(filter), type: filter.input_type, data: { action: "input->filter#debouncedSubmit" } %>
-                  <% end %>
-                </div>
-              <% elsif filter.type == :select %>
-                <%= f.select filter.key, options_for_select(filter.select_options, current_value(filter)), { include_blank: t('filters.all_option', attribute: filter.label.pluralize.downcase, default: "All #{filter.label.pluralize.downcase}") }, class: input_classes(filter), data: { action: "change->filter#debouncedSubmit" } %>
-              <% else %>
-                <%= f.text_field filter.key, value: current_value(filter), placeholder: filter.placeholder, class: input_classes(filter), type: filter.input_type, data: { action: "input->filter#debouncedSubmit" } %>
-              <% end %>
-            </div>
-          </div>
-          <div class="flex items-start gap-2">
-            <button type="button" class="btn btn-ghost btn-xs btn-circle mt-1" data-action="filter#removeFilter" data-filter-key="<%= filter.key %>">
+  <div class="flex flex-col" data-filter-target="inputsContainer">
+    <section class="flex flex-wrap gap-2 my-1">
+      <% @filters.each do |filter| %>
+        <% active = @active_filter_keys.include?(filter.key) || current_value(filter).present? %>
+        <div class="<%= filter_container_classes %> <%= 'hidden' unless active %> w-full sm:w-auto" data-filter-key="<%= filter.key %>">
+          <div class="relative p-3 bg-base-100 rounded-lg border border-base-300 hover:shadow-md transition-shadow duration-200 max-w-2xl">
+            <button type="button" class="absolute top-2 <%= I18n.locale.to_s == 'ar' ? 'left-2' : 'right-2' %> btn btn-ghost btn-xs btn-circle hover:bg-error hover:text-error-content transition-colors duration-200" data-action="filter#removeFilter" data-filter-key="<%= filter.key %>" aria-label="Remove filter">
               <%= icon "x", library: "lucide", class: "w-4 h-4" %>
             </button>
+            <div>
+              <label class="<%= label_classes %> font-medium text-sm"><%= filter.label %></label>
+              <div class="mt-2 flex flex-col sm:flex-row sm:items-center gap-3">
+                <%= select_tag "#{filter.key}_operator", options_for_select(filter.operators.map { |op| [op[:label], op[:value]] }, current_operator(filter)), class: "select select-bordered select-sm w-full sm:w-40", data: { action: "filter#updateOperator" } %>
+                <% if filter.multiple_inputs? %>
+                  <div class="flex flex-col sm:flex-row gap-2 flex-1">
+                    <% filter_name(filter).each_with_index do |name, index| %>
+                      <% placeholder = index == 0 ? "Min #{filter.label.downcase}" : "Max #{filter.label.downcase}" %>
+                      <%= f.text_field name, value: current_value(filter)&.dig(index), placeholder: placeholder, class: input_classes(filter), type: filter.input_type, data: { action: "input->filter#debouncedSubmit" } %>
+                    <% end %>
+                  </div>
+                <% elsif filter.type == :select %>
+                  <%= f.select filter.key, options_for_select(filter.select_options, current_value(filter)), { include_blank: t('filters.all_option', attribute: filter.label.pluralize.downcase, default: "All #{filter.label.pluralize.downcase}") }, class: input_classes(filter), data: { action: "change->filter#debouncedSubmit" } %>
+                <% else %>
+                  <%= f.text_field filter.key, value: current_value(filter), placeholder: filter.placeholder, class: input_classes(filter), type: filter.input_type, data: { action: "input->filter#debouncedSubmit" } %>
+                <% end %>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    <% end %>
+      <% end %>
+    </section>
     <!-- Add Filter Dropdown -->
     <div class="<%= filter_container_classes %>">
-      <p class="text-sm font-medium text-base-content/70"><%= t('filters.add_filter', default: 'Add Filter') %></p>
-      <% direction = I18n.locale == :ar ? :rtl : :ltr %>
-      <%= render DropdownComponent.new(
-        direction: direction,
-        container_classes: "w-fit dropdown-start  ",
-        dropdown_classes: "btn btn-outline btn-sm",
-        menu_classes: "bg-base-100 max-h-96"
-      ) do |dropdown| %>
-        <% dropdown.with_trigger do %>
-          <%= icon "plus", library: "lucide", class: "w-4 h-4 mr-1" %>
-          <%= t('filters.add_filter', default: 'Add Filter') %>
-        <% end %>
-        <% dropdown.with_menu do %>
-          <li class="p-2">
-            <input type="text" placeholder="<%= t('filters.search_filters', default: 'Search filters...') %>" class="input input-bordered input-sm w-full" data-action="input->filter#searchFilters" data-filter-target="searchInput">
-          </li>
-          <li class="divider my-1 h-0.5"></li>
-          <section class="overflow-y-auto max-h-60">
-          <% @filters.each do |filter| %>
-            <%# Mark filters that are currently active as hidden so they remain in the DOM but are not selectable. This makes re-adding them reliable after a refresh. %>
-            <% hidden = @active_filter_keys.include?(filter.key) || active_filters.map(&:key).include?(filter.key) || current_value(filter).present? %>
-            <li data-filter-target="filterItem" data-filter-label="<%= filter.label.downcase %>" <%= 'data-hidden-by-filter="true" style="display:none;"' if hidden %>>
-              <button type="button" class="w-full text-left" data-action="click->filter#addFilter" data-filter-key="<%= filter.key %>" data-filter-label="<%= filter.label %>">
-                <%= filter.label %>
-              </button>
-            </li>
+      <div class="flex flex-wrap gap-2">
+        <% direction = I18n.locale == :ar ? :rtl : :ltr %>
+        <%= render DropdownComponent.new(
+          direction: direction,
+          container_classes: "w-fit dropdown-start",
+          dropdown_classes: "btn btn-outline btn-sm",
+          menu_classes: "bg-base-100 max-h-96"
+        ) do |dropdown| %>
+          <% dropdown.with_trigger do %>
+            <%= icon "plus", library: "lucide", class: "w-4 h-4 mr-1" %>
+            <%= t('filters.add_filter', default: 'Add Filter') %>
           <% end %>
-          </section>
+          <% dropdown.with_menu do %>
+            <li class="p-2">
+              <input type="text" placeholder="<%= t('filters.search_filters', default: 'Search filters...') %>" class="input input-bordered input-sm w-full" data-action="input->filter#searchFilters" data-filter-target="searchInput">
+            </li>
+            <li class="divider my-1 h-0.5"></li>
+            <section class="overflow-y-auto max-h-60">
+              <% @filters.each do |filter| %>
+                <%# Mark filters that are currently active as hidden so they remain in the DOM but are not selectable. This makes re-adding them reliable after a refresh. %>
+                <% hidden = @active_filter_keys.include?(filter.key) || active_filters.map(&:key).include?(filter.key) || current_value(filter).present? %>
+                <li data-filter-target="filterItem" data-filter-label="<%= filter.label.downcase %>" <%= 'data-hidden-by-filter="true" style="display:none;"' if hidden %>>
+                  <button type="button" class="w-full text-left" data-action="click->filter#addFilter" data-filter-key="<%= filter.key %>" data-filter-label="<%= filter.label %>">
+                    <%= filter.label %>
+                  </button>
+                </li>
+              <% end %>
+            </section>
+          <% end %>
         <% end %>
-      <% end %>
+        <% if has_sortable_columns? %>
+          <%= render DropdownComponent.new(
+            direction: direction,
+            container_classes: "w-fit dropdown-start",
+            dropdown_classes: "btn btn-outline btn-sm",
+            menu_classes: "bg-base-100 max-h-96"
+          ) do |dropdown| %>
+            <% dropdown.with_trigger do %>
+              <%= icon "arrow-up-down", library: "lucide", class: "w-4 h-4 mr-1" %>
+              <span data-filter-target="sortLabel"><%= current_sort_label.present? ? current_sort_label : t('filters.sort', default: 'Sort') %></span>
+            <% end %>
+            <% dropdown.with_menu do %>
+              <li class="p-2">
+                <input type="text" placeholder="<%= t('filters.search_sort', default: 'Search sort options...') %>" class="input input-bordered input-sm w-full" data-action="input->filter#searchSortOptions" data-filter-target="sortSearchInput">
+              </li>
+              <li class="divider my-1 h-0.5"></li>
+              <section class="overflow-y-auto max-h-60">
+                <% sort_options.each do |label, key| %>
+                  <% is_active_asc = @current_sort.to_s == key.to_s && @current_direction == 'asc' %>
+                  <% is_active_desc = @current_sort.to_s == key.to_s && @current_direction == 'desc' %>
+                  <li data-filter-target="sortItem" data-sort-label="<%= label.downcase %>">
+                    <button type="button" class="w-full text-left flex items-center gap-2 <%= 'active bg-base-200' if is_active_asc %>" data-action="click->filter#applySort" data-sort-column="<%= key %>" data-sort-direction="asc" data-sort-label="<%= label %>">
+                      <%= icon "arrow-up", library: "lucide", class: "w-4 h-4" %>
+                      <span><%= label %></span>
+                      <% if is_active_asc %>
+                        <%= icon "check", library: "lucide", class: "w-4 h-4 ml-auto sort-check" %>
+                      <% end %>
+                    </button>
+                  </li>
+                  <li data-filter-target="sortItem" data-sort-label="<%= label.downcase %>">
+                    <button type="button" class="w-full text-left flex items-center gap-2 <%= 'active bg-base-200' if is_active_desc %>" data-action="click->filter#applySort" data-sort-column="<%= key %>" data-sort-direction="desc" data-sort-label="<%= label %>">
+                      <%= icon "arrow-down", library: "lucide", class: "w-4 h-4" %>
+                      <span><%= label %></span>
+                      <% if is_active_desc %>
+                        <%= icon "check", library: "lucide", class: "w-4 h-4 ml-auto sort-check" %>
+                      <% end %>
+                    </button>
+                  </li>
+                <% end %>
+              </section>
+            <% end %>
+          <% end %>
+        <% end %>
+      </div>
     </div>
   </div>
 <% end %>

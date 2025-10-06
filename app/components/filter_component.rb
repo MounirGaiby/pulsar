@@ -1,19 +1,27 @@
 # frozen_string_literal: true
 
 class FilterComponent < BaseComponent
-  attr_reader :filters, :current_filters, :form_id, :active_filter_keys
+  attr_reader :filters, :current_filters, :form_id, :active_filter_keys, :sortable_columns, :current_sort, :current_direction, :current_page
 
   def initialize(
     filters:,
     current_filters: {},
     form_id: nil,
     active_filter_keys: [],
+    sortable_columns: [],
+    current_sort: nil,
+    current_direction: nil,
+    current_page: nil,
     **options
   )
     @filters = filters.map { |filter| Filter.new(filter) }
     @current_filters = current_filters || {}
     @form_id = form_id || "filter-form-#{SecureRandom.hex(4)}"
     @active_filter_keys = active_filter_keys || []
+    @sortable_columns = sortable_columns || []
+    @current_sort = current_sort
+    @current_direction = current_direction
+    @current_page = current_page
     @options = options
   end
 
@@ -24,7 +32,7 @@ class FilterComponent < BaseComponent
 
   def filter_container_classes
     # Each filter takes its own row
-    "flex flex-col gap-2 min-w-0 w-full"
+    "flex flex-col gap-2 min-w-0 w-full sm:w-fit"
   end
 
   def label_classes
@@ -87,6 +95,24 @@ class FilterComponent < BaseComponent
 
   def available_filters
     @filters.reject { |filter| active_filter_keys.include?(filter.key) }
+  end
+
+  def has_sortable_columns?
+    @sortable_columns.any?
+  end
+
+  def sort_options
+    @sortable_columns.map do |col|
+      label = col[:label] || col[:key].to_s.humanize
+      [ label, col[:key].to_s ]
+    end
+  end
+
+  def current_sort_label
+    return nil unless @current_sort.present?
+
+    col = @sortable_columns.find { |c| c[:key].to_s == @current_sort.to_s }
+    col ? (col[:label] || col[:key].to_s.humanize) : @current_sort.to_s.humanize
   end
 
   def display_filter_value(filter)

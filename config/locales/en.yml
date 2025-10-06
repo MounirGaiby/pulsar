@@ -186,6 +186,10 @@ en:
     apply_filters: "Apply Filters"
     all_option: "All %{attribute}"
     search_filters: "Search filters..."
+    sort: "Sort"
+    ascending: "Ascending"
+    descending: "Descending"
+    search_sort: "Search sort options..."
     operators:
       cont: "Contains"
       eq: "Equals"
@@ -198,6 +202,10 @@ en:
       lteq: "On or before"
       yes: "Yes"
       no: "No"
+
+  # Breadcrumb component
+  breadcrumb:
+    navigation: "Breadcrumb"
 
   # Pagination component
   pagy:

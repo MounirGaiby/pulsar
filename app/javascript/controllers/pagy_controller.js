@@ -12,6 +12,32 @@ export default class extends Controller {
                     if (!a.hasAttribute('data-turbo-frame')) {
                         a.setAttribute('data-turbo-frame', frameId)
                     }
+                    // Add click handler to update browser URL and sync with filter form
+                    a.addEventListener('click', (e) => {
+                        const href = a.getAttribute('href')
+                        if (href) {
+                            try {
+                                // Update browser URL immediately
+                                window.history.pushState({}, '', href)
+                                
+                                // Extract page number from URL and update hidden field in filter form
+                                const url = new URL(href, window.location.origin)
+                                const pageNumber = url.searchParams.get('page')
+                                if (pageNumber) {
+                                    // Find the filter form and update its page field
+                                    const filterForm = document.querySelector('form[data-controller*="filter"]')
+                                    if (filterForm) {
+                                        const pageField = filterForm.querySelector('input[name="page"]')
+                                        if (pageField) {
+                                            pageField.value = pageNumber
+                                        }
+                                    }
+                                }
+                            } catch (err) {
+                                // ignore
+                            }
+                        }
+                    })
                 })
             }
         } catch (e) {

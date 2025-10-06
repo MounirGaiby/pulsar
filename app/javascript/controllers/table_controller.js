@@ -37,6 +37,12 @@ export default class extends Controller {
             url.searchParams.delete('direction')
         }
 
+        // Dispatch event so filter controller can sync
+        document.dispatchEvent(new CustomEvent('table:sort-changed', {
+            detail: { column, direction },
+            bubbles: true
+        }))
+
         // Reset to page 1 when sorting changes
         url.searchParams.delete('page')
         // Replace history URL so refresh preserves sort/filter params

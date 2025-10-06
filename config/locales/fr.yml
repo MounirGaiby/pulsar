@@ -186,6 +186,10 @@ fr:
     apply_filters: "Appliquer les filtres"
     all_option: "Tous les %{attribute}"
     search_filters: "Rechercher des filtres..."
+    sort: "Trier"
+    ascending: "Croissant"
+    descending: "Décroissant"
+    search_sort: "Rechercher des options de tri..."
     operators:
       cont: "Contient"
       eq: "Égale"

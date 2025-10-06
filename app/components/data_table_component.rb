@@ -63,8 +63,18 @@ class DataTableComponent < BaseComponent
     @filter_component ||= FilterComponent.new(
       filters: @filters,
       current_filters: @current_filters,
-      active_filter_keys: @active_filter_keys
+      active_filter_keys: @active_filter_keys,
+      sortable_columns: sortable_columns_list,
+      current_sort: @sort_column,
+      current_direction: @sort_direction,
+      current_page: @pagy&.page
     )
+  end
+
+  def sortable_columns_list
+    @columns.select { |col| col[:sortable] != false }.map do |col|
+      { key: col[:key], label: col[:label] }
+    end
   end
 
   def pagy_component

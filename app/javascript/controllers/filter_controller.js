@@ -2,7 +2,7 @@ import { Controller } from "@hotwired/stimulus"
 
 // Connects to data-controller="filter"
 export default class extends Controller {
-    static targets = ["form", "activeFilters", "inputsContainer", "searchInput", "filterItem"]
+    static targets = ["form", "activeFilters", "inputsContainer", "searchInput", "filterItem", "sortField", "directionField", "pageField", "sortLabel", "sortItem", "sortSearchInput"]
     static values = {
         debounce: { type: Number, default: 300 }
     }
@@ -22,16 +22,9 @@ export default class extends Controller {
 
         this.disableActiveDropdownItems()
 
-        // Observe active filters container to toggle the Clear All button visibility
-        try {
-            this.clearButton = this.element.querySelector('[data-filter-target="clearButton"]')
-            const observer = new MutationObserver(() => this.updateClearButtonVisibility())
-            observer.observe(this.activeFiltersTarget, { childList: true, subtree: true })
-            this._clearObserver = observer
-            this.updateClearButtonVisibility()
-        } catch (e) {
-            // ignore
-        }
+        // Listen for table sort events to sync hidden fields
+        this.syncSortFromTable = this.handleTableSort.bind(this)
+        document.addEventListener('table:sort-changed', this.syncSortFromTable)
     }
 
     rebuildFilterItemsMap() {
@@ -140,6 +133,11 @@ export default class extends Controller {
             clearTimeout(this.debounceTimeout)
         }
 
+        // Reset to page 1 when filter values change
+        if (this.hasPageFieldTarget) {
+            this.pageFieldTarget.value = '1'
+        }
+
         // Set new timeout
         this.debounceTimeout = setTimeout(() => {
             this.performSubmit()
@@ -244,7 +242,6 @@ export default class extends Controller {
                     activeBar.appendChild(clone)
                     // Hide the dropdown item that corresponds to this filter
                     this.hideDropdownItem(filterKey)
-                    this.updateClearButtonVisibility()
                 } else {
                     // Fallback to simple badge if template is missing
                     const badge = document.createElement('div')
@@ -253,7 +250,6 @@ export default class extends Controller {
                     badge.innerHTML = `${filterKey} <button type="button" class="btn btn-ghost btn-xs btn-circle" data-action="filter#removeFilter" data-filter-key="${filterKey}">×</button>`
                     activeBar.appendChild(badge)
                     this.hideDropdownItem(filterKey)
-                    this.updateClearButtonVisibility()
                 }
             }
         }
@@ -293,7 +289,10 @@ export default class extends Controller {
         // Re-enable dropdown button for this filter
         this.showDropdownItem(filterKey)
 
-        this.updateClearButtonVisibility()
+        // Reset to page 1 when removing filters
+        if (this.hasPageFieldTarget) {
+            this.pageFieldTarget.value = '1'
+        }
 
         // Submit to update the table
         this.submit()
@@ -305,16 +304,16 @@ export default class extends Controller {
             clearTimeout(this.debounceTimeout)
         }
         // Remove observers and listeners
-        if (this._clearObserver) {
-            this._clearObserver.disconnect()
-            this._clearObserver = null
-        }
         if (this._dropdownObserver) {
             this._dropdownObserver.disconnect()
             this._dropdownObserver = null
         }
         if (this._dropdownTriggers) {
             this._dropdownTriggers.forEach(t => t.removeEventListener('click', this._dropdownOpenHandler))
+        }
+        // Remove table sort listener
+        if (this.syncSortFromTable) {
+            document.removeEventListener('table:sort-changed', this.syncSortFromTable)
         }
     }
 
@@ -329,6 +328,16 @@ export default class extends Controller {
             }
 
             const label = item.dataset.filterLabel
+            const matches = label.includes(searchTerm)
+            item.style.display = matches ? '' : 'none'
+        })
+    }
+
+    searchSortOptions(event) {
+        const searchTerm = event.target.value.toLowerCase().trim()
+
+        this.sortItemTargets.forEach(item => {
+            const label = item.dataset.sortLabel
             const matches = label.includes(searchTerm)
             item.style.display = matches ? '' : 'none'
         })
@@ -383,17 +392,6 @@ export default class extends Controller {
         }
     }
 
-    updateClearButtonVisibility() {
-        if (!this.clearButton) return
-        try {
-            const hasBadges = Array.from(this.activeFiltersTarget?.querySelectorAll('[data-filter-key]') || []).length > 0
-            if (hasBadges) this.clearButton.classList.remove('hidden')
-            else this.clearButton.classList.add('hidden')
-        } catch (e) {
-            // ignore
-        }
-    }
-
     disableActiveDropdownItems() {
         // Disable buttons for filters that are currently active (present in activeFiltersTarget)
         try {
@@ -401,6 +399,114 @@ export default class extends Controller {
             activeKeys.forEach(k => this.hideDropdownItem(k))
         } catch (e) {
             // ignore
+        }
+    }
+
+    applySort(event) {
+        event.preventDefault()
+        const button = event.currentTarget
+        const column = button.dataset.sortColumn
+        const direction = button.dataset.sortDirection
+        const label = button.dataset.sortLabel
+
+        // Close dropdown
+        document.querySelectorAll('.dropdown').forEach(dropdown => {
+            dropdown.removeAttribute('open')
+        })
+
+        // Update the UI immediately before submitting
+        this.updateSortUI(column, direction, label)
+
+        // Update hidden fields
+        if (this.hasSortFieldTarget) {
+            this.sortFieldTarget.value = column
+        }
+        if (this.hasDirectionFieldTarget) {
+            this.directionFieldTarget.value = direction
+        }
+        
+        // Reset to page 1 when sorting changes
+        if (this.hasPageFieldTarget) {
+            this.pageFieldTarget.value = '1'
+        }
+
+        // Submit form
+        this.submit()
+    }
+
+    updateSortUI(column, direction, label) {
+        // Update the dropdown button label (just the column name, no direction text)
+        if (this.hasSortLabelTarget && label) {
+            this.sortLabelTarget.textContent = label
+        }
+
+        // Update active states in the dropdown menu
+        const form = this.element.tagName && this.element.tagName.toLowerCase() === 'form' ? this.element : this.element.querySelector('form')
+        if (!form) return
+
+        // Remove all active states and checkmarks
+        const allSortButtons = form.querySelectorAll('[data-sort-column]')
+        allSortButtons.forEach(btn => {
+            btn.classList.remove('active', 'bg-base-200')
+            // Remove existing checkmarks
+            const existingCheck = btn.querySelector('.sort-check')
+            if (existingCheck) {
+                existingCheck.remove()
+            }
+        })
+
+        // Add active state to the selected button
+        const selectedButton = form.querySelector(`[data-sort-column="${column}"][data-sort-direction="${direction}"]`)
+        if (selectedButton) {
+            selectedButton.classList.add('active', 'bg-base-200')
+            
+            // Add checkmark icon
+            const checkIcon = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
+            checkIcon.setAttribute('xmlns', 'http://www.w3.org/2000/svg')
+            checkIcon.setAttribute('width', '16')
+            checkIcon.setAttribute('height', '16')
+            checkIcon.setAttribute('viewBox', '0 0 24 24')
+            checkIcon.setAttribute('fill', 'none')
+            checkIcon.setAttribute('stroke', 'currentColor')
+            checkIcon.setAttribute('stroke-width', '2')
+            checkIcon.setAttribute('stroke-linecap', 'round')
+            checkIcon.setAttribute('stroke-linejoin', 'round')
+            checkIcon.classList.add('w-4', 'h-4', 'ml-auto', 'sort-check')
+            
+            const path = document.createElementNS('http://www.w3.org/2000/svg', 'path')
+            path.setAttribute('d', 'M20 6 9 17l-5-5')
+            checkIcon.appendChild(path)
+            
+            selectedButton.appendChild(checkIcon)
+        }
+    }
+
+    handleTableSort(event) {
+        // Sync sort fields when table header is clicked
+        const { column, direction } = event.detail || {}
+        
+        if (column && direction) {
+            if (this.hasSortFieldTarget) {
+                this.sortFieldTarget.value = column
+            }
+            if (this.hasDirectionFieldTarget) {
+                this.directionFieldTarget.value = direction
+            }
+            // Reset to page 1 when table header sorting changes
+            if (this.hasPageFieldTarget) {
+                this.pageFieldTarget.value = '1'
+            }
+            
+            // Update the UI to reflect the sort change
+            // Find the label for this column from the sort buttons
+            const form = this.element.tagName && this.element.tagName.toLowerCase() === 'form' ? this.element : this.element.querySelector('form')
+            if (form) {
+                const sortButton = form.querySelector(`[data-sort-column="${column}"]`)
+                const label = sortButton?.dataset.sortLabel
+                if (label) {
+                    this.updateSortUI(column, direction, label)
+                }
+            }
         }
     }
 }
