@@ -6,7 +6,52 @@
       <% end %>
       <% if has_action_buttons? %>
         <div class="flex items-center gap-2">
-          <% @action_buttons.each do |button| %>
+          <% if has_multiple_action_buttons? %>
+            <!-- Multiple buttons: Show primary + dropdown for rest -->
+            <% button = primary_action_button %>
+            <% if button[:type] == :link %>
+              <%= link_to button[:url], class: "#{action_button_classes(button)} btn-sm" do %>
+                <%= icon button[:icon], library: "lucide", class: "w-4 h-4 mr-1" if button[:icon] %>
+                <%= button[:label] %>
+              <% end %>
+            <% elsif button[:type] == :button %>
+              <%= button_to button[:url], method: button[:method] || :post, class: "#{action_button_classes(button)} btn-sm", data: button[:data] || {} do %>
+                <%= icon button[:icon], library: "lucide", class: "w-4 h-4 mr-1" if button[:icon] %>
+                <%= button[:label] %>
+              <% end %>
+            <% end %>
+            
+            <% direction = I18n.locale == :ar ? :rtl : :ltr %>
+            <%= render DropdownComponent.new(
+              direction: direction,
+              container_classes: "w-fit dropdown-end",
+              dropdown_classes: "btn btn-outline btn-sm btn-square",
+              menu_classes: "bg-base-100"
+            ) do |dropdown| %>
+              <% dropdown.with_trigger do %>
+                <%= icon "menu", library: "lucide", class: "w-4 h-4" %>
+              <% end %>
+              <% dropdown.with_menu do %>
+                <% secondary_action_buttons.each do |button| %>
+                  <li>
+                    <% if button[:type] == :link %>
+                      <%= link_to button[:url], class: "flex items-center gap-2" do %>
+                        <%= icon button[:icon], library: "lucide", class: "w-4 h-4" if button[:icon] %>
+                        <%= button[:label] %>
+                      <% end %>
+                    <% elsif button[:type] == :button %>
+                      <%= button_to button[:url], method: button[:method] || :post, class: "flex items-center gap-2 w-full text-left", data: button[:data] || {} do %>
+                        <%= icon button[:icon], library: "lucide", class: "w-4 h-4" if button[:icon] %>
+                        <%= button[:label] %>
+                      <% end %>
+                    <% end %>
+                  </li>
+                <% end %>
+              <% end %>
+            <% end %>
+          <% else %>
+            <!-- Single button: Show cleanly -->
+            <% button = primary_action_button %>
             <% if button[:type] == :link %>
               <%= link_to button[:url], class: action_button_classes(button) do %>
                 <%= icon button[:icon], library: "lucide", class: "w-4 h-4 mr-1" if button[:icon] %>

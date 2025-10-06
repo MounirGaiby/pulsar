@@ -52,11 +52,22 @@ class DataTableComponent < BaseComponent
   end
 
   def action_button_classes(button)
-    base_classes = "btn"
-    variant_classes = button[:variant] ? "btn-#{button[:variant]}" : "btn-primary"
+    base_classes = "btn btn-outline"
     size_classes = button[:size] ? "btn-#{button[:size]}" : ""
+    # Apple-like clean design: outlined buttons with no fill
+    [ base_classes, size_classes ].compact.join(" ")
+  end
 
-    [ base_classes, variant_classes, size_classes ].compact.join(" ")
+  def has_multiple_action_buttons?
+    @action_buttons.length > 1
+  end
+
+  def primary_action_button
+    @action_buttons.first
+  end
+
+  def secondary_action_buttons
+    @action_buttons[1..-1] || []
   end
 
   def filter_component
