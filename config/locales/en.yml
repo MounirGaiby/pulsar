@@ -244,6 +244,16 @@ en:
       title: "New Terminal"
     edit:
       title: "Edit Terminal"
+    form:
+      name: "Terminal Name"
+      name_placeholder: "e.g., Main Entrance Terminal"
+      provider: "Provider"
+      ip: "IP Address"
+      port: "Port"
+      protocol: "Protocol"
+      username: "Username"
+      password: "Password"
+      ssl_verify: "Verify SSL Certificate"
     columns:
       name: "Name"
       ip: "IP Address"
@@ -262,6 +272,7 @@ en:
     messages:
       created: "Terminal created successfully"
       updated: "Terminal updated successfully"
+      deleted: "Terminal deleted successfully"
       destroyed: "Terminal deleted successfully"
       sync_enqueued: "Device sync has been queued"
       terminal_offline: "Terminal must be online to sync"
@@ -300,6 +311,7 @@ en:
       logout_success: "Signed out successfully."
 
   topbar:
+    default_title: "Pulsar"
     language: "Language"
     theme: "Theme"
     logout: "Logout"

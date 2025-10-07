@@ -296,6 +296,7 @@ fr:
       logout_success: "Déconnecté avec succès."
 
   topbar:
+    default_title: "Pulsar"
     language: "Langue"
     theme: "Thème"
     logout: "Déconnexion"

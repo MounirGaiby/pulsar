@@ -16,12 +16,23 @@ class ApplicationController < ActionController::Base
     Current.user
   end
 
-  private
-    def set_locale
-      I18n.locale = params[:locale] || I18n.default_locale
-    end
+  def turbo_frame_request?
+    request.headers["Turbo-Frame"].present?
+  end
 
-    def default_url_options
-      { locale: I18n.locale }
+  def redirect_if_html_request
+    respond_to do |format|
+      format.html { redirect_to root_path }
     end
+  end
+
+  private
+
+  def set_locale
+    I18n.locale = params[:locale] || I18n.default_locale
+  end
+
+  def default_url_options
+    { locale: I18n.locale }
+  end
 end

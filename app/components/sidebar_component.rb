@@ -12,6 +12,8 @@ class SidebarComponent < BaseComponent
   def links
     [
       { name: I18n.t("sidebar.links.dashboard"), path: root_path, icon: "home", controllers: [ "dashboard" ] },
+      { name: I18n.t("sidebar.links.terminals"), path: terminals_path, icon: "device-phone-mobile", controllers: [ "terminals" ] },
+      { name: I18n.t("sidebar.links.clocks"), path: clocks_path, icon: "clock", controllers: [ "clocks" ] },
       { name: I18n.t("sidebar.links.users"), path: users_path, icon: "users", controllers: [ "users" ]  }
     ]
   end

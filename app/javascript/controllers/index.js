@@ -25,6 +25,9 @@ application.register("hello", HelloController)
 import ModalController from "./modal_controller"
 application.register("modal", ModalController)
 
+import ModalTitleController from "./modal_title_controller"
+application.register("modal-title", ModalTitleController)
+
 import PagyController from "./pagy_controller"
 application.register("pagy", PagyController)
 

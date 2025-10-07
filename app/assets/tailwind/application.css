@@ -12,36 +12,6 @@
 /* Define layer order: earlier = lower in stack, later = higher in stack */
 @layer base, layout, components, interactive, overlays, notifications;
 
-/* Base: Foundation styles, resets, utilities */
-@layer base {
-    /* Base layer content will go here */
-}
-
-/* Layout: Major layout containers (sidebar, topbar, main content) */
-@layer layout {
-    /* Layout styles will be moved here */
-}
-
-/* Components: UI components (cards, tables, forms, badges) */
-@layer components {
-    /* Component styles will be moved here */
-}
-
-/* Interactive: Dropdowns, popovers, tooltips */
-@layer interactive {
-    /* Interactive element styles will be moved here */
-}
-
-/* Overlays: Modals, toasts, loading overlays */
-@layer overlays {
-    /* Overlay styles will be moved here */
-}
-
-/* Notifications: Flash messages, alerts (highest priority) */
-@layer notifications {
-    /* Notification styles will be moved here */
-}
-
 /* ========================================
    DaisyUI Theme Configuration
    ======================================== */
@@ -276,10 +246,44 @@
     .card-container {
         @apply card bg-base-100 shadow-xs;
     }
-
-    .poem {
-        @apply card bg-base-100 text-base-content p-4 rounded-box shadow-xs border border-base-200 mb-6;
+    
+    /* ========================================
+       Form Input Improvements
+       ======================================== */
+    /* Remove DaisyUI's stiff focus animation on inputs */
+    .input:focus,
+    .select:focus,
+    .textarea:focus {
+        transform: none !important;
+        animation: none !important;
     }
+    
+    /* Smooth focus ring transition */
+    .input,
+    .select,
+    .textarea {
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    
+    /* Accent color focus states */
+    .focus\:input-accent:focus {
+        border-color: oklch(var(--color-accent));
+        box-shadow: 0 0 0 2px oklch(var(--color-accent) / 0.2);
+    }
+    
+    .focus\:select-accent:focus {
+        border-color: oklch(var(--color-accent));
+        box-shadow: 0 0 0 2px oklch(var(--color-accent) / 0.2);
+    }
+    
+    .focus\:outline-accent:focus {
+        outline: 2px solid oklch(var(--color-accent) / 0.3);
+        outline-offset: 2px;
+    }
+
+    /* .poem {
+        @apply card bg-base-100 text-base-content p-4 rounded-box shadow-xs border border-base-200 mb-6;
+    } */
 
     /* ========================================
        Table Components
@@ -838,6 +842,18 @@
     /* Ensure nested dropdowns don't interfere with parent hover state */
     .dropdown .dropdown-content .dropdown {
         pointer-events: auto;
+    }
+}
+
+@layer overlays {
+    /* ========================================
+       Modal Components
+       ======================================== */
+    /* Layer 'overlays' automatically stacks above 'interactive' layer */
+    
+    /* Fix scrollbar gutter issue when modal is open */
+    :root:has(:is(.modal-open, .modal:target, .modal-toggle:checked + .modal, .modal[open])) {
+        scrollbar-gutter: auto !important;
     }
 }
 

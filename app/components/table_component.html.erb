@@ -61,12 +61,20 @@
                         <% @row_actions.each do |action| %>
                           <li>
                             <% if action[:type] == :link %>
-                              <%= link_to (action[:url].respond_to?(:call) ? action[:url].call(record) : action[:url]), class: "flex items-center gap-2" do %>
+                              <% 
+                                action_url = action[:url].respond_to?(:call) ? action[:url].call(record) : action[:url]
+                                action_data = action[:data].respond_to?(:call) ? action[:data].call(record) : (action[:data] || {})
+                              %>
+                              <%= link_to action_url, class: "flex items-center gap-2", data: action_data do %>
                                 <%= icon action[:icon], library: "lucide", class: "w-4 h-4" if action[:icon] %>
                                 <span class="text-sm"><%= action[:label] %></span>
                               <% end %>
                             <% elsif action[:type] == :button %>
-                              <%= button_to (action[:url].respond_to?(:call) ? action[:url].call(record) : action[:url]), method: action[:method] || :post, form: { data: action[:data] || {} }, class: "w-full text-left" do %>
+                              <% 
+                                action_url = action[:url].respond_to?(:call) ? action[:url].call(record) : action[:url]
+                                action_data = action[:data].respond_to?(:call) ? action[:data].call(record) : (action[:data] || {})
+                              %>
+                              <%= button_to action_url, method: action[:method] || :post, form: { data: action_data }, class: "w-full text-left" do %>
                                 <span class="flex items-center gap-2"><%= icon action[:icon], library: "lucide", class: "w-4 h-4" if action[:icon] %><span class="text-sm"><%= action[:label] %></span></span>
                               <% end %>
                             <% end %>

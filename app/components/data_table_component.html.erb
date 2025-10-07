@@ -1,16 +1,17 @@
 <div class="<%= container_classes %>">
   <% if @title || has_action_buttons? %>
-    <div class="flex items-center justify-between mb-4">
-      <% if @title %>
-        <h1 class="<%= title_classes %>"><%= @title %></h1>
-      <% end %>
+    <div class="flex items-center justify-end mb-4">
+      <%# if @title %>
+<!--        <h1 class="<%#= title_classes %>"><%= @title %></h1>-->
+      <%# end %>
+      
       <% if has_action_buttons? %>
         <div class="flex items-center gap-2">
           <% if has_multiple_action_buttons? %>
             <!-- Multiple buttons: Show primary + dropdown for rest -->
             <% button = primary_action_button %>
             <% if button[:type] == :link %>
-              <%= link_to button[:url], class: "#{action_button_classes(button)} btn-sm" do %>
+              <%= link_to button[:url], class: "#{action_button_classes(button)} btn-sm", data: button[:data] || {} do %>
                 <%= icon button[:icon], library: "lucide", class: "w-4 h-4 mr-1" if button[:icon] %>
                 <%= button[:label] %>
               <% end %>
@@ -53,7 +54,7 @@
             <!-- Single button: Show cleanly -->
             <% button = primary_action_button %>
             <% if button[:type] == :link %>
-              <%= link_to button[:url], class: action_button_classes(button) do %>
+              <%= link_to button[:url], class: action_button_classes(button), data: button[:data] || {} do %>
                 <%= icon button[:icon], library: "lucide", class: "w-4 h-4 mr-1" if button[:icon] %>
                 <%= button[:label] %>
               <% end %>

@@ -20,4 +20,8 @@ class BaseComponent < ViewComponent::Base
   def tag(*args, &block)
     helpers.tag(*args, &block)
   end
+
+  def simple_form(*args, &block)
+    helpers.simple_form(*args, &block)
+  end
 end

@@ -1,58 +1,67 @@
 import { Controller } from "@hotwired/stimulus"
 
-// Connects to data-controller="modal"
 export default class extends Controller {
-  connect() {
-    // Auto-open modal when frame loads
-    const dialog = this.element.querySelector('dialog')
-    if (dialog && !dialog.open) {
-      dialog.showModal()
-    }
+  static targets = ["title"]
+  static values = {
+    backdropDismissable: { type: Boolean, default: true }
+  }
 
-    // Setup close handlers
-    this.setupCloseHandlers()
+  connect() {
+    this.boundHandleFrameClick = this.handleFrameClick.bind(this)
+    document.addEventListener('click', this.boundHandleFrameClick, true)
+    
+    this.boundBeforeStreamRender = this.handleBeforeStreamRender.bind(this)
+    document.addEventListener('turbo:before-stream-render', this.boundBeforeStreamRender)
+    
+    this.element._modalController = this
   }
 
   disconnect() {
-    const dialog = this.element.querySelector('dialog')
-    if (dialog && dialog.open) {
-      dialog.close()
-    }
-  }
-
-  setupCloseHandlers() {
-    // Close on ESC key
-    document.addEventListener('keydown', this.handleEscape.bind(this))
+    document.removeEventListener('click', this.boundHandleFrameClick, true)
+    document.removeEventListener('turbo:before-stream-render', this.boundBeforeStreamRender)
     
-    // Close when clicking backdrop
-    const dialog = this.element.querySelector('dialog')
-    if (dialog) {
-      dialog.addEventListener('click', this.handleBackdropClick.bind(this))
+    if (this.element.open) {
+      this.element.close()
+    }
+    
+    delete this.element._modalController
+  }
+
+  handleFrameClick(event) {
+    const link = event.target.closest('a[data-turbo-frame="modal-content"]')
+    if (link) {
+      const title = link.dataset.modalTitleParam
+      if (title && this.hasTitleTarget) {
+        this.titleTarget.textContent = title
+      }
+      this.open()
     }
   }
 
-  handleEscape(event) {
-    if (event.key === 'Escape') {
+  handleBeforeStreamRender(event) {
+    const streamAction = event.target.getAttribute('action')
+    if (streamAction === 'refresh') {
       this.close()
     }
   }
 
-  handleBackdropClick(event) {
-    const dialog = event.target
-    if (event.target === dialog) {
-      // Clicked on backdrop (the dialog element itself, not its children)
-      this.close()
+  open(title = null) {
+    if (!this.element.open) {
+      if (title && this.hasTitleTarget) {
+        this.titleTarget.textContent = title
+      }
+      this.element.showModal()
     }
   }
 
-  close() {
-    const dialog = this.element.querySelector('dialog')
-    if (dialog && dialog.open) {
-      dialog.close()
-      // Clear the turbo frame content to fully reset
-      setTimeout(() => {
-        this.element.innerHTML = ''
-      }, 300)
+  close(event) {
+    if (event) {
+      event.preventDefault()
+    }
+    
+    if (this.element.open) {
+      this.element.close()
     }
   }
 }
+
