@@ -20,26 +20,26 @@
     default: true;
     prefersdark: false;
     color-scheme: "light";
-    --color-base-100: oklch(100% 0 0);
-    --color-base-200: oklch(97.466% 0.011 259.822);
-    --color-base-300: oklch(93.268% 0.016 262.751);
-    --color-base-content: oklch(41.886% 0.053 255.824);
-    --color-primary: oklch(56.86% 0.255 257.57);
-    --color-primary-content: oklch(91.372% 0.051 257.57);
-    --color-secondary: oklch(42.551% 0.161 282.339);
-    --color-secondary-content: oklch(88.51% 0.032 282.339);
-    --color-accent: oklch(59.939% 0.191 335.171);
-    --color-accent-content: oklch(11.988% 0.038 335.171);
-    --color-neutral: oklch(19.616% 0.063 257.651);
-    --color-neutral-content: oklch(83.923% 0.012 257.651);
-    --color-info: oklch(88.127% 0.085 214.515);
-    --color-info-content: oklch(17.625% 0.017 214.515);
-    --color-success: oklch(80.494% 0.077 197.823);
-    --color-success-content: oklch(16.098% 0.015 197.823);
-    --color-warning: oklch(89.172% 0.045 71.47);
-    --color-warning-content: oklch(17.834% 0.009 71.47);
-    --color-error: oklch(73.092% 0.11 20.076);
-    --color-error-content: oklch(14.618% 0.022 20.076);
+    --color-base-100: oklch(98% 0.005 250); /* soft neutral white */
+    --color-base-200: oklch(95% 0.01 250);  /* subtle contrast for panels */
+    --color-base-300: oklch(90% 0.015 250); /* slightly deeper for borders */
+    --color-base-content: oklch(35% 0.03 250); /* soft graphite text */
+    --color-primary: oklch(65% 0.16 280); /* cool violet-blue like Apple tint */
+    --color-primary-content: oklch(95% 0.02 280);
+    --color-secondary: oklch(60% 0.12 330); /* slight magenta touch */
+    --color-secondary-content: oklch(95% 0.02 330);
+    --color-accent: oklch(80% 0.15 270); /* subtle blue accent */
+    --color-accent-content: oklch(20% 0.02 270);
+    --color-neutral: oklch(30% 0.03 260); /* neutral graphite */
+    --color-neutral-content: oklch(92% 0.01 260);
+    --color-info: oklch(75% 0.1 220);
+    --color-info-content: oklch(18% 0.02 220);
+    --color-success: oklch(75% 0.12 160);
+    --color-success-content: oklch(18% 0.02 160);
+    --color-warning: oklch(85% 0.1 80);
+    --color-warning-content: oklch(25% 0.02 80);
+    --color-error: oklch(70% 0.12 25);
+    --color-error-content: oklch(18% 0.03 25);
     --radius-selector: 1rem;
     --radius-field: 0.5rem;
     --radius-box: 1rem;
@@ -53,28 +53,28 @@
 @plugin "daisyui/theme" {
     name: "dark";
     default: false;
-    prefersdark: false;
+    prefersdark: true;
     color-scheme: "dark";
-    --color-base-100: oklch(28.822% 0.022 277.508);
-    --color-base-200: oklch(37% 0.034 259.733);
-    --color-base-300: oklch(24.787% 0.019 277.508);
-    --color-base-content: oklch(97.747% 0.007 106.545);
-    --color-primary: oklch(75.461% 0.183 346.812);
-    --color-primary-content: oklch(15.092% 0.036 346.812);
-    --color-secondary: oklch(74.202% 0.148 301.883);
-    --color-secondary-content: oklch(14.84% 0.029 301.883);
-    --color-accent: oklch(83.392% 0.124 66.558);
-    --color-accent-content: oklch(16.678% 0.024 66.558);
-    --color-neutral: oklch(39.445% 0.032 275.524);
-    --color-neutral-content: oklch(87.889% 0.006 275.524);
-    --color-info: oklch(88.263% 0.093 212.846);
-    --color-info-content: oklch(17.652% 0.018 212.846);
-    --color-success: oklch(87.099% 0.219 148.024);
-    --color-success-content: oklch(17.419% 0.043 148.024);
-    --color-warning: oklch(95.533% 0.134 112.757);
-    --color-warning-content: oklch(19.106% 0.026 112.757);
-    --color-error: oklch(68.22% 0.206 24.43);
-    --color-error-content: oklch(13.644% 0.041 24.43);
+    --color-base-100: oklch(18% 0.015 260); /* soft matte dark base */
+    --color-base-200: oklch(24% 0.02 260);  /* card base */
+    --color-base-300: oklch(30% 0.025 260); /* panel elevation */
+    --color-base-content: oklch(95% 0.01 260); /* light graphite text */
+    --color-primary: oklch(70% 0.18 330); /* cyberpunk pink-violet glow */
+    --color-primary-content: oklch(15% 0.03 330);
+    --color-secondary: oklch(65% 0.16 280); /* neon blue-violet */
+    --color-secondary-content: oklch(15% 0.03 280);
+    --color-accent: oklch(75% 0.2 310); /* electric magenta accent */
+    --color-accent-content: oklch(18% 0.04 310);
+    --color-neutral: oklch(25% 0.02 260);
+    --color-neutral-content: oklch(88% 0.01 260);
+    --color-info: oklch(80% 0.12 220);
+    --color-info-content: oklch(15% 0.02 220);
+    --color-success: oklch(78% 0.15 150);
+    --color-success-content: oklch(15% 0.03 150);
+    --color-warning: oklch(85% 0.16 85);
+    --color-warning-content: oklch(20% 0.04 85);
+    --color-error: oklch(70% 0.18 25);
+    --color-error-content: oklch(14% 0.04 25);
     --radius-selector: 1rem;
     --radius-field: 0.5rem;
     --radius-box: 1rem;
@@ -279,6 +279,173 @@
     .focus\:outline-accent:focus {
         outline: 2px solid oklch(var(--color-accent) / 0.3);
         outline-offset: 2px;
+    }
+
+    /* ========================================
+       Form Component Styles
+       ======================================== */
+    
+    /* Form labels */
+    .form-label {
+        @apply text-sm font-semibold text-base-content;
+    }
+    
+    /* Form hints */
+    .form-hint {
+        @apply text-xs text-base-content/60 leading-relaxed;
+    }
+    
+    /* Form errors */
+    .form-error {
+        @apply text-xs text-error mt-1;
+    }
+    
+    /* Form inputs with consistent styling */
+    .form-input {
+        @apply w-full transition-all duration-200;
+        @apply border border-base-content/20 rounded-lg px-4 py-2;
+        @apply bg-base-100 text-base-content;
+        @apply focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/20;
+    }
+    
+    .form-select {
+        @apply w-full transition-all duration-200;
+        @apply border border-base-content/20 rounded-lg px-4 py-2;
+        @apply bg-base-100 text-base-content;
+        @apply focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/20;
+    }
+    
+    .form-textarea {
+        @apply w-full transition-all duration-200;
+        @apply border border-base-content/20 rounded-lg px-4 py-2;
+        @apply bg-base-100 text-base-content;
+        @apply focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/20;
+        @apply min-h-[100px];
+    }
+    
+    /* Checkbox with accent color */
+    .form-checkbox {
+        @apply w-5 h-5 rounded border-2 border-base-content/20;
+        @apply checked:bg-accent checked:border-accent;
+        @apply focus:outline-none focus:ring-2 focus:ring-accent/20;
+        @apply transition-all duration-200 cursor-pointer;
+    }
+    
+    .form-checkbox-label {
+        @apply cursor-pointer justify-start gap-3 py-2.5 hover:bg-base-200/50 rounded-lg px-2 -ml-2 transition-colors;
+        @apply flex items-center;
+    }
+    
+    /* Radio buttons with accent color */
+    .form-radio {
+        @apply w-5 h-5 rounded-full border-2 border-base-content/20;
+        @apply checked:bg-accent checked:border-accent;
+        @apply focus:outline-none focus:ring-2 focus:ring-accent/20;
+        @apply transition-all duration-200 cursor-pointer;
+    }
+    
+    .form-radio-label {
+        @apply cursor-pointer justify-start gap-3 py-2 hover:bg-base-200/50 rounded-lg px-2 -ml-2 transition-colors;
+        @apply flex items-center;
+    }
+    
+    /* File input */
+    .form-file {
+        @apply w-full transition-all duration-200;
+        @apply border border-base-content/20 rounded-lg;
+        @apply bg-base-100 text-base-content;
+        @apply file:mr-4 file:py-2 file:px-4;
+        @apply file:rounded-l-lg file:border-0;
+        @apply file:bg-accent file:text-white;
+        @apply file:cursor-pointer file:transition-colors;
+        @apply hover:file:bg-accent/90;
+        @apply focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/20;
+    }
+
+    /* ========================================
+       Button Variants
+       ======================================== */
+    
+    /* Primary action buttons with white text */
+    .btn-primary {
+        @apply text-primary-content;
+    }
+    
+    .btn-accent {
+        @apply text-accent-content;
+    }
+    
+    .btn-secondary {
+        @apply text-secondary-content;
+    }
+    
+    /* Semantic button classes */
+    .btn-add {
+        @apply btn btn-accent text-white;
+    }
+    
+    .btn-edit {
+        @apply btn btn-accent text-white;
+    }
+    
+    .btn-update {
+        @apply btn btn-accent text-white;
+    }
+    
+    .btn-create {
+        @apply btn btn-accent text-white;
+    }
+    
+    .btn-save {
+        @apply btn btn-accent text-white;
+    }
+    
+    .btn-delete {
+        @apply btn btn-error text-error-content;
+    }
+    
+    .btn-remove {
+        @apply btn btn-error text-error-content;
+    }
+    
+    .btn-cancel {
+        @apply btn btn-ghost;
+    }
+    
+    .btn-back {
+        @apply btn btn-ghost;
+    }
+    
+    .btn-view {
+        @apply btn btn-outline btn-accent;
+    }
+    
+    .btn-submit {
+        @apply btn btn-accent text-white;
+    }
+    
+    .btn-search {
+        @apply btn btn-outline btn-accent;
+    }
+    
+    .btn-filter {
+        @apply btn btn-outline btn-accent;
+    }
+    
+    .btn-export {
+        @apply btn btn-outline btn-accent;
+    }
+    
+    .btn-import {
+        @apply btn btn-outline btn-accent;
+    }
+    
+    .btn-sync {
+        @apply btn btn-outline btn-accent;
+    }
+    
+    .btn-refresh {
+        @apply btn btn-outline btn-accent;
     }
 
     /* .poem {

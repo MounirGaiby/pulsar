@@ -1,0 +1,319 @@
+<%# Field wrapper with grid column support %>
+<div class="form-control <%= field[:cols] ? field_grid_classes(field) : 'col-span-1' %>">
+  
+  <% case field[:type] %>
+  
+  <%# Text input (default) %>
+  <% when :text, :email, :password, :url, :tel, :number, nil %>
+    <% unless field[:hide_label] %>
+      <label class="label">
+        <span class="<%= label_classes %>">
+          <%= field_label(field) %>
+          <% if field_required?(field) %>
+            <span class="text-error">*</span>
+          <% end %>
+        </span>
+      </label>
+    <% end %>
+    
+    <%= form.text_field field[:attribute],
+        type: field[:type] || :text,
+        class: input_classes(field),
+        placeholder: field_placeholder(field),
+        required: field_required?(field),
+        autofocus: field[:autofocus],
+        autocomplete: field[:autocomplete],
+        disabled: field[:disabled],
+        readonly: field[:readonly],
+        data: field[:data] || {} %>
+    
+    <% if field_hint(field) %>
+      <label class="label">
+        <span class="label-text-alt text-base-content/60 text-sm"><%= field_hint(field) %></span>
+      </label>
+    <% end %>
+    
+    <% if field_has_errors?(field) %>
+      <label class="label">
+        <span class="<%= error_classes %>"><%= field_errors(field).first %></span>
+      </label>
+    <% end %>
+  
+  <%# Textarea %>
+  <% when :textarea %>
+    <% unless field[:hide_label] %>
+      <label class="label">
+        <span class="<%= label_classes %>">
+          <%= field_label(field) %>
+          <% if field_required?(field) %>
+            <span class="text-error">*</span>
+          <% end %>
+        </span>
+      </label>
+    <% end %>
+    
+    <%= form.text_area field[:attribute],
+        class: input_classes(field),
+        placeholder: field_placeholder(field),
+        required: field_required?(field),
+        rows: field[:rows] || 4,
+        disabled: field[:disabled],
+        readonly: field[:readonly],
+        data: field[:data] || {} %>
+    
+    <% if field_hint(field) %>
+      <label class="label">
+        <span class="label-text-alt text-base-content/60"><%= field_hint(field) %></span>
+      </label>
+    <% end %>
+    
+    <% if field_has_errors?(field) %>
+      <label class="label">
+        <span class="<%= error_classes %>"><%= field_errors(field).first %></span>
+      </label>
+    <% end %>
+  
+  <%# Select / Dropdown %>
+  <% when :select, :enum %>
+    <% unless field[:hide_label] %>
+      <label class="label">
+        <span class="<%= label_classes %>">
+          <%= field_label(field) %>
+          <% if field_required?(field) %>
+            <span class="text-error">*</span>
+          <% end %>
+        </span>
+      </label>
+    <% end %>
+    
+    <%= form.select field[:attribute],
+        field_options(field),
+        {
+          include_blank: include_blank_option(field) ? include_blank_text(field) : false,
+          selected: field[:selected]
+        },
+        {
+          class: input_classes(field),
+          required: field_required?(field),
+          disabled: field[:disabled],
+          data: field[:data] || {}
+        } %>
+    
+    <% if field_hint(field) %>
+      <label class="label">
+        <span class="label-text-alt text-base-content/60"><%= field_hint(field) %></span>
+      </label>
+    <% end %>
+    
+    <% if field_has_errors?(field) %>
+      <label class="label">
+        <span class="<%= error_classes %>"><%= field_errors(field).first %></span>
+      </label>
+    <% end %>
+  
+  <%# Checkbox %>
+  <% when :checkbox, :boolean %>
+    <label class="label cursor-pointer justify-start gap-3 py-3">
+      <%= form.check_box field[:attribute],
+          class: input_classes(field),
+          disabled: field[:disabled],
+          data: field[:data] || {} %>
+      <span class="label-text font-medium">
+        <%= field_label(field) %>
+        <% if field_required?(field) %>
+          <span class="text-error">*</span>
+        <% end %>
+      </span>
+    </label>
+    
+    <% if field_hint(field) %>
+      <label class="label">
+        <span class="label-text-alt text-base-content/60"><%= field_hint(field) %></span>
+      </label>
+    <% end %>
+    
+    <% if field_has_errors?(field) %>
+      <label class="label">
+        <span class="<%= error_classes %>"><%= field_errors(field).first %></span>
+      </label>
+    <% end %>
+  
+  <%# Radio buttons %>
+  <% when :radio %>
+    <% unless field[:hide_label] %>
+      <label class="label">
+        <span class="<%= label_classes %>">
+          <%= field_label(field) %>
+          <% if field_required?(field) %>
+            <span class="text-error">*</span>
+          <% end %>
+        </span>
+      </label>
+    <% end %>
+    
+    <div class="flex flex-col gap-2">
+      <% field_options(field).each do |option| %>
+        <label class="label cursor-pointer justify-start gap-3 py-2">
+          <%= form.radio_button field[:attribute],
+              option.is_a?(Array) ? option.last : option,
+              class: "radio radio-primary",
+              disabled: field[:disabled],
+              data: field[:data] || {} %>
+          <span class="label-text"><%= option.is_a?(Array) ? option.first : option.humanize %></span>
+        </label>
+      <% end %>
+    </div>
+    
+    <% if field_hint(field) %>
+      <label class="label">
+        <span class="label-text-alt text-base-content/60"><%= field_hint(field) %></span>
+      </label>
+    <% end %>
+    
+    <% if field_has_errors?(field) %>
+      <label class="label">
+        <span class="<%= error_classes %>"><%= field_errors(field).first %></span>
+      </label>
+    <% end %>
+  
+  <%# File upload %>
+  <% when :file %>
+    <% unless field[:hide_label] %>
+      <label class="label">
+        <span class="<%= label_classes %>">
+          <%= field_label(field) %>
+          <% if field_required?(field) %>
+            <span class="text-error">*</span>
+          <% end %>
+        </span>
+      </label>
+    <% end %>
+    
+    <%= form.file_field field[:attribute],
+        class: input_classes(field),
+        accept: field[:accept],
+        multiple: field[:multiple],
+        required: field_required?(field),
+        disabled: field[:disabled],
+        data: field[:data] || {} %>
+    
+    <% if field_hint(field) %>
+      <label class="label">
+        <span class="label-text-alt text-base-content/60"><%= field_hint(field) %></span>
+      </label>
+    <% end %>
+    
+    <% if field_has_errors?(field) %>
+      <label class="label">
+        <span class="<%= error_classes %>"><%= field_errors(field).first %></span>
+      </label>
+    <% end %>
+  
+  <%# Date input %>
+  <% when :date %>
+    <% unless field[:hide_label] %>
+      <label class="label">
+        <span class="<%= label_classes %>">
+          <%= field_label(field) %>
+          <% if field_required?(field) %>
+            <span class="text-error">*</span>
+          <% end %>
+        </span>
+      </label>
+    <% end %>
+    
+    <%= form.date_field field[:attribute],
+        class: input_classes(field),
+        required: field_required?(field),
+        disabled: field[:disabled],
+        readonly: field[:readonly],
+        data: field[:data] || {} %>
+    
+    <% if field_hint(field) %>
+      <label class="label">
+        <span class="label-text-alt text-base-content/60"><%= field_hint(field) %></span>
+      </label>
+    <% end %>
+    
+    <% if field_has_errors?(field) %>
+      <label class="label">
+        <span class="<%= error_classes %>"><%= field_errors(field).first %></span>
+      </label>
+    <% end %>
+  
+  <%# Time input %>
+  <% when :time %>
+    <% unless field[:hide_label] %>
+      <label class="label">
+        <span class="<%= label_classes %>">
+          <%= field_label(field) %>
+          <% if field_required?(field) %>
+            <span class="text-error">*</span>
+          <% end %>
+        </span>
+      </label>
+    <% end %>
+    
+    <%= form.time_field field[:attribute],
+        class: input_classes(field),
+        required: field_required?(field),
+        disabled: field[:disabled],
+        readonly: field[:readonly],
+        data: field[:data] || {} %>
+    
+    <% if field_hint(field) %>
+      <label class="label">
+        <span class="label-text-alt text-base-content/60"><%= field_hint(field) %></span>
+      </label>
+    <% end %>
+    
+    <% if field_has_errors?(field) %>
+      <label class="label">
+        <span class="<%= error_classes %>"><%= field_errors(field).first %></span>
+      </label>
+    <% end %>
+  
+  <%# Datetime input %>
+  <% when :datetime %>
+    <% unless field[:hide_label] %>
+      <label class="label">
+        <span class="<%= label_classes %>">
+          <%= field_label(field) %>
+          <% if field_required?(field) %>
+            <span class="text-error">*</span>
+          <% end %>
+        </span>
+      </label>
+    <% end %>
+    
+    <%= form.datetime_field field[:attribute],
+        class: input_classes(field),
+        required: field_required?(field),
+        disabled: field[:disabled],
+        readonly: field[:readonly],
+        data: field[:data] || {} %>
+    
+    <% if field_hint(field) %>
+      <label class="label">
+        <span class="label-text-alt text-base-content/60"><%= field_hint(field) %></span>
+      </label>
+    <% end %>
+    
+    <% if field_has_errors?(field) %>
+      <label class="label">
+        <span class="<%= error_classes %>"><%= field_errors(field).first %></span>
+      </label>
+    <% end %>
+  
+  <%# Hidden field %>
+  <% when :hidden %>
+    <%= form.hidden_field field[:attribute], value: field[:value] %>
+  
+  <%# Custom field type - render block if provided %>
+  <% when :custom %>
+    <% if field[:render] %>
+      <%= field[:render].call(form, field, @model) %>
+    <% end %>
+  
+  <% end %>
+</div>

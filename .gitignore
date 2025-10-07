@@ -39,6 +39,6 @@
 /node_modules
 
 # IDE specific files
-.vscode/
-.idea/
-.github/instructions
+/.vscode
+/.idea
+/.github/instructions

@@ -22,6 +22,8 @@ ar:
         updated_at: "تاريخ التحديث"
       session:
         token: "رمز الجلسة"
+        email_address: "البريد الإلكتروني"
+        password: "كلمة المرور"
       terminal:
         name: "الاسم"
         provider: "المزود"
@@ -66,18 +68,28 @@ ar:
         too_short: "قصير جداً (الحد الأدنى %{count} حرف)"
         too_long: "طويل جداً (الحد الأقصى %{count} حرف)"
         invalid: "غير صالح"
+        invalid_format: "صيغة غير صالحة"
+        invalid_url: "يجب أن يكون عنوان URL صالح"
+        greater_than: "يجب أن يكون أكبر من %{count}"
+        less_than_or_equal_to: "يجب أن يكون أقل من أو يساوي %{count}"
       models:
         terminal:
           attributes:
             ip:
-              invalid: "يجب أن يكون عنوان IP صالح"
+              invalid_format: "يجب أن يكون عنوان IP أو اسم مضيف صالح"
+              already_exists: "ومجموعة المنفذ مسجلة بالفعل"
             port:
               not_a_number: "يجب أن يكون رقماً"
+              greater_than: "يجب أن يكون أكبر من 0"
+              less_than_or_equal_to: "يجب أن يكون أقل من أو يساوي 65535"
+            listener_url:
+              invalid_url: "يجب أن يكون عنوان URL من نوع HTTP أو HTTPS صالح"
 
   # Views and components
   sessions:
     new:
       title: "تسجيل الدخول"
+      subtitle: "مرحباً بعودتك! يرجى تسجيل الدخول إلى حسابك."
       email: "البريد الإلكتروني"
       password: "كلمة المرور"
       submit: "تسجيل الدخول"
@@ -240,6 +252,28 @@ ar:
       title: "جهاز جديد"
     edit:
       title: "تعديل الجهاز"
+    form:
+      name: "اسم الجهاز"
+      name_placeholder: "مثال: جهاز المدخل الرئيسي"
+      provider: "المزود"
+      ip: "عنوان IP"
+      port: "المنفذ"
+      protocol: "البروتوكول"
+      username: "اسم المستخدم"
+      password: "كلمة المرور"
+      ssl_verify: "التحقق من شهادة SSL"
+      sections:
+        basic_info: "المعلومات الأساسية"
+        connection: "تفاصيل الاتصال"
+        authentication: "المصادقة"
+        security: "خيارات الأمان"
+      hints:
+        name: "اسم مميز لتحديد هذا الجهاز"
+        ip: "عنوان IP الخاص بالجهاز"
+        port: "رقم المنفذ للاتصال"
+        username: "اسم المستخدم للمصادقة (إذا لزم الأمر)"
+        password: "اتركه فارغاً للحفاظ على كلمة المرور الحالية"
+        ssl_verify: "قم بتعطيله للشهادات الموقعة ذاتياً"
     columns:
       name: "الاسم"
       ip: "عنوان IP"
@@ -262,6 +296,8 @@ ar:
       sync_enqueued: "تمت جدولة المزامنة"
       terminal_offline: "يجب أن يكون الجهاز متصلاً للمزامنة"
       confirm_delete: "هل أنت متأكد من حذف هذا الجهاز؟ سيتم حذف جميع تسجيلات الحضور المرتبطة أيضاً."
+    errors:
+      duplicate: "يوجد جهاز بنفس عنوان IP ورقم المنفذ بالفعل"
 
   clocks:
     index:

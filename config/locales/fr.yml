@@ -22,6 +22,8 @@ fr:
         updated_at: "Mis à jour le"
       session:
         token: "Jeton de session"
+        email_address: "Adresse e-mail"
+        password: "Mot de passe"
       terminal:
         name: "Nom"
         provider: "Fournisseur"
@@ -66,18 +68,28 @@ fr:
         too_short: "est trop court (minimum %{count} caractères)"
         too_long: "est trop long (maximum %{count} caractères)"
         invalid: "est invalide"
+        invalid_format: "a un format invalide"
+        invalid_url: "doit être une URL valide"
+        greater_than: "doit être supérieur à %{count}"
+        less_than_or_equal_to: "doit être inférieur ou égal à %{count}"
       models:
         terminal:
           attributes:
             ip:
-              invalid: "doit être une adresse IP valide"
+              invalid_format: "doit être une adresse IP ou un nom d'hôte valide"
+              already_exists: "et la combinaison de port est déjà enregistrée"
             port:
               not_a_number: "doit être un nombre"
+              greater_than: "doit être supérieur à 0"
+              less_than_or_equal_to: "doit être inférieur ou égal à 65535"
+            listener_url:
+              invalid_url: "doit être une URL HTTP ou HTTPS valide"
 
   # Views and components
   sessions:
     new:
       title: "Connexion"
+      subtitle: "Bienvenue! Veuillez vous connecter à votre compte."
       email: "E-mail"
       password: "Mot de passe"
       submit: "Connexion"
@@ -240,6 +252,28 @@ fr:
       title: "Nouveau terminal"
     edit:
       title: "Modifier le terminal"
+    form:
+      name: "Nom du terminal"
+      name_placeholder: "ex: Terminal Entrée Principale"
+      provider: "Fournisseur"
+      ip: "Adresse IP"
+      port: "Port"
+      protocol: "Protocole"
+      username: "Nom d'utilisateur"
+      password: "Mot de passe"
+      ssl_verify: "Vérifier le certificat SSL"
+      sections:
+        basic_info: "Informations de base"
+        connection: "Détails de connexion"
+        authentication: "Authentification"
+        security: "Options de sécurité"
+      hints:
+        name: "Un nom convivial pour identifier ce terminal"
+        ip: "L'adresse IP du terminal"
+        port: "Le numéro de port pour la connexion"
+        username: "Nom d'utilisateur pour l'authentification (si requis)"
+        password: "Laissez vide pour conserver le mot de passe actuel"
+        ssl_verify: "Désactiver pour les certificats auto-signés"
     columns:
       name: "Nom"
       ip: "Adresse IP"
@@ -262,6 +296,8 @@ fr:
       sync_enqueued: "La synchronisation a été mise en file d'attente"
       terminal_offline: "Le terminal doit être en ligne pour synchroniser"
       confirm_delete: "Êtes-vous sûr de vouloir supprimer ce terminal ? Tous les pointages associés seront également supprimés."
+    errors:
+      duplicate: "Un terminal avec cette combinaison d'adresse IP et de port existe déjà"
 
   clocks:
     index:

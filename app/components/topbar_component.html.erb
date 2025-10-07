@@ -50,22 +50,24 @@
         <% end %>
       </div>
     <% else %>
-      <%= render DropdownComponent.new do |c| %>
-        <% c.with_trigger do %>
-          <div class="flex items-center gap-2">
-            <%= icon "globe", library: "lucide", class: "w-4 h-4" %>
-            <span><%= "#{t('topbar.language')} · #{t('topbar.theme')}" %></span>
-            <%= icon "chevron-down", library: "lucide", class: "w-4 h-4" %>
-          </div>
-        <% end %>
-        <% c.with_menu do %>
-          <%= render LanguageDropdownComponent.new %>
-          <li class="divider h-0.5 my-2"></li>
-          <li>
-            <%= render ThemeToggleComponent.new %>
-          </li>
+      <div class="flex w-full justify-end [rtl]:justify-start">
+        <%= render DropdownComponent.new do |c| %>
+          <% c.with_trigger do %>
+            <div class="flex items-center gap-2">
+              <%= icon "globe", library: "lucide", class: "w-4 h-4" %>
+              <span><%= "#{t('topbar.language')} · #{t('topbar.theme')}" %></span>
+              <%= icon "chevron-down", library: "lucide", class: "w-4 h-4" %>
+            </div>
+          <% end %>
+          <% c.with_menu do %>
+            <%= render LanguageDropdownComponent.new %>
+            <li class="divider h-0.5 my-2"></li>
+            <li>
+              <%= render ThemeToggleComponent.new %>
+            </li>
+          <% end %>
         <% end %>
       <% end %>
-    <% end %>
+    </div>
   </nav>
 </header>

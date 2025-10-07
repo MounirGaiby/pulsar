@@ -22,8 +22,6 @@
   </div>
   
   <% if @backdrop_dismissable %>
-    <form method="dialog" class="modal-backdrop">
-      <button>close</button>
-    </form>
+    <div class="modal-backdrop blur-3xl" data-action="click->modal#close"></div>
   <% end %>
 </dialog>
