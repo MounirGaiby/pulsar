@@ -11,17 +11,17 @@ window.Modal = {
     return this.element?.querySelector('turbo-frame#modal-content')
   },
 
+  get modalBox() {
+    return this.element?.querySelector('.modal-box')
+  },
+
   open(options = {}) {
     if (!this.controller) {
       console.error('Modal controller not found')
       return
     }
 
-    this.controller.open(options.title)
-
-    if (options.url && this.frame) {
-      this.frame.src = options.url
-    }
+    this.controller.open(options)
   },
 
   close() {

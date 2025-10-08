@@ -18,10 +18,11 @@
     <%= render ModalComponent.new(
       id: "app-modal",
       title: "",
-      size: :medium,
+      size: :lg,
       closable: true,
       backdrop_dismissable: true,
-      turbo_frame_id: "modal-content"
+      turbo_frame_id: "modal-content",
+      content_class: "max-h-[80vh] overflow-y-auto py-4"
     ) %>
   </body>
 </html>

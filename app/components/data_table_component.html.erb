@@ -83,7 +83,10 @@
         sort_direction: @sort_direction,
         selectable: @selectable,
         selected_ids: @selected_ids,
-        row_actions: @row_actions
+        row_actions: @row_actions,
+        disable_sorting: @disable_sorting,
+        scrollable: @scrollable,
+        empty_message: @empty_message
       ) %>
     <% if @pagy %>
       <%= render pagy_component %>

@@ -18,6 +18,7 @@ fr:
       user:
         email_address: "Adresse e-mail"
         password: "Mot de passe"
+        password_confirmation: "Confirmation du mot de passe"
         created_at: "Créé le"
         updated_at: "Mis à jour le"
       session:
@@ -73,6 +74,13 @@ fr:
         greater_than: "doit être supérieur à %{count}"
         less_than_or_equal_to: "doit être inférieur ou égal à %{count}"
       models:
+        user:
+          attributes:
+            email_address:
+              invalid_format: "doit être une adresse e-mail valide"
+              taken: "est déjà enregistrée"
+            password:
+              too_short: "est trop court (minimum 8 caractères)"
         terminal:
           attributes:
             ip:
@@ -227,11 +235,37 @@ fr:
   users:
     index:
       title: "Utilisateurs"
+      empty_message: "Aucun utilisateur trouvé. Créez votre premier utilisateur pour commencer."
+    show:
+      title: "Détails de l'utilisateur"
+      sessions: "Sessions actives"
+      session_started: "Commencée"
+      session_last_active: "Dernière activité"
+      session_ip: "Adresse IP"
+      session_user_agent: "Appareil"
+      no_sessions: "Aucune session active"
+    new:
+      title: "Nouvel utilisateur"
+    edit:
+      title: "Modifier l'utilisateur"
+    form:
+      password_confirmation: "Confirmer le mot de passe"
+      hints:
+        email: "Adresse e-mail pour la connexion"
+        password: "Minimum 8 caractères"
+        password_optional: "Laissez vide pour conserver le mot de passe actuel (minimum 8 caractères si changé)"
     columns:
       email: "E-mail"
       status: "Statut"
       created_at: "Créé le"
       updated_at: "Mis à jour le"
+    messages:
+      created: "Utilisateur créé avec succès"
+      updated: "Utilisateur mis à jour avec succès"
+      deleted: "Utilisateur supprimé avec succès"
+      confirm_delete: "Êtes-vous sûr de vouloir supprimer cet utilisateur ? Toutes les sessions associées seront également supprimées."
+    errors:
+      duplicate: "Un utilisateur avec cette adresse e-mail existe déjà"
 
   terminals:
     index:
@@ -433,6 +467,20 @@ fr:
       default: "%Y-%m-%d %H:%M:%S %z"
       short: "%d %b %H:%M"
       long: "%d %B %Y %H:%M"
+    month_names:
+      - ~
+      - "Janvier"
+      - "Février"
+      - "Mars"
+      - "Avril"
+      - "Mai"
+      - "Juin"
+      - "Juillet"
+      - "Août"
+      - "Septembre"
+      - "Octobre"
+      - "Novembre"
+      - "Décembre"
 
   datetime:
     distance_in_words:

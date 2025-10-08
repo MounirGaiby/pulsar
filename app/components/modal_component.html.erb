@@ -1,18 +1,18 @@
-<dialog id="<%= @id %>" class="modal" data-controller="modal" data-modal-backdrop-dismissable-value="<%= @backdrop_dismissable %>">
-  <div class="modal-box">
+<dialog id="<%= @id %>" class="<%= modal_dialog_classes %>" data-controller="modal" data-modal-backdrop-dismissable-value="<%= @backdrop_dismissable %>">
+  <div class="<%= modal_box_classes %>">
     <% if @closable %>
       <form method="dialog">
-        <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+        <button class="btn btn-sm btn-circle btn-ghost absolute rtl:left-2 ltr:right-2 top-2">✕</button>
       </form>
     <% end %>
     
     <% if @title.present? %>
-      <h3 class="font-bold text-lg" data-modal-target="title"><%= @title %></h3>
+      <h3 class="<%= title_classes %>" data-modal-target="title"><%= @title %></h3>
     <% else %>
-      <h3 class="font-bold text-lg" data-modal-target="title"></h3>
+      <h3 class="<%= title_classes %>" data-modal-target="title"></h3>
     <% end %>
     
-    <div class="py-4">
+    <div class="<%= content_classes %>">
       <%= turbo_frame_tag @turbo_frame_id do %>
         <div class="flex items-center justify-center p-8">
           <span class="loading loading-spinner loading-lg"></span>

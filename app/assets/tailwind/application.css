@@ -1022,6 +1022,22 @@
     :root:has(:is(.modal-open, .modal:target, .modal-toggle:checked + .modal, .modal[open])) {
         scrollbar-gutter: auto !important;
     }
+    
+    /* Hide scrollbar in modal content but keep functionality */
+    .modal-box * {
+        /* Firefox */
+        scrollbar-width: none;
+    }
+    
+    .modal-box *::-webkit-scrollbar {
+        /* Chrome, Safari, Edge */
+        display: none;
+    }
+    
+    /* Ensure scrolling still works */
+    .modal-box * {
+        -ms-overflow-style: none; /* IE and Edge */
+    }
 }
 
 @layer notifications {

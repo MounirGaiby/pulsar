@@ -18,6 +18,7 @@ ar:
       user:
         email_address: "البريد الإلكتروني"
         password: "كلمة المرور"
+        password_confirmation: "تأكيد كلمة المرور"
         created_at: "تاريخ الإنشاء"
         updated_at: "تاريخ التحديث"
       session:
@@ -73,6 +74,13 @@ ar:
         greater_than: "يجب أن يكون أكبر من %{count}"
         less_than_or_equal_to: "يجب أن يكون أقل من أو يساوي %{count}"
       models:
+        user:
+          attributes:
+            email_address:
+              invalid_format: "يجب أن يكون عنوان بريد إلكتروني صالح"
+              taken: "مسجل بالفعل"
+            password:
+              too_short: "قصير جداً (8 أحرف كحد أدنى)"
         terminal:
           attributes:
             ip:
@@ -227,11 +235,37 @@ ar:
   users:
     index:
       title: "المستخدمون"
+      empty_message: "لم يتم العثور على مستخدمين. أنشئ أول مستخدم للبدء."
+    show:
+      title: "تفاصيل المستخدم"
+      sessions: "الجلسات النشطة"
+      session_started: "البداية"
+      session_last_active: "آخر نشاط"
+      session_ip: "عنوان IP"
+      session_user_agent: "الجهاز"
+      no_sessions: "لا توجد جلسات نشطة"
+    new:
+      title: "مستخدم جديد"
+    edit:
+      title: "تعديل المستخدم"
+    form:
+      password_confirmation: "تأكيد كلمة المرور"
+      hints:
+        email: "عنوان البريد الإلكتروني لتسجيل الدخول"
+        password: "8 أحرف كحد أدنى"
+        password_optional: "اتركه فارغاً للاحتفاظ بكلمة المرور الحالية (8 أحرف كحد أدنى إذا تم التغيير)"
     columns:
       email: "البريد الإلكتروني"
       status: "الحالة"
       created_at: "تاريخ الإنشاء"
       updated_at: "تاريخ التحديث"
+    messages:
+      created: "تم إنشاء المستخدم بنجاح"
+      updated: "تم تحديث المستخدم بنجاح"
+      deleted: "تم حذف المستخدم بنجاح"
+      confirm_delete: "هل أنت متأكد من حذف هذا المستخدم؟ سيتم حذف جميع الجلسات المرتبطة أيضاً."
+    errors:
+      duplicate: "يوجد مستخدم بهذا البريد الإلكتروني بالفعل"
 
   terminals:
     index:
@@ -426,6 +460,20 @@ ar:
       default: "%Y-%m-%d"
       short: "%d %b"
       long: "%d %B %Y"
+    month_names:
+      - "~"
+      - "يناير"
+      - "فبراير"
+      - "مارس"
+      - "أبريل"
+      - "مايو"
+      - "يونيو"
+      - "يوليو"
+      - "أغسطس"
+      - "سبتمبر"
+      - "أكتوبر"
+      - "نوفمبر"
+      - "ديسمبر"
 
   time:
     formats:

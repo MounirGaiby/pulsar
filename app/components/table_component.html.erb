@@ -1,6 +1,6 @@
 <div class="table-container">
-  <div class="overflow-visible bg-base-100 rounded-box shadow-xs border border-base-200/60">
-    <table id="<%= @table_id %>" class="<%= responsive_classes %> overflow-auto" data-controller="table" data-table-sort-column-value="<%= @sort_column %>" data-table-sort-direction-value="<%= @sort_direction %>">
+  <div class="<%= container_classes %> bg-base-100 rounded-box shadow-xs border border-base-200/60">
+    <table id="<%= @table_id %>" class="<%= responsive_classes %>" data-controller="table" data-table-sort-column-value="<%= @sort_column %>" data-table-sort-direction-value="<%= @sort_direction %>">
       <thead>
         <tr>
           <% if @selectable %>
@@ -44,7 +44,7 @@
                 </td>
               <% end %>
               <% @columns.each do |column| %>
-                <td class="<%= cell_classes(column) %>">
+                <td class="<%= cell_classes_for_record(column, record) %>">
                   <%= cell_value(record, column) %>
                 </td>
               <% end %>
@@ -74,7 +74,7 @@
                                 action_url = action[:url].respond_to?(:call) ? action[:url].call(record) : action[:url]
                                 action_data = action[:data].respond_to?(:call) ? action[:data].call(record) : (action[:data] || {})
                               %>
-                              <%= button_to action_url, method: action[:method] || :post, form: { data: action_data }, class: "w-full text-left" do %>
+                              <%= button_to action_url, method: action[:method] || :post, form: { data: action_data }, class: "w-full text-left hover:cursor-pointer" do %>
                                 <span class="flex items-center gap-2"><%= icon action[:icon], library: "lucide", class: "w-4 h-4" if action[:icon] %><span class="text-sm"><%= action[:label] %></span></span>
                               <% end %>
                             <% end %>
