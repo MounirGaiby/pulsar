@@ -26,4 +26,18 @@ RailsIcons.configure do |config|
   # config.libraries.lucide.outline.default.css = "size-6"
   # config.libraries.lucide.outline.default.stroke_width = "1.5"
   # config.libraries.lucide.outline.default.data = {}
+  config.libraries.merge!(
+
+    {
+      custom: {
+        flags: {
+          path: "app/assets/svg/icons/flags/",
+          default: {
+            css: "size-6"
+          }
+        }
+
+      }
+    }
+  )
 end
