@@ -86,7 +86,9 @@
         row_actions: @row_actions,
         disable_sorting: @disable_sorting,
         scrollable: @scrollable,
-        empty_message: @empty_message
+        empty_message: @empty_message,
+        dom_id: @dom_id,
+        record_id: @record_id
       ) %>
     <% if @pagy %>
       <%= render pagy_component %>

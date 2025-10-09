@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 class DataTableComponent < BaseComponent
-  attr_reader :filters, :columns, :data, :pagy, :sort_column, :sort_direction, :current_filters, :action_buttons, :title, :active_filter_keys, :selectable, :selected_ids, :row_actions, :disable_sorting, :scrollable, :table_frame_id, :empty_message
+  attr_reader :filters, :columns, :data, :pagy, :sort_column, :sort_direction, :current_filters, :action_buttons, :title, :active_filter_keys, :selectable, :selected_ids, :row_actions, :disable_sorting, :scrollable, :table_frame_id, :empty_message,
+  :dom_id, :record_id
 
   def initialize(
     title: nil,
@@ -21,6 +22,8 @@ class DataTableComponent < BaseComponent
     scrollable: false,
     table_frame_id: nil,
     empty_message: nil,
+    dom_id: nil,
+    record_id: nil,
     **options
   )
     @title = title
@@ -40,6 +43,8 @@ class DataTableComponent < BaseComponent
     @scrollable = scrollable
     @table_frame_id = table_frame_id
     @empty_message = empty_message
+    @dom_id = dom_id
+    @record_id = record_id
     @options = options
   end
 
@@ -86,7 +91,8 @@ class DataTableComponent < BaseComponent
       sortable_columns: sortable_columns_list,
       current_sort: @sort_column,
       current_direction: @sort_direction,
-      current_page: @pagy&.page
+      current_page: @pagy&.page,
+      turbo_frame_id: @table_frame_id
     )
   end
 

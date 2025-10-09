@@ -7,6 +7,8 @@ export default class extends Controller {
   }
 
   connect() {
+    console.log('Modal controller connected')
+
     this.boundHandleFrameClick = this.handleFrameClick.bind(this)
     document.addEventListener('click', this.boundHandleFrameClick, true)
     
@@ -20,6 +22,8 @@ export default class extends Controller {
     
     // Save original state
     this.saveOriginalState()
+
+    this.setEventListeners()
   }
 
   disconnect() {
@@ -83,6 +87,9 @@ export default class extends Controller {
   handleFrameClick(event) {
     const link = event.target.closest('a[data-turbo-frame="modal-content"]')
     if (link) {
+      event.preventDefault()
+      event.stopPropagation()
+      
       const options = {
         title: link.dataset.modalTitleParam,
         size: link.dataset.modalSize,
@@ -173,6 +180,13 @@ export default class extends Controller {
       // The 'close' event will handle restoration
       this.element.close()
     }
+  }
+
+  setEventListeners() {
+    this.element.addEventListener('modal:close', () => {
+      console.log('modal:close event received')
+      this.close()
+    })
   }
 }
 

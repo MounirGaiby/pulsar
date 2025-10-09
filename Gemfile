@@ -131,3 +131,6 @@ gem "faraday-retry", "~> 2.2"
 gem "rails_icons"
 
 gem "i18n-tasks", "~> 1.0"
+
+# Hashing ids
+gem "hashid-rails", "~> 1.0"

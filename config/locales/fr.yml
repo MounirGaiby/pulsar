@@ -461,12 +461,6 @@ fr:
       default: "%d-%m-%Y"
       short: "%d %b"
       long: "%d %B %Y"
-
-  time:
-    formats:
-      default: "%Y-%m-%d %H:%M:%S %z"
-      short: "%d %b %H:%M"
-      long: "%d %B %Y %H:%M"
     month_names:
       - ~
       - "Janvier"
@@ -481,6 +475,12 @@ fr:
       - "Octobre"
       - "Novembre"
       - "Décembre"
+
+  time:
+    formats:
+      default: "%Y-%m-%d %H:%M:%S %z"
+      short: "%d %b %H:%M"
+      long: "%d %B %Y %H:%M"
 
   datetime:
     distance_in_words:

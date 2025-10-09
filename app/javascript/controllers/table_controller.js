@@ -14,53 +14,82 @@ export default class extends Controller {
         event.preventDefault()
 
         const column = event.currentTarget.dataset.tableColumn
-        const currentColumn = this.sortColumnValue
-        const currentDirection = this.sortDirectionValue
+        const url = new URL(window.location)
+        
+        // Get current sorts from URL
+        const currentSorts = url.searchParams.getAll('sort[]').length > 0 
+            ? url.searchParams.getAll('sort[]')
+            : (url.searchParams.get('sort') ? [url.searchParams.get('sort')] : [])
+        
+        const currentDirections = url.searchParams.getAll('direction[]').length > 0
+            ? url.searchParams.getAll('direction[]')
+            : (url.searchParams.get('direction') ? [url.searchParams.get('direction')] : [])
+        
+        // Build current sorts array
+        const sorts = currentSorts.map((col, index) => ({
+            column: col,
+            direction: currentDirections[index] || 'asc'
+        }))
 
-        let newDirection = 'asc'
-
-        if (currentColumn === column && currentDirection === 'asc') {
-            newDirection = 'desc'
+        // Find if this column is already sorted
+        const existingIndex = sorts.findIndex(s => s.column === column)
+        
+        if (existingIndex >= 0) {
+            // Column is already sorted
+            if (sorts[existingIndex].direction === 'asc') {
+                // First click: asc -> second click: desc
+                sorts[existingIndex].direction = 'desc'
+            } else {
+                // Second click: desc -> third click: remove sort
+                sorts.splice(existingIndex, 1)
+            }
+        } else {
+            // Column not sorted yet - add as ascending
+            sorts.push({ column, direction: 'asc' })
         }
 
-        this.updateSort(column, newDirection)
+        // Always do a page refresh to ensure everything stays in sync
+        this.updateSort(sorts)
     }
 
-    updateSort(column, direction) {
+    updateSort(sorts) {
         const url = new URL(window.location)
 
-        if (column) {
-            url.searchParams.set('sort', column)
-            url.searchParams.set('direction', direction)
-        } else {
-            url.searchParams.delete('sort')
-            url.searchParams.delete('direction')
-        }
+        // Clear old sort params
+        url.searchParams.delete('sort')
+        url.searchParams.delete('sort[]')
+        url.searchParams.delete('direction')
+        url.searchParams.delete('direction[]')
 
-        // Dispatch event so filter controller can sync
-        document.dispatchEvent(new CustomEvent('table:sort-changed', {
-            detail: { column, direction },
-            bubbles: true
-        }))
+        // Add new sort params
+        if (sorts && sorts.length > 0) {
+            sorts.forEach(sort => {
+                url.searchParams.append('sort[]', sort.column)
+                url.searchParams.append('direction[]', sort.direction)
+            })
+
+            // Dispatch event with first sort for backwards compatibility
+            document.dispatchEvent(new CustomEvent('table:sort-changed', {
+                detail: { column: sorts[0].column, direction: sorts[0].direction },
+                bubbles: true
+            }))
+        } else {
+            // Dispatch event with null to clear
+            document.dispatchEvent(new CustomEvent('table:sort-changed', {
+                detail: { column: null, direction: null },
+                bubbles: true
+            }))
+        }
 
         // Reset to page 1 when sorting changes
         url.searchParams.delete('page')
-        // Replace history URL so refresh preserves sort/filter params
-        try { window.history.replaceState({}, '', url.toString()) } catch (e) { }
 
-        // If user provided an explicit frame id on the table element (data-table-frame-id), use it.
-        const explicitFrame = this.element.getAttribute('data-table-frame-id')
-        if (explicitFrame) {
-            if (typeof Turbo !== 'undefined' && Turbo.visit) { Turbo.visit(url.toString(), { frame: explicitFrame }) }
-            else { window.location.href = url.toString() }
-            return
+        // Use Turbo.visit for full page navigation (fast, updates all frames)
+        if (typeof Turbo !== 'undefined' && Turbo.visit) {
+            Turbo.visit(url.toString(), { frame: '_top' })
+        } else {
+            window.location.href = url.toString()
         }
-
-        // Fallback: try to find the closest turbo-frame, else use _top
-        const frame = this.element.closest('turbo-frame')
-        const frameId = frame?.id || '_top'
-        if (typeof Turbo !== 'undefined' && Turbo.visit) { Turbo.visit(url.toString(), { frame: frameId }) }
-        else { window.location.href = url.toString() }
     }
 
     // Handle responsive table behavior

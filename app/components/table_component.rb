@@ -8,7 +8,9 @@
 #       { key: :name, label: "Name" },
 #       { key: :email, label: "Email" }
 #     ],
-#     data: @users
+#     data: @users,
+#     dom_id: ->(user) { dom_id(user) },
+#     record_id: ->(user) { user.id }
 #   ) %>
 #
 # == Custom Column Styling:
@@ -90,7 +92,7 @@
 #   scrollable: true       - Makes table horizontally scrollable
 #
 class TableComponent < BaseComponent
-  attr_reader :columns, :data, :pagy, :sort_column, :sort_direction, :empty_message, :table_id, :selectable, :selected_ids, :row_actions, :disable_sorting, :scrollable, :column_styles, :cell_styles
+  attr_reader :columns, :data, :pagy, :sort_column, :sort_direction, :empty_message, :table_id, :selectable, :selected_ids, :row_actions, :disable_sorting, :scrollable, :column_styles, :cell_styles, :dom_id, :record_id
 
   def initialize(
     columns:,
@@ -107,13 +109,18 @@ class TableComponent < BaseComponent
     scrollable: false,
     column_styles: nil,
     cell_styles: nil,
+    dom_id: nil,
+    record_id: nil,
     **options
   )
     @columns = columns.map { |col| Column.new(col) }
     @data = data
     @pagy = pagy
-    @sort_column = sort_column
-    @sort_direction = sort_direction
+    # Support both single and multiple sort columns
+    @sort_column = Array.wrap(sort_column).compact
+    @sort_direction = Array.wrap(sort_direction).compact
+    # Ensure directions match sorts count
+    @sort_direction = @sort_column.map.with_index { |_, i| @sort_direction[i] || @sort_direction.last || "asc" } if @sort_column.any?
     @empty_message = empty_message
     @table_id = table_id || "table-#{SecureRandom.hex(4)}"
     @selectable = selectable
@@ -132,9 +139,17 @@ class TableComponent < BaseComponent
   end
 
   def sorted_by?(column, direction = nil)
-    return false unless @sort_column&.to_sym == column.key
+    # Check if this column is in the sort array
+    sort_index = @sort_column.index(column.key.to_s) || @sort_column.index(column.key)
+    return false unless sort_index
 
-    direction.nil? ? true : @sort_direction == direction
+    direction.nil? ? true : @sort_direction[sort_index] == direction
+  end
+
+  def sort_priority(column)
+    # Return the sort priority (1-based index) or nil if not sorted
+    sort_index = @sort_column.index(column.key.to_s) || @sort_column.index(column.key)
+    sort_index ? sort_index + 1 : nil
   end
 
   def next_sort_direction(column)
@@ -147,7 +162,8 @@ class TableComponent < BaseComponent
 
   def sort_icon(column)
     if sorted_by?(column)
-      @sort_direction == "asc" ? "chevron-up" : "chevron-down"
+      current_dir = @sort_direction[@sort_column.index(column.key.to_s) || @sort_column.index(column.key)]
+      current_dir == "asc" ? "chevron-up" : "chevron-down"
     else
       "chevrons-up-down"
     end
@@ -170,7 +186,13 @@ class TableComponent < BaseComponent
   end
 
   def record_id(record)
-    record.id
+    if @record_id.respond_to?(:call)
+      @record_id.call(record)
+    elsif @record_id
+      record.send(@record_id)
+    else
+      record.id
+    end
   end
 
   def all_selected?

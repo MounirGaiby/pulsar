@@ -1077,6 +1077,9 @@
 
     .flash-alert {
         @apply border-l-4 shadow-xs;
+        /* Override DaisyUI alert colors to have neutral background with colored left border */
+        background-color: var(--color-base-100) !important;
+        color: var(--color-base-content) !important;
     }
 
     /* Alert type specific left borders */

@@ -2,33 +2,38 @@
 
 class FilterBuilder
   def self.build_filters_for_model(model_class, custom_filters = [])
-    filters = []
+    cache_key = [
+      "filter_builder",
+      model_class.name,
+      model_class.columns_hash.keys.hash,
+      model_class.reflect_on_all_associations.map(&:name).hash,
+      custom_filters.hash
+    ].join("/")
 
-    # Add custom filters first (these override auto-generated ones)
-    custom_filters.each do |filter_config|
-      filters << build_filter_from_config(filter_config, model_class)
+    Rails.cache.fetch(cache_key, expires_in: 12.hours) do
+      filters = []
+
+      custom_filters.each do |filter_config|
+        filters << build_filter_from_config(filter_config, model_class)
+      end
+
+      custom_keys = custom_filters.map { |f| f[:attribute] || f[:key] }
+
+      model_class.columns.each do |column|
+        next if custom_keys.include?(column.name.to_sym)
+        next if %w[id created_at updated_at password_digest encrypted_password].include?(column.name)
+        filter = build_filter_from_column(column, model_class)
+        filters << filter if filter
+      end
+
+      model_class.reflect_on_all_associations.each do |association|
+        next if custom_keys.include?(association.name)
+        filter = build_filter_from_association(association, model_class)
+        filters << filter if filter
+      end
+
+      filters
     end
-
-    custom_keys = custom_filters.map { |f| f[:attribute] || f[:key] }
-
-    # Auto-generate filters from model attributes
-    model_class.columns.each do |column|
-      next if custom_keys.include?(column.name.to_sym)
-      next if %w[id created_at updated_at password_digest encrypted_password].include?(column.name)
-
-      filter = build_filter_from_column(column, model_class)
-      filters << filter if filter
-    end
-
-    # Auto-generate filters from associations
-    model_class.reflect_on_all_associations.each do |association|
-      next if custom_keys.include?(association.name)
-
-      filter = build_filter_from_association(association, model_class)
-      filters << filter if filter
-    end
-
-    filters
   end
 
   def self.build_filter_from_config(config, model_class)

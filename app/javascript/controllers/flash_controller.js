@@ -11,23 +11,55 @@ export default class extends Controller {
 
     connect() {
         // container holds individual flash items
-        this.showAll()
         this._timers = new Map()
         this._animationDuration = this.animationDurationValue
+        this._observer = null
+        
+        this.showAll()
+        this._setupMutationObserver()
     }
 
     disconnect() {
         // Clean up all timers on disconnect
         this._timers.forEach((id) => clearTimeout(id))
         this._timers.clear()
+        
+        // Clean up mutation observer
+        if (this._observer) {
+            this._observer.disconnect()
+            this._observer = null
+        }
     }
 
     showAll() {
-        const items = Array.from(this.element.querySelectorAll('.flash-item'))
+        const items = Array.from(this.element.querySelectorAll('.flash-item:not(.flash-initialized)'))
         items.forEach((item, i) => this._showItem(item, i))
+    }
+    
+    _setupMutationObserver() {
+        // Watch for new flash items added dynamically via Turbo Stream
+        this._observer = new MutationObserver((mutations) => {
+            mutations.forEach((mutation) => {
+                mutation.addedNodes.forEach((node) => {
+                    if (node.nodeType === 1 && node.classList.contains('flash-item')) {
+                        if (!node.classList.contains('flash-initialized')) {
+                            this._showItem(node, 0)
+                        }
+                    }
+                })
+            })
+        })
+        
+        this._observer.observe(this.element, {
+            childList: true,
+            subtree: false
+        })
     }
 
     _showItem(item, index) {
+        // Mark as initialized to prevent duplicate handling
+        item.classList.add('flash-initialized')
+        
         // Stagger entrance animations for multiple flashes
         const delay = index * 100 // 100ms stagger
         requestAnimationFrame(() => {

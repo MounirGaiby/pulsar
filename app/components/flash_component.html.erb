@@ -1,63 +1,24 @@
 <section class="<%= position_class %>" aria-live="polite" aria-label="Flash messages">
   <div
+    id="flash-messages"
     data-controller="flash"
     data-flash-animation-duration-value="<%= animation_duration %>"
     class="space-y-2 max-w-sm"
   >
     <% flash.each do |type, message| %>
       <% next if message.blank? %>
-      <% content = message_content(type, message) %>
-      <% timeout = timeout_for(type, message) %>
-      <% custom_class = custom_classes(type, message) %>
-      <% alert_kind = alert_type(type) %>
       <% if custom_template?(type) %>
-        <!-- Custom template rendering -->
         <div
-          class="flash-item <%= custom_class %>"
-          data-flash-timeout="<%= timeout %>"
-          data-flash-type-value="<%= alert_kind %>"
+          class="flash-item <%= custom_classes(type, message) %>"
+          data-flash-timeout="<%= timeout_for(type, message) %>"
+          data-flash-type-value="<%= alert_type(type) %>"
           role="status"
           tabindex="0"
         >
           <%= render_custom_template(type, message) %>
         </div>
       <% else %>
-        <!-- Default flash item -->
-        <div
-          class="flash-item <%= custom_class %>"
-          data-flash-timeout="<%= timeout %>"
-          data-flash-type-value="<%= alert_kind %>"
-          role="status"
-          tabindex="0"
-        >
-          <div class="alert alert-<%= alert_kind %> shadow-xs border border-base-300 flash-alert">
-            <div class="flex-1">
-              <div class="flash-icon mr-2">
-                <% case alert_kind %>
-                <% when "success" %>
-                  <%= icon "check-circle", variant: "outline", class: "w-5 h-5" %>
-                <% when "error" %>
-                  <%= icon "exclamation-circle", variant: "outline", class: "w-5 h-5" %>
-                <% when "warning" %>
-                  <%= icon "exclamation-triangle", variant: "outline", class: "w-5 h-5" %>
-                <% when "info" %>
-                  <%= icon "information-circle", variant: "outline", class: "w-5 h-5" %>
-                <% end %>
-              </div>
-              <label class="flash-message"><%= content %></label>
-            </div>
-            <div class="flex-none">
-              <button
-                type="button"
-                class="flash-close btn btn-circle btn-ghost btn-sm"
-                aria-label="<%= t('flash.close', default: 'Dismiss') %>"
-                title="<%= t('flash.close', default: 'Dismiss') %>"
-              >
-                <%= icon "x", library: "lucide", class: "w-4 h-4" %>
-              </button>
-            </div>
-          </div>
-        </div>
+        <%= render partial: "shared/flash_item", locals: { type: type, message: message } %>
       <% end %>
     <% end %>
   </div>

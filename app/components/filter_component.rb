@@ -19,8 +19,11 @@ class FilterComponent < BaseComponent
     @form_id = form_id || "filter-form-#{SecureRandom.hex(4)}"
     @active_filter_keys = active_filter_keys || []
     @sortable_columns = sortable_columns || []
-    @current_sort = current_sort
-    @current_direction = current_direction
+    # Support both single and multiple sort columns
+    @current_sort = Array.wrap(current_sort).compact
+    @current_direction = Array.wrap(current_direction).compact
+    # Ensure directions match sorts count
+    @current_direction = @current_sort.map.with_index { |_, i| @current_direction[i] || @current_direction.last || "asc" } if @current_sort.any?
     @current_page = current_page
     @options = options
   end
@@ -109,10 +112,38 @@ class FilterComponent < BaseComponent
   end
 
   def current_sort_label
-    return nil unless @current_sort.present?
+    return nil unless @current_sort.present? && @current_sort.any?
 
-    col = @sortable_columns.find { |c| c[:key].to_s == @current_sort.to_s }
-    col ? (col[:label] || col[:key].to_s.humanize) : @current_sort.to_s.humanize
+    col = @sortable_columns.find { |c| c[:key].to_s == @current_sort.first.to_s }
+    col ? (col[:label] || col[:key].to_s.humanize) : @current_sort.first.to_s.humanize
+  end
+
+  # Returns array of active sort criteria as hashes with column info
+  def active_sorts
+    @current_sort.map.with_index do |sort_col, index|
+      col = @sortable_columns.find { |c| c[:key].to_s == sort_col.to_s }
+      {
+        key: sort_col,
+        label: col ? (col[:label] || col[:key].to_s.humanize) : sort_col.to_s.humanize,
+        direction: @current_direction[index] || "asc",
+        index: index
+      }
+    end
+  end
+
+  def has_active_sorts?
+    @current_sort.any?
+  end
+
+  # Check if a specific column is currently being sorted
+  def column_sorted?(column_key)
+    @current_sort.include?(column_key.to_s)
+  end
+
+  # Get the direction for a specific sorted column
+  def column_sort_direction(column_key)
+    index = @current_sort.index(column_key.to_s)
+    index ? @current_direction[index] : nil
   end
 
   def display_filter_value(filter)
