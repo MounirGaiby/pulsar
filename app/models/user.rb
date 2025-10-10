@@ -1,10 +1,22 @@
 class User < ApplicationRecord
   audited
+  include Hashid::Rails
 
   has_secure_password
   has_many :sessions, dependent: :destroy
 
   normalizes :email_address, with: ->(e) { e.strip.downcase }
+
+  # Validations
+  validates :email_address, presence: true,
+                            uniqueness: { case_sensitive: false },
+                            format: {
+                              with: URI::MailTo::EMAIL_REGEXP,
+                              message: :invalid_format
+                            },
+                            length: { maximum: 255 }
+
+  validates :password, length: { minimum: 8, maximum: 255 }, if: :password_digest_changed?
 
   # Authenticate a user with the provided params (from permittted session params).
   # Returns the user on success, or a symbol describing the failure on failure.
@@ -44,5 +56,9 @@ class User < ApplicationRecord
 
   def self.ransackable_associations(auth_object = nil)
     []
+  end
+
+  def to_key
+    [ hashid ]
   end
 end
