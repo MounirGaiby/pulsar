@@ -1,6 +1,5 @@
 import { Controller } from "@hotwired/stimulus"
 
-// Connects to data-controller="event"
 export default class extends Controller {
   // Broadcast an event using dataset only.
   // - data-event-name is required.

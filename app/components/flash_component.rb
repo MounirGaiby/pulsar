@@ -1,24 +1,5 @@
 # frozen_string_literal: true
 
-# FlashComponent renders flash messages with customizable styling, animations, and behavior.
-# Supports multiple flash types with custom templates, timeouts, and dismiss options.
-#
-# @example Basic usage in a layout:
-#   <%= render FlashComponent.new(flash: flash) %>
-#
-# @example With custom options:
-#   <%= render FlashComponent.new(
-#     flash: flash,
-#     position: "top-center",
-#     animation_duration: 300,
-#     default_timeout: 5000
-#   ) %>
-#
-# @param flash [Hash] Rails flash hash containing messages keyed by type
-# @param position [String] Position class (e.g., "top-right", "bottom-left")
-# @param animation_duration [Integer] Animation duration in milliseconds
-# @param default_timeout [Integer] Default auto-hide timeout in milliseconds
-# @param custom_templates [Hash] Custom ERB templates per flash type
 class FlashComponent < BaseComponent
   attr_reader :flash, :position, :animation_duration, :default_timeout, :custom_templates
 

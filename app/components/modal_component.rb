@@ -1,46 +1,5 @@
 # frozen_string_literal: true
 
-# ModalComponent - A customizable modal dialog component
-#
-# == Basic Usage:
-#   <%= render ModalComponent.new(
-#     id: "my-modal",
-#     title: "Modal Title"
-#   ) %>
-#
-# == Size Options:
-#   size: :sm     # Small modal (max-w-sm)
-#   size: :md     # Medium modal (max-w-2xl) - default
-#   size: :lg     # Large modal (max-w-4xl)
-#   size: :xl     # Extra large modal (max-w-6xl)
-#   size: :full   # Full width modal (max-w-7xl)
-#
-# == Custom Width:
-#   width: "w-96"           # Fixed width
-#   width: "w-full max-w-3xl" # Responsive with max width
-#
-# == Custom Classes:
-#   modal_class: "backdrop-blur-sm"           # Custom classes for dialog element
-#   modal_box_class: "bg-base-200 rounded-2xl" # Custom classes for modal box
-#   title_class: "text-2xl text-primary"       # Custom classes for title
-#   content_class: "min-h-96"                  # Custom classes for content area
-#
-# == Style Modes:
-#   modal_box_class_mode: :add      # Append to default classes (default)
-#   modal_box_class_mode: :replace  # Replace all default classes
-#
-# == Complete Example:
-#   <%= render ModalComponent.new(
-#     id: "user-modal",
-#     title: "User Details",
-#     size: :lg,
-#     closable: true,
-#     backdrop_dismissable: true,
-#     modal_box_class: "shadow-2xl border-2 border-primary",
-#     title_class: "text-primary text-2xl",
-#     content_class: "max-h-[80vh] overflow-y-auto"
-#   ) %>
-
 class ModalComponent < BaseComponent
   attr_reader :id, :title, :closable, :backdrop_dismissable, :turbo_frame_id,
               :size, :width, :modal_class, :modal_box_class, :title_class,

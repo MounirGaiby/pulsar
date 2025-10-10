@@ -3,8 +3,6 @@ class BaseComponent < ViewComponent::Base
     helpers.icon(name, library: library, **options)
   end
 
-  # Delegate common view helper methods to the helpers proxy so components
-  # can call them directly (e.g., turbo_frame_tag in templates rendered by components).
   def turbo_frame_tag(*args, &block)
     helpers.turbo_frame_tag(*args, &block)
   end
