@@ -28,6 +28,12 @@ require "view_component/system_test_helpers"
 require 'webmock/rspec'
 WebMock.disable_net_connect!(allow_localhost: true)
 
+# Pundit Matchers
+require 'pundit/matchers'
+
+# Timecop for time travel in tests
+require 'timecop'
+
 # Requires supporting ruby files with custom matchers and macros, etc, in
 # spec/support/ and its subdirectories. Files matching `spec/**/*_spec.rb` are
 # run as spec files by default. This means that files in spec/support that end
@@ -61,7 +67,33 @@ RSpec.configure do |config|
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
   # examples within a transaction, remove the following line or assign false
   # instead of true.
-  config.use_transactional_fixtures = true
+  config.use_transactional_fixtures = false
+
+  # Database Cleaner configuration
+  config.before(:suite) do
+    DatabaseCleaner.clean_with(:truncation)
+  end
+
+  config.before do
+    DatabaseCleaner.strategy = :transaction
+  end
+
+  config.before(:each, type: :system) do
+    DatabaseCleaner.strategy = :truncation
+  end
+
+  config.before do
+    DatabaseCleaner.start
+  end
+
+  config.after do
+    DatabaseCleaner.clean
+  end
+
+  # Clean up after Timecop
+  config.after do
+    Timecop.return
+  end
 
   # You can uncomment this line to turn off ActiveRecord support entirely.
   # config.use_active_record = false
@@ -71,7 +103,7 @@ RSpec.configure do |config|
   config.include ViewComponent::SystemTestHelpers, type: :component
 
   # FactoryBot
-  config.include FactoryBot::Syntax::Methods
+  # config.include FactoryBot::Syntax::Methods
 
   # Shoulda Matchers
   config.include Shoulda::Matchers::ActiveRecord, type: :model
@@ -98,4 +130,5 @@ RSpec.configure do |config|
   config.filter_rails_from_backtrace!
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
+  config.include Rails.application.routes.url_helpers
 end

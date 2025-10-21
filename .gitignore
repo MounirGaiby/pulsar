@@ -42,3 +42,9 @@
 /.vscode
 /.idea
 /.github/instructions
+
+# Test coverage
+/coverage/
+/coverage.data
+coverage/.resultset.json
+coverage/.last_run.json

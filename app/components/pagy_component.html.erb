@@ -10,7 +10,7 @@
   </div>
 
   <!-- Navigation: Previous, Pages, Next -->
-  <div class="<%= nav_classes %>">
+  <nav class="<%= nav_classes %>">
     <!-- Previous Button -->
     <% if @pagy.prev %>
       <%= link_to url_for(request.params.merge(page: @pagy.prev)), class: "#{nav_button_classes} btn-ghost", title: t('pagy.prev', default: 'Previous') do %>
@@ -47,7 +47,7 @@
         <%= icon(is_rtl? ? "chevron-left" : "chevron-right", library: "lucide", class: "w-4 h-4") %>
       </span>
     <% end %>
-  </div>
+    </nav>
 
   <!-- Items Per Page Selector -->
   <div class="<%= items_per_page_classes %>">
@@ -55,16 +55,16 @@
       <%= t('pagy.show', default: 'Show:') %>
     </label>
     <% if @form_id %>
-      <%= select_tag :limit, 
-          options_for_select([10, 25, 50, 100], @pagy.vars[:limit]), 
-          class: "select select-bordered select-sm min-h-[2rem] h-8 w-16 text-xs sm:text-sm font-medium", 
-          data: { controller: "pagy", action: "change->pagy#limitChanged" }, 
+      <%= select_tag :limit,
+          options_for_select([10, 25, 50, 100], @pagy.vars[:limit]),
+          class: "select select-bordered select-sm min-h-[2rem] h-8 w-16 text-xs sm:text-sm font-medium",
+          data: { controller: "pagy", action: "change->pagy#limitChanged" },
           form: @form_id %>
     <% else %>
       <%= form_with url: request.path, method: :get, data: { turbo_frame: "_top" }, class: "inline" do |f| %>
-        <%= f.select :limit, 
-            options_for_select([10, 25, 50, 100], @pagy.vars[:limit]), 
-            class: "select select-bordered select-sm min-h-[2rem] h-8 w-16 text-xs sm:text-sm font-medium", 
+        <%= f.select :limit,
+            options_for_select([10, 25, 50, 100], @pagy.vars[:limit]),
+            class: "select select-bordered select-sm min-h-[2rem] h-8 w-16 text-xs sm:text-sm font-medium",
             data: { controller: "pagy", action: "change->pagy#limitChanged" } %>
       <% end %>
     <% end %>

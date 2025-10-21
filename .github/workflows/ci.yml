@@ -83,7 +83,24 @@ jobs:
         # (test:system) instead, replace the second command with `bin/rails test:system`.
         run: |
           bin/rails db:test:prepare
-          bin/rspec
+          bin/rspec --format progress --format RspecJunitFormatter --out tmp/rspec_results.xml
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./coverage/lcov.info
+          flags: unittests
+          name: codecov-umbrella
+          fail_ci_if_error: false
+
+      - name: Upload test results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: test-results
+          path: tmp/rspec_results.xml
+          if-no-files-found: ignore
 
       - name: Keep screenshots from failed system tests
         uses: actions/upload-artifact@v4
@@ -91,4 +108,12 @@ jobs:
         with:
           name: screenshots
           path: ${{ github.workspace }}/tmp/screenshots
+          if-no-files-found: ignore
+
+      - name: Upload coverage reports
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: coverage-report
+          path: coverage/
           if-no-files-found: ignore

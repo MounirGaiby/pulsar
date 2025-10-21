@@ -4,6 +4,42 @@
 # this file to always be loaded, without a need to explicitly require it in any
 # files.
 #
+# SimpleCov configuration for code coverage
+require 'simplecov'
+require 'simplecov-lcov'
+
+SimpleCov::Formatter::LcovFormatter.config.report_with_single_file = true
+SimpleCov::Formatter::LcovFormatter.config.single_report_path = 'coverage/lcov.info'
+
+SimpleCov.formatters = [
+  SimpleCov::Formatter::HTMLFormatter,
+  SimpleCov::Formatter::LcovFormatter
+]
+
+SimpleCov.start 'rails' do
+  add_filter '/bin/'
+  add_filter '/db/'
+  add_filter '/spec/'
+  add_filter '/config/'
+  add_filter '/vendor/'
+  add_filter '/tmp/'
+
+  add_group 'Controllers', 'app/controllers'
+  add_group 'Models', 'app/models'
+  add_group 'Helpers', 'app/helpers'
+  add_group 'Mailers', 'app/mailers'
+  add_group 'Jobs', 'app/jobs'
+  add_group 'Services', 'app/services'
+  add_group 'Policies', 'app/policies'
+  add_group 'Components', 'app/components'
+
+  # Coverage thresholds
+  minimum_coverage 90
+  minimum_coverage_by_file 80
+
+  track_files '{app,lib}/**/*.rb'
+end
+
 # Given that it is always loaded, you are encouraged to keep this file as
 # light-weight as possible. Requiring heavyweight dependencies from this file
 # will add to the boot time of your test suite on EVERY test run, even for an
@@ -91,4 +127,6 @@ RSpec.configure do |config|
   # as the one that triggered the failure.
   Kernel.srand config.seed
 =end
+
+  config.example_status_persistence_file_path = "tmp/examples.txt"
 end

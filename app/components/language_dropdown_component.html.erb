@@ -8,10 +8,19 @@
     </li>
   <% else %>
     <li>
-      <%= link_to url_for(locale: locale[:code], **request.query_parameters.except(:locale)), class: "dropdown-item" do %>
+      <% target_url =
+           if request.query_parameters.present?
+             url_for(request.query_parameters.except(:locale).merge(locale: locale[:code]))
+           else
+             root_path(locale: locale[:code])
+           end %>
+
+      <%= link_to target_url, class: "dropdown-item" do %>
         <%= icon locale[:icon], library: locale[:library], class: "w-4 h-4" %>
         <span><%= t("topbar.languages.#{locale[:code]}") %></span>
       <% end %>
+
+
     </li>
   <% end %>
 <% end %>

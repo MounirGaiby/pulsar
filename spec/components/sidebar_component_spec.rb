@@ -3,13 +3,15 @@
 require "rails_helper"
 
 RSpec.describe SidebarComponent, type: :component do
-  pending "add some examples to (or delete) #{__FILE__}"
+  it "renders the sidebar" do
+    render_inline(described_class.new(current_user: create(:user)))
 
-  # it "renders something useful" do
-  #   expect(
-  #     render_inline(described_class.new(attr: "value")) { "Hello, components!" }.css("p").to_html
-  #   ).to include(
-  #     "Hello, components!"
-  #   )
-  # end
+    expect(page).to have_selector('aside, nav, [data-component="sidebar"]')
+  end
+
+  it "renders navigation items" do
+    render_inline(described_class.new(current_user: create(:user)))
+
+    expect(page).to have_selector('a, li')
+  end
 end

@@ -1,43 +1,65 @@
+# frozen_string_literal: true
+
 puts "Seeding data for #{ENV.fetch("RAILS_ENV", "development")} environment".upcase
 
+# Create admin user from environment variables
 if User.count.zero? && ENV["ADMIN_EMAIL_ADDRESS"].present? && ENV["ADMIN_PASSWORD"].present?
   Seeding::UserService.create_user(ENV.fetch("ADMIN_EMAIL_ADDRESS"), ENV.fetch("ADMIN_PASSWORD"))
 end
 
-# Create test users for development
-if Rails.env.development? && User.count < 20
-  puts "Creating test users..."
+# Seed test data for development environment
+if Rails.env.development?
+  require 'factory_bot_rails'
 
-  test_emails = [
-    "john.doe@example.com",
-    "jane.smith@example.com",
-    "bob.wilson@example.com",
-    "alice.brown@example.com",
-    "charlie.davis@example.com",
-    "diana.evans@example.com",
-    "edward.frank@example.com",
-    "fiona.grace@example.com",
-    "george.harris@example.com",
-    "helen.ivanov@example.com",
-    "ian.johnson@example.com",
-    "kate.kim@example.com",
-    "liam.lopez@example.com",
-    "maria.martinez@example.com",
-    "nathan.nguyen@example.com",
-    "olivia.ortiz@example.com",
-    "peter.patel@example.com",
-    "quinn.qureshi@example.com",
-    "rachel.rodriguez@example.com",
-    "samuel.smith@example.com"
-  ]
+  # Load factory definitions
+  FactoryBot.find_definitions
 
-  test_emails.each do |email|
-    next if User.exists?(email_address: email)
+  # Create test users if needed
+  if User.count < 20
+    puts "Creating test users with FactoryBot..."
 
-    User.create!(
-      email_address: email,
-      password: "password123"
-    )
-    puts "Created test user: #{email}"
+    # Create users with different states
+    5.times do |i|
+      FactoryBot.create(:user, email_address: "user#{i + 1}@example.com")
+    end
+
+    # Create active users (with recent sessions)
+    3.times do |i|
+      FactoryBot.create(:user, :active, email_address: "active#{i + 1}@example.com")
+    end
+
+    # Create idle users (with idle sessions)
+    3.times do |i|
+      FactoryBot.create(:user, :idle, email_address: "idle#{i + 1}@example.com")
+    end
+
+    # Create users with multiple sessions
+    2.times do |i|
+      FactoryBot.create(:user, :with_sessions, email_address: "multi_session#{i + 1}@example.com")
+    end
+
+    # Create specific test users
+    test_users = [
+      { email: "john.doe@example.com", password: "password123" },
+      { email: "jane.smith@example.com", password: "password123" },
+      { email: "admin@example.com", password: "password123" }
+    ]
+
+    test_users.each do |user_data|
+      next if User.exists?(email_address: user_data[:email])
+
+      FactoryBot.create(:user,
+        email_address: user_data[:email],
+        password: user_data[:password],
+        password_confirmation: user_data[:password]
+      )
+      puts "Created test user: #{user_data[:email]}"
+    end
+
+    puts "Successfully created #{User.count} users with sessions"
+  else
+    puts "Users already exist. Skipping seed creation."
   end
 end
+
+puts "Seeding completed!"

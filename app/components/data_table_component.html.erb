@@ -4,7 +4,7 @@
       <%# if @title %>
 <!--        <h1 class="<%#= title_classes %>"><%= @title %></h1>-->
       <%# end %>
-      
+
       <% if has_action_buttons? %>
         <div class="flex items-center gap-2">
           <% if has_multiple_action_buttons? %>
@@ -21,7 +21,7 @@
                 <%= button[:label] %>
               <% end %>
             <% end %>
-            
+
             <% direction = I18n.locale == :ar ? :rtl : :ltr %>
             <%= render DropdownComponent.new(
               direction: direction,
@@ -69,11 +69,11 @@
       <% end %>
     </div>
   <% end %>
-  
+
   <% if has_filters? %>
     <%= render filter_component %>
   <% end %>
-  
+
   <%= turbo_frame_tag(@table_frame_id || 'data-table-frame') do %>
     <%= render TableComponent.new(
         columns: @columns,

@@ -38,7 +38,7 @@
   gem "thruster", require: false
 
   # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
-  # gem "image_processing", "~> 1.2"
+  gem "image_processing", "~> 1.2"
 
   # Pagination
   gem "pagy", "~> 9.3"
@@ -104,6 +104,32 @@
 
     # WebMock for HTTP request stubbing in tests
     gem "webmock"
+
+    # SimpleCov for code coverage
+    gem "simplecov", require: false
+    gem "simplecov-lcov", require: false
+
+    # Database cleaner strategies
+    gem "database_cleaner-active_record"
+
+    # Test data generation
+    gem "factory_bot_rails"
+    gem "ffaker"
+
+    # Time travel in tests
+    gem "timecop"
+
+    # Test profiling
+    gem "rspec-benchmark"
+
+    # Pundit matchers for authorization tests
+    gem "pundit-matchers"
+
+    # JUnit formatter for CI
+    gem "rspec_junit_formatter"
+
+    # Rails controller testing
+    gem "rails-controller-testing"
   end
 
   # Turbo Streams enhancements and utilities
@@ -116,9 +142,7 @@
   gem "view_component"
 
   # Faker for generating fake data
-  gem "faker"
-
-  gem "factory_bot", "~> 6.5"
+  gem "faker", groups: [ :development, :test ]
 
 # Authorization with Pundit
 gem "pundit", "~> 2.5"
