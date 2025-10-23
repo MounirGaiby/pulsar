@@ -366,7 +366,7 @@ ar:
       logout_success: "تم تسجيل الخروج بنجاح."
 
   topbar:
-    default_title: "Pulsar"
+    default_title: "__APP_NAME__"
     language: "اللغة"
     theme: "السمة"
     logout: "تسجيل الخروج"

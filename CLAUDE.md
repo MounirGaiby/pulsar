@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Application Overview
 
-This is a Rails 8 application called "Pulsar" using modern Rails stack with:
+This is a Rails 8 application called "__APP_NAME__" using modern Rails stack with:
 - Authentication system with session-based login
 - Multi-language support (English, French, Arabic)
 - ViewComponent-based UI architecture
